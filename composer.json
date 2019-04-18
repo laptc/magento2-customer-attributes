@@ -1,0 +1,28 @@
+{
+  "name": "mvn/cam",
+  "description": "Magento 2 customer attributes management",
+  "require": {
+  },
+  "type": "project",
+  "license": [
+    "OSL-3.0",
+    "AFL-3.0"
+  ],
+  "version": "0.1.0",
+  "authors": [
+    {
+      "name": "daniel",
+      "email": "support@danieltruong.com",
+      "homepage": "https://www.danieltruong.com/",
+      "role": "Developer"
+    }
+  ],
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "Mvn\\Cam\\": ""
+    }
+  }
+}

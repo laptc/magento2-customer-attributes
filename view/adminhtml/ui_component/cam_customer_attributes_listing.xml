@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Copyright © Mvn, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">cam_customer_attributes_listing.cam_customer_attributes_listing_data_source</item>
+        </item>
+        <item name="buttons" xsi:type="array">
+            <item name="add" xsi:type="array">
+                <item name="name" xsi:type="string">add</item>
+                <item name="label" xsi:type="string" translate="true">Add Attribute</item>
+                <item name="class" xsi:type="string">primary</item>
+                <item name="url" xsi:type="string">*/*/new</item>
+            </item>
+        </item>
+    </argument>
+    <settings>
+        <spinner>customer_attributes_columns</spinner>
+        <deps>
+            <dep>cam_customer_attributes_listing.cam_customer_attributes_listing_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="cam_customer_attributes_listing_data_source" component="Magento_Ui/js/grid/provider">
+        <settings>
+            <storageConfig>
+                <param name="cacheRequests" xsi:type="boolean">false</param>
+                <param name="indexField" xsi:type="string">attribute_id</param>
+            </storageConfig>
+            <updateUrl path="mui/index/render"/>
+        </settings>
+        <aclResource>Mvn_Cam::customer_attributes</aclResource>
+        <dataProvider class="Mvn\Cam\Ui\DataProvider\Customer\Attributes\Listing" name="cam_customer_attributes_listing_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>attribute_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <listingToolbar name="listing_top">
+        <bookmark name="bookmarks"/>
+        <columnsControls name="columns_controls"/>
+        <filters name="listing_filters">
+            <settings>
+                <childDefaults>
+                    <param name="imports" xsi:type="array">
+                        <item name="visible" xsi:type="string">cam_customer_attributes_listing.cam_customer_attributes_listing.customer_attributes_columns:${ $.index }.visible</item>
+                    </param>
+                    <param name="provider" xsi:type="string">cam_customer_attributes_listing.cam_customer_attributes_listing.listing_top.listing_filters</param>
+                </childDefaults>
+                <statefull>
+                    <property name="applied" xsi:type="boolean">false</property>
+                </statefull>
+            </settings>
+        </filters>
+        <paging name="listing_paging" component="Magento_Catalog/js/components/attributes-grid-paging">
+            <settings>
+                <selectProvider>cam_customer_attributes_listing.cam_customer_attributes_listing.customer_attributes_columns.ids</selectProvider>
+            </settings>
+        </paging>
+    </listingToolbar>
+    <columns name="customer_attributes_columns">
+        <selectionsColumn name="ids" sortOrder="0">
+            <settings>
+                <indexField>attribute_id</indexField>
+            </settings>
+        </selectionsColumn>
+        <column name="attribute_code">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Attribute Code</label>
+                <sorting>asc</sorting>
+            </settings>
+        </column>
+        <column name="frontend_label">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Default Label</label>
+            </settings>
+        </column>
+        <column name="is_required" component="Magento_Ui/js/grid/columns/select">
+            <settings>
+                <options class="Magento\Config\Model\Config\Source\Yesno"/>
+                <filter>select</filter>
+                <dataType>select</dataType>
+                <label translate="true">Required</label>
+            </settings>
+        </column>
+        <column name="is_system" component="Magento_Ui/js/grid/columns/select">
+            <settings>
+                <options class="Magento\Config\Model\Config\Source\Yesno"/>
+                <filter>select</filter>
+                <dataType>select</dataType>
+                <label translate="true">System</label>
+            </settings>
+        </column>
+        <column name="is_visible" component="Magento_Ui/js/grid/columns/select">
+            <settings>
+                <options class="Magento\Config\Model\Config\Source\Yesno"/>
+                <filter>select</filter>
+                <dataType>select</dataType>
+                <label translate="true">Visible</label>
+            </settings>
+        </column>
+        <column name="sort_order">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Sort Order</label>
+            </settings>
+        </column>
+        <actionsColumn name="actions" class="Mvn\Cam\Ui\Component\Action\Edit">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="indexField" xsi:type="string">attribute_id</item>
+                    <item name="urlPath" xsi:type="string">cam/customer/edit</item>
+                    <item name="label" xsi:type="string" translate="true">Action</item>
+                    <item name="labelAction" xsi:type="string" translate="true">Edit</item>
+                    <item name="filterable" xsi:type="boolean">false</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </actionsColumn>
+    </columns>
+</listing>

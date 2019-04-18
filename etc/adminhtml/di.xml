@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ Copyright © 2019 MVN. All rights reserved.
+  ~ See COPYING.txt for license details.
+  -->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <type name="Mvn\Cam\Controller\Adminhtml\Customer\Attribute">
+        <arguments>
+            <argument name="attributeLabelCache" xsi:type="object">Magento\Framework\App\Cache\Type\Translate</argument>
+        </arguments>
+    </type>
+
+    <type name="Mvn\Cam\Controller\Adminhtml\Address\Attribute">
+        <arguments>
+            <argument name="attributeLabelCache" xsi:type="object">Magento\Framework\App\Cache\Type\Translate</argument>
+        </arguments>
+    </type>
+
+</config>
