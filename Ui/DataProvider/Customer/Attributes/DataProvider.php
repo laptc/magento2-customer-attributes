@@ -15,6 +15,7 @@ use Magento\Ui\Component\Form\Element\DataType\Text;
 use Magento\Store\Model\Store;
 use Magento\Framework\App\RequestInterface;
 use Magento\Customer\Model\AttributeFactory;
+use Magento\Eav\Model\ResourceModel\Entity\Attribute\Option\CollectionFactory as OptionCollectionFactory;
 
 /**
  * Class DataProvider
@@ -43,6 +44,11 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
     protected $attributeFactory;
 
     /**
+     * @var OptionCollectionFactory
+     */
+    protected $attrOptionCollectionFactory;
+
+    /**
      * @param string $name
      * @param string $primaryFieldName
      * @param string $requestFieldName
@@ -50,7 +56,8 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
      * @param StoreRepositoryInterface $storeRepository
      * @param ArrayManager $arrayManager
      * @param RequestInterface $request
-     * @param AttributeFactory $request
+     * @param AttributeFactory $attributeFactory
+     * @param OptionCollectionFactory $attrOptionCollectionFactory
      * @param array $meta
      * @param array $data
      */
@@ -63,6 +70,7 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
         ArrayManager $arrayManager,
         RequestInterface $request,
         AttributeFactory $attributeFactory,
+        OptionCollectionFactory $attrOptionCollectionFactory,
         array $meta = [],
         array $data = []
     ) {
@@ -72,6 +80,7 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
         $this->arrayManager = $arrayManager;
         $this->request = $request;
         $this->attributeFactory = $attributeFactory;
+        $this->attrOptionCollectionFactory = $attrOptionCollectionFactory;
     }
 
     /**
@@ -87,7 +96,49 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
             $attribute = $this->attributeFactory->create();
             $attribute->load($attributeId);
             if($attribute->getId()){
-                $data[""] = $attribute->getData();
+                $attributeData = $attribute->getData();
+                if(empty($attributeData["frontend_label[0]"]) && !empty($attributeData["frontend_label"])){
+                    $attributeData["frontend_label[0]"] = $attributeData["frontend_label"];
+                }
+                $labels = $attribute->getStoreLabels();
+                if($labels && !empty($labels)){
+                    foreach ($labels as $storeId => $label){
+                        $attributeData["frontend_label[$storeId]"] = $label;
+                    }
+                }
+
+                if($attribute->usesSource()){
+                    $inputType = $attribute->getFrontendInput();
+                    $optionsData = [];
+                    foreach ($this->storeRepository->getList() as $store) {
+                        $storeId = $store->getId();
+                        if (!$storeId) {
+                            continue;
+                        }
+                        $options = $this->getAttributeOptions($attribute->getId(), $storeId);
+                        if($options && !empty($options)){
+                            foreach ($options as $option) {
+                                $optionId = $option->getOptionId();
+                                if(isset($optionsData[$optionId])){
+                                    $optionsData[$optionId]["value_option_$storeId"] = $option->getValue();
+                                }else{
+                                    $optionsData[$optionId] = [
+                                        "record_id" => $optionId,
+                                        "option_id" => $optionId,
+                                        "is_default" => ($optionId == $attribute->getDefaultValue())?1:0,
+                                        "position" => $option->getSortOrder(),
+                                        "value_option_0" => $option->getDefaultValue(),
+                                        "value_option_$storeId" => $option->getValue()
+                                    ];
+                                }
+                            }
+                        }
+                    }
+                    $attributeData["attribute_options_$inputType"] = array_values($optionsData);
+                }
+
+                $attributeData["used_in_forms"] = $attribute->getUsedInForms();
+                $data[""] = $attributeData;
             }
         }
         return $data;
@@ -244,5 +295,20 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
             ]
         );
         return $meta;
+    }
+
+    /**
+     * @param $attributeId
+     * @param $storeId
+     * @return mixed
+     */
+    public function getAttributeOptions($attributeId, $storeId)
+    {
+        $options = $this->attrOptionCollectionFactory->create()
+            ->setPositionOrder('asc')
+            ->setAttributeFilter($attributeId)
+            ->setStoreFilter($storeId)
+            ->load();
+        return $options;
     }
 }

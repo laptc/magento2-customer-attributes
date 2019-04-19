@@ -206,6 +206,9 @@ class Save extends \Mvn\Cam\Controller\Adminhtml\Customer\Attribute implements H
                 $data['default_value'] = $this->getRequest()->getParam($defaultValueField);
             }
 
+            $data['is_visible_in_grid'] = ((bool) $data['is_used_in_grid'])?1:0;
+            $data['is_searchable_in_grid'] = ((bool) $data['is_filterable_in_grid'])?1:0;
+
             $model->addData($data);
 
             if (!$attributeId) {

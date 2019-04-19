@@ -8,4 +8,26 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
 
+    <type name="Mvn\Cam\Model\Attribute\Source\CustomerForm">
+        <arguments>
+            <argument name="optionsArray" xsi:type="array">
+                <item name="adminhtml_customer" xsi:type="string" translatable="true">Admin Customer</item>
+                <item name="adminhtml_checkout" xsi:type="string" translatable="true">Admin Checkout</item>
+                <item name="customer_account_create" xsi:type="string" translatable="true">Customer Registration</item>
+                <item name="customer_account_edit" xsi:type="string" translatable="true">Customer Account Edit</item>
+                <item name="checkout_register" xsi:type="string" translatable="true">Checkout Register</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Mvn\Cam\Model\Attribute\Source\AddressForm">
+        <arguments>
+            <argument name="optionsArray" xsi:type="array">
+                <item name="adminhtml_customer_address" xsi:type="string" translatable="true">Admin Customer Address</item>
+                <item name="customer_address_edit" xsi:type="string" translatable="true">Customer Account Address</item>
+                <item name="customer_register_address" xsi:type="string" translatable="true">Customer Address Registration</item>
+            </argument>
+        </arguments>
+    </type>
+
 </config>
