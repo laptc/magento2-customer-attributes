@@ -460,6 +460,12 @@
             </settings>
         </field>
 
+    </fieldset>
+    <fieldset name="manage-visibility" sortOrder="22">
+        <settings>
+            <collapsible>true</collapsible>
+            <label translate="true">Visibility</label>
+        </settings>
 
         <field name="is_visible" sortOrder="80" formElement="checkbox">
             <argument name="data" xsi:type="array">
@@ -469,7 +475,7 @@
             </argument>
             <settings>
                 <dataType>boolean</dataType>
-                <label translate="true">Show on Storefront</label>
+                <label translate="true">Visible</label>
                 <dataScope>is_visible</dataScope>
             </settings>
             <formElements>

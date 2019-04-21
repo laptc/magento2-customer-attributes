@@ -66,7 +66,7 @@ class Edit extends Column
                 $name = $this->getData('name');
                 if (isset($item[$this->_indexField])) {
                     $item[$name]['edit'] = [
-                        'href' => $this->_urlBuilder->getUrl($this->_urlPath, ['id' => $item[$this->_indexField]]),
+                        'href' => $this->_urlBuilder->getUrl($this->_urlPath, [$this->_indexField => $item[$this->_indexField]]),
                         'label' => __($this->_labelAction)
                     ];
                 }
