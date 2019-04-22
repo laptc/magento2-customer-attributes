@@ -209,7 +209,7 @@
             <collapsible>true</collapsible>
             <label translate="true">Values</label>
         </settings>
-        <dynamicRows name="attribute_options_select">
+        <dynamicRows name="attribute_options_select" component="Mvn_Cam/js/components/dynamic-rows">
             <settings>
                 <addButtonLabel translate="true">Add Value</addButtonLabel>
                 <additionalClasses>
@@ -225,7 +225,7 @@
                         <item name="componentType" xsi:type="string">container</item>
                     </item>
                 </argument>
-                <field name="is_default" component="Magento_Catalog/js/form/element/checkbox" sortOrder="0" formElement="checkbox">
+                <field name="is_default" component="Mvn_Cam/js/form/element/checkbox" sortOrder="0" formElement="checkbox">
                     <argument name="data" xsi:type="array">
                         <item name="config" xsi:type="array">
                             <item name="prefixElementName" xsi:type="string">option_</item>
@@ -251,7 +251,7 @@
                         </checkbox>
                     </formElements>
                 </field>
-                <field name="position" component="Magento_Catalog/js/form/element/input" formElement="input">
+                <field name="position" component="Mvn_Cam/js/form/element/input" formElement="input">
                     <argument name="data" xsi:type="array">
                         <item name="config" xsi:type="array">
                             <item name="prefixName" xsi:type="string">option.order</item>
@@ -278,7 +278,7 @@
             <collapsible>true</collapsible>
             <label translate="true">Values</label>
         </settings>
-        <dynamicRows name="attribute_options_multiselect">
+        <dynamicRows name="attribute_options_multiselect" component="Mvn_Cam/js/components/dynamic-rows">
             <settings>
                 <addButtonLabel translate="true">Add Value</addButtonLabel>
                 <additionalClasses>
@@ -295,7 +295,7 @@
                         <item name="positionProvider" xsi:type="string">attribute_options.position</item>
                     </item>
                 </argument>
-                <field name="is_default" component="Magento_Catalog/js/form/element/checkbox" sortOrder="0" formElement="checkbox">
+                <field name="is_default" component="Mvn_Cam/js/form/element/checkbox" sortOrder="0" formElement="checkbox">
                     <argument name="data" xsi:type="array">
                         <item name="config" xsi:type="array">
                             <item name="prefixElementName" xsi:type="string">option_</item>
@@ -316,7 +316,7 @@
                         <label translate="true">Is Default</label>
                     </settings>
                 </field>
-                <field name="position" component="Magento_Catalog/js/form/element/input" formElement="input">
+                <field name="position" component="Mvn_Cam/js/form/element/input" formElement="input">
                     <argument name="data" xsi:type="array">
                         <item name="config" xsi:type="array">
                             <item name="prefixName" xsi:type="string">option.order</item>

@@ -209,6 +209,15 @@ class Save extends \Mvn\Cam\Controller\Adminhtml\Customer\Attribute implements H
             $data['is_visible_in_grid'] = ((bool) $data['is_used_in_grid'])?1:0;
             $data['is_searchable_in_grid'] = ((bool) $data['is_filterable_in_grid'])?1:0;
 
+            if(!empty($data['option']['delete'])){
+                $data['option']['value'] = (isset($data['option']['value']))?$data['option']['value']:[];
+                foreach ($data['option']['delete'] as $id => $isDeleted){
+                    if($isDeleted){
+                        $data['option']['value'][$id] = $isDeleted;
+                    }
+                }
+            }
+
             $model->addData($data);
 
             if (!$attributeId) {
