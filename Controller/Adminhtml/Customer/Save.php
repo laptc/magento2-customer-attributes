@@ -218,6 +218,23 @@ class Save extends \Mvn\Cam\Controller\Adminhtml\Customer\Attribute implements H
                 }
             }
 
+
+            if(isset($data['default']) && is_array($data['default'])){
+                $data['default_value'] = implode(',', $data['default']);
+            }
+
+            $defaultValueField = $model->getDefaultValueByInput($data['frontend_input']);
+            if ($defaultValueField) {
+                $data['default_value'] = $this->getRequest()->getParam($defaultValueField);
+            }
+
+            $scopeDataFields = ["is_visible", "is_required", "default_value", "multiline_count"];
+            foreach ($scopeDataFields as $fieldName){
+                if(isset($data[$fieldName])){
+                    $data["scope_$fieldName"] = $data[$fieldName];
+                }
+            }
+
             $model->addData($data);
 
             if (!$attributeId) {

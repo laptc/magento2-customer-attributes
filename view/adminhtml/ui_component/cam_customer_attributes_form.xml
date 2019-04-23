@@ -17,6 +17,7 @@
     <settings>
         <buttons>
             <button name="save" class="Mvn\Cam\Block\Adminhtml\Customer\Attribute\Button\Save"/>
+            <button name="delete" class="Mvn\Cam\Block\Adminhtml\Customer\Attribute\Button\Delete"/>
             <button name="cancel" class="Mvn\Cam\Block\Adminhtml\Customer\Attribute\Button\Cancel"/>
         </buttons>
         <namespace>cam_customer_attributes_form</namespace>

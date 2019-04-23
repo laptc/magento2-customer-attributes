@@ -49,6 +49,11 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
     protected $attrOptionCollectionFactory;
 
     /**
+     * @var \Magento\Customer\Model\Attribute
+     */
+    protected $attribute;
+
+    /**
      * @param string $name
      * @param string $primaryFieldName
      * @param string $requestFieldName
@@ -84,6 +89,21 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
     }
 
     /**
+     * @return \Magento\Customer\Model\Attribute
+     */
+    public function getAttribute(){
+        if(!$this->attribute){
+            $attribute = $this->attributeFactory->create();
+            $attributeId = $this->request->getParam('attribute_id');
+            if($attributeId) {
+                $attribute->load($attributeId);
+            }
+            $this->attribute = $attribute;
+        }
+        return $this->attribute;
+    }
+
+    /**
      * Get data
      *
      * @return array
@@ -91,56 +111,57 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
     public function getData()
     {
         $data = [];
-        $attributeId = $this->request->getParam('attribute_id');
-        if($attributeId){
-            $attribute = $this->attributeFactory->create();
-            $attribute->load($attributeId);
-            if($attribute->getId()){
-                $attributeData = $attribute->getData();
-                if(empty($attributeData["frontend_label[0]"]) && !empty($attributeData["frontend_label"])){
-                    $attributeData["frontend_label[0]"] = $attributeData["frontend_label"];
+        $attribute = $this->getAttribute();
+        if($attribute->getId()){
+            $inputType = $attribute->getFrontendInput();
+            if(empty($attribute->getData("frontend_label[0]")) && !empty($attribute->getData("frontend_label"))){
+                $attribute->setData("frontend_label[0]", $attribute->getData("frontend_label"));
+            }
+            $labels = $attribute->getStoreLabels();
+            if($labels && !empty($labels)){
+                foreach ($labels as $storeId => $label){
+                    $attribute->setData("frontend_label[$storeId]", $label);
                 }
-                $labels = $attribute->getStoreLabels();
-                if($labels && !empty($labels)){
-                    foreach ($labels as $storeId => $label){
-                        $attributeData["frontend_label[$storeId]"] = $label;
-                    }
-                }
+            }
 
-                if($attribute->usesSource()){
-                    $inputType = $attribute->getFrontendInput();
-                    $optionsData = [];
-                    foreach ($this->storeRepository->getList() as $store) {
-                        $storeId = $store->getId();
-                        if (!$storeId) {
-                            continue;
-                        }
-                        $options = $this->getAttributeOptions($attribute->getId(), $storeId);
-                        if($options && !empty($options)){
-                            foreach ($options as $option) {
-                                $optionId = $option->getOptionId();
-                                if(isset($optionsData[$optionId])){
-                                    $optionsData[$optionId]["value_option_$storeId"] = $option->getValue();
-                                }else{
-                                    $optionsData[$optionId] = [
-                                        "record_id" => $optionId,
-                                        "option_id" => $optionId,
-                                        "is_default" => ($optionId == $attribute->getDefaultValue())?1:0,
-                                        "position" => $option->getSortOrder(),
-                                        "value_option_0" => $option->getDefaultValue(),
-                                        "value_option_$storeId" => $option->getValue()
-                                    ];
-                                }
+            if($attribute->usesSource()){
+                $optionsData = [];
+                foreach ($this->storeRepository->getList() as $store) {
+                    $storeId = $store->getId();
+                    if (!$storeId) {
+                        continue;
+                    }
+                    $options = $this->getAttributeOptions($attribute->getId(), $storeId);
+                    if($options && !empty($options)){
+                        foreach ($options as $option) {
+                            $optionId = $option->getOptionId();
+                            if(isset($optionsData[$optionId])){
+                                $optionsData[$optionId]["value_option_$storeId"] = $option->getValue();
+                            }else{
+                                $optionsData[$optionId] = [
+                                    "record_id" => $optionId,
+                                    "option_id" => $optionId,
+                                    "is_default" => ($optionId == $attribute->getDefaultValue())?1:0,
+                                    "position" => $option->getSortOrder(),
+                                    "value_option_0" => $option->getDefaultValue(),
+                                    "value_option_$storeId" => $option->getValue()
+                                ];
                             }
                         }
                     }
-                    $attributeData["attribute_options_$inputType"] = array_values($optionsData);
                 }
-
-                $attributeData["used_in_forms"] = $attribute->getUsedInForms();
-                $data[""] = $attributeData;
+                $attribute->setData("attribute_options_$inputType", array_values($optionsData));
             }
+
+            $defaultValueField = $attribute->getDefaultValueByInput($inputType);
+            if ($defaultValueField) {
+                $attribute->setData($defaultValueField, $attribute->getDefaultValue());
+            }
+
+            $attribute->setUsedInForms($attribute->getUsedInForms());
+            $data[""] = $attribute->getData();
         }
+
         return $data;
     }
 
@@ -152,26 +173,34 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
     public function getMeta()
     {
         $meta = parent::getMeta();
-
-        $meta = $this->customizeAttributeCode($meta);
+        $meta = $this->customizeBase($meta);
         $meta = $this->customizeFrontendLabels($meta);
         $meta = $this->customizeOptions($meta);
-
         return $meta;
     }
 
     /**
-     * Customize attribute_code field
+     * Customize base field
      *
      * @param array $meta
      * @return array
      */
-    private function customizeAttributeCode($meta)
+    private function customizeBase($meta)
     {
-        $meta['base_fieldset']['children'] = $this->arrayManager->set(
-            'attribute_code/arguments/data/config',
+        $attribute = $this->getAttribute();
+        $disabled = ($attribute->getId())?true:false;
+        $childrens = $this->arrayManager->set(
+            'frontend_input/arguments/data/config',
             [],
             [
+                'disabled' => $disabled
+            ]
+        );
+        $meta['base_fieldset']['children'] = $this->arrayManager->set(
+            'attribute_code/arguments/data/config',
+            $childrens,
+            [
+                'disabled' => $disabled,
                 'notice' => __(
                     'This is used internally. Make sure you don\'t use spaces or more than %1 symbols.',
                     EavAttribute::ATTRIBUTE_CODE_MAX_LENGTH
@@ -311,4 +340,5 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
             ->load();
         return $options;
     }
+
 }

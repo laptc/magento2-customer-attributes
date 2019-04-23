@@ -48,7 +48,7 @@ class Edit extends \Mvn\Cam\Controller\Adminhtml\Customer\Attribute
 
         $this->coreRegistry->register('entity_attribute', $model);
 
-        $title = $id ? __('Edit Customer Attribute') : __('New Customer Attribute');
+        $title = $id ? __('Edit Customer Attribute "%1"', $model->getAttributeCode()) : __('New Customer Attribute');
         $resultPage = $this->createPageResult();
         $resultPage->setActiveMenu(self::ADMIN_RESOURCE);
         $resultPage->getConfig()->getTitle()->prepend($title);

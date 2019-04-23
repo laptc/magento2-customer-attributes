@@ -61,4 +61,11 @@ class Generic implements ButtonProviderInterface
     {
         return [];
     }
+
+    /**
+     * @return Context
+     */
+    public function getContext(){
+        return $this->context;
+    }
 }
