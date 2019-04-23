@@ -197,6 +197,10 @@ class Save extends \Mvn\Cam\Controller\Adminhtml\Customer\Attribute implements H
                     $data['frontend_input']
                 );
 
+                if($data['frontend_input'] == "multiselect"){
+                    $data['source_model'] = \Magento\Eav\Model\Entity\Attribute\Source\Table::class;
+                }
+
                 if ($model->getIsUserDefined() === null) {
                     $data['backend_type'] = $model->getBackendTypeByInput($data['frontend_input']);
                 }
@@ -219,14 +223,13 @@ class Save extends \Mvn\Cam\Controller\Adminhtml\Customer\Attribute implements H
                 }
             }
 
-
-            if(isset($data['default']) && is_array($data['default'])){
-                $data['default_value'] = implode(',', $data['default']);
-            }
-
             $defaultValueField = $model->getDefaultValueByInput($data['frontend_input']);
             if ($defaultValueField) {
                 $data['default_value'] = $this->getRequest()->getParam($defaultValueField);
+            }
+
+            if(isset($data['default']) && is_array($data['default'])){
+                $data['default_value'] = implode(',', $data['default']);
             }
 
             $scopeDataFields = ["is_visible", "is_required", "default_value", "multiline_count"];

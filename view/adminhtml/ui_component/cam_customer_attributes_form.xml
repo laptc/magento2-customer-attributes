@@ -301,7 +301,7 @@
                         <item name="config" xsi:type="array">
                             <item name="prefixElementName" xsi:type="string">option_</item>
                             <item name="inputCheckBoxName" xsi:type="string">default</item>
-                            <item name="isMultiple" xsi:type="boolean">true</item>
+                            <item name="multiple" xsi:type="boolean">true</item>
                             <item name="value" xsi:type="string">1</item>
                             <item name="columnsHeaderClasses" xsi:type="string">control-table-options-th</item>
                             <item name="modules" xsi:type="array">

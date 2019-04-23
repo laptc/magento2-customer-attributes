@@ -133,6 +133,7 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
                     }
                     $options = $this->getAttributeOptions($attribute->getId(), $storeId);
                     if($options && !empty($options)){
+                        $attributeDefaultValue = explode(",", $attribute->getDefaultValue());
                         foreach ($options as $option) {
                             $optionId = $option->getOptionId();
                             if(isset($optionsData[$optionId])){
@@ -141,7 +142,7 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
                                 $optionsData[$optionId] = [
                                     "record_id" => $optionId,
                                     "option_id" => $optionId,
-                                    "is_default" => ($optionId == $attribute->getDefaultValue())?1:0,
+                                    "is_default" => (in_array($optionId, $attributeDefaultValue))?1:0,
                                     "position" => $option->getSortOrder(),
                                     "value_option_0" => $option->getDefaultValue(),
                                     "value_option_$storeId" => $option->getValue()
