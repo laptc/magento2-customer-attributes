@@ -16,6 +16,7 @@ use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Filter\FilterManager;
 use Magento\Framework\View\LayoutFactory;
 use Magento\Customer\Model\AttributeFactory;
+use Magento\Customer\Api\CustomerMetadataInterface;
 
 /**
  * Product attribute save controller.
@@ -236,6 +237,11 @@ class Save extends \Mvn\Cam\Controller\Adminhtml\Customer\Attribute implements H
             }
 
             $model->addData($data);
+
+            if (!$model->getAttributeSetId()) {
+                $model->setAttributeSetId(CustomerMetadataInterface::ATTRIBUTE_SET_ID_CUSTOMER);
+                $model->setAttributeGroupId(CustomerMetadataInterface::ATTRIBUTE_SET_ID_CUSTOMER);
+            }
 
             if (!$attributeId) {
                 $model->setEntityTypeId($this->entityTypeId);
