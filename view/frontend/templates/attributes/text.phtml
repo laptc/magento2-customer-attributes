@@ -1,0 +1,23 @@
+<?php
+$attribute = $block->getAttribute();
+if($attribute):
+?>
+<div class="field <?= $attribute->getAttributeCode() ?>">
+    <label for="<?= $attribute->getAttributeCode() ?>" class="label">
+    <span>
+        <?= $block->escapeHtml(__($attribute->getStoreLabel())) ?>
+    </span>
+    </label>
+    <div class="control">
+        <input type="text"
+               name="<?= $attribute->getAttributeCode() ?>"
+               id="<?= $attribute->getAttributeCode() ?>"
+               value="<?= $block->escapeHtmlAttr("") ?>"
+               title="<?= $block->escapeHtmlAttr(__($attribute->getStoreLabel())) ?>"
+               class="input-text <?= '' ?>"
+        >
+    </div>
+</div>
+<?php
+endif;
+?>
