@@ -437,7 +437,7 @@
                 </item>
             </argument>
             <settings>
-                <notice translate="true">Add this attribute to the list of filter options in the customer grid.</notice>
+                <notice translate="true">Add this attribute to the list of filter options in the customer grid. Currently this option are not available for "Multiple Select" attribute</notice>
                 <dataType>boolean</dataType>
                 <label translate="true">Use in Filter Options</label>
                 <dataScope>is_filterable_in_grid</dataScope>
