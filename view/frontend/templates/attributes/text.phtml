@@ -1,8 +1,11 @@
 <?php
+/**
+ * @var \Magento\Customer\Api\Data\AttributeMetadataInterface $attribute
+ */
 $attribute = $block->getAttribute();
 if($attribute):
 ?>
-<div class="field <?= $attribute->getAttributeCode() ?>">
+<div class="field <?= $attribute->getAttributeCode() ?> <?= $attribute->isRequired()?"required":"" ?>">
     <label for="<?= $attribute->getAttributeCode() ?>" class="label">
     <span>
         <?= $block->escapeHtml(__($attribute->getStoreLabel())) ?>
@@ -12,10 +15,10 @@ if($attribute):
         <input type="text"
                name="<?= $attribute->getAttributeCode() ?>"
                id="<?= $attribute->getAttributeCode() ?>"
-               value="<?= $block->escapeHtmlAttr("") ?>"
+               value="<?= $block->escapeHtmlAttr($block->getAttributeValue()) ?>"
                title="<?= $block->escapeHtmlAttr(__($attribute->getStoreLabel())) ?>"
-               class="input-text <?= '' ?>"
-        >
+               class="input-text <?= $attribute->getFrontendClass() ?>"
+        />
     </div>
 </div>
 <?php

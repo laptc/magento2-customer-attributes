@@ -19,4 +19,11 @@ class Multiselect extends AbstractElement
      * @var string
      */
     protected $_template = "Mvn_Cam::attributes/multiselect.phtml";
+
+    /**
+     * @return array
+     */
+    public function getAttributeValue(){
+        return explode(",", parent::getAttributeValue());
+    }
 }

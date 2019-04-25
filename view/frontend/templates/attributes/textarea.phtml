@@ -1,23 +1,25 @@
 <?php
+/**
+ * @var \Magento\Customer\Api\Data\AttributeMetadataInterface $attribute
+ */
 $attribute = $block->getAttribute();
 if($attribute):
-?>
-<div class="field <?= $attribute->getAttributeCode() ?>">
-    <label for="<?= $attribute->getAttributeCode() ?>" class="label">
+    ?>
+    <div class="field <?= $attribute->getAttributeCode() ?> <?= $attribute->isRequired()?"required":"" ?>">
+        <label for="<?= $attribute->getAttributeCode() ?>" class="label">
     <span>
         <?= $block->escapeHtml(__($attribute->getStoreLabel())) ?>
     </span>
-    </label>
-    <div class="control">
-        <input type="text"
-               name="<?= $attribute->getAttributeCode() ?>"
-               id="<?= $attribute->getAttributeCode() ?>"
-               value="<?= $block->escapeHtmlAttr("") ?>"
-               title="<?= $block->escapeHtmlAttr(__($attribute->getStoreLabel())) ?>"
-               class="input-text <?= '' ?>"
-        >
+        </label>
+        <div class="control">
+            <textarea type="text"
+                   name="<?= $attribute->getAttributeCode() ?>"
+                   id="<?= $attribute->getAttributeCode() ?>"
+                   title="<?= $block->escapeHtmlAttr(__($attribute->getStoreLabel())) ?>"
+                   class="input-text <?= $attribute->getFrontendClass() ?>"
+            ><?= $block->escapeHtmlAttr($block->getAttributeValue()) ?></textarea>
+        </div>
     </div>
-</div>
 <?php
 endif;
 ?>

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Mvn, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="form.additional.info">
+            <block class="Mvn\Cam\Block\Customer\Form\Edit\Attributes" name="customer_custom_attributes_info" template="Mvn_Cam::customer/form/edit/attributes.phtml"/>
+        </referenceContainer>
+    </body>
+</page>

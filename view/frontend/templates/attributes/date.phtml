@@ -2,20 +2,14 @@
 $attribute = $block->getAttribute();
 if($attribute):
 ?>
-<div class="field <?= $attribute->getAttributeCode() ?>">
+<div class="field date <?= $attribute->getAttributeCode() ?>">
     <label for="<?= $attribute->getAttributeCode() ?>" class="label">
     <span>
         <?= $block->escapeHtml(__($attribute->getStoreLabel())) ?>
     </span>
     </label>
     <div class="control">
-        <input type="text"
-               name="<?= $attribute->getAttributeCode() ?>"
-               id="<?= $attribute->getAttributeCode() ?>"
-               value="<?= $block->escapeHtmlAttr("") ?>"
-               title="<?= $block->escapeHtmlAttr(__($attribute->getStoreLabel())) ?>"
-               class="input-text <?= '' ?>"
-        >
+        <?= $block->getFieldHtml() ?>
     </div>
 </div>
 <?php
