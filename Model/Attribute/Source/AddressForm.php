@@ -37,6 +37,6 @@ class AddressForm implements \Magento\Framework\Data\OptionSourceInterface
                 'label' => $label
             ];
         }
-        return $this->optionsArray;
+        return $options;
     }
 }

@@ -116,7 +116,7 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="indexField" xsi:type="string">attribute_id</item>
-                    <item name="urlPath" xsi:type="string">cam/customer/edit</item>
+                    <item name="urlPath" xsi:type="string">cam/address/edit</item>
                     <item name="label" xsi:type="string" translate="true">Action</item>
                     <item name="labelAction" xsi:type="string" translate="true">Edit</item>
                     <item name="filterable" xsi:type="boolean">false</item>

@@ -19,7 +19,7 @@ class Edit extends \Mvn\Cam\Controller\Adminhtml\Address\Attribute
     {
         $id = $this->getRequest()->getParam('attribute_id');
         $model = $this->_objectManager->create(
-            \Magento\Customer\Model\ResourceModel\Attribute::class
+            \Magento\Customer\Model\Attribute::class
         );
         if ($id) {
             $model->load($id);
@@ -48,7 +48,7 @@ class Edit extends \Mvn\Cam\Controller\Adminhtml\Address\Attribute
 
         $this->coreRegistry->register('entity_attribute', $model);
 
-        $title = $id ? __('Edit Customer Address Attribute') : __('New Customer Address Attribute');
+        $title = $id ? __('Edit Customer Address Attribute "%1"', $model->getAttributeCode()) : __('New Customer Address Attribute');
         $resultPage = $this->createPageResult();
         $resultPage->setActiveMenu(self::ADMIN_RESOURCE);
         $resultPage->getConfig()->getTitle()->prepend($title);

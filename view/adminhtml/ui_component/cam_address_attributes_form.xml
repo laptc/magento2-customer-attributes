@@ -8,7 +8,7 @@
 <form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
     <argument name="data" xsi:type="array">
         <item name="js_config" xsi:type="array">
-            <item name="provider" xsi:type="string">cam_customer_attributes_form.cam_customer_attributes_form_data_source</item>
+            <item name="provider" xsi:type="string">cam_address_attributes_form.cam_address_attributes_form_data_source</item>
         </item>
         <item name="label" xsi:type="string" translate="true">New Attribute</item>
         <item name="template" xsi:type="string">templates/form/collapsible</item>
@@ -16,29 +16,29 @@
     </argument>
     <settings>
         <buttons>
-            <button name="save" class="Mvn\Cam\Block\Adminhtml\Customer\Attribute\Button\Save"/>
-            <button name="delete" class="Mvn\Cam\Block\Adminhtml\Customer\Attribute\Button\Delete"/>
-            <button name="cancel" class="Mvn\Cam\Block\Adminhtml\Customer\Attribute\Button\Cancel"/>
+            <button name="save" class="Mvn\Cam\Block\Adminhtml\Address\Attribute\Button\Save"/>
+            <button name="delete" class="Mvn\Cam\Block\Adminhtml\Address\Attribute\Button\Delete"/>
+            <button name="cancel" class="Mvn\Cam\Block\Adminhtml\Address\Attribute\Button\Cancel"/>
         </buttons>
-        <namespace>cam_customer_attributes_form</namespace>
+        <namespace>cam_address_attributes_form</namespace>
         <!--<ajaxSave>true</ajaxSave>-->
         <!--<ajaxSaveType>simple</ajaxSaveType>-->
         <dataScope>data</dataScope>
         <deps>
-            <dep>cam_customer_attributes_form.cam_customer_attributes_form_data_source</dep>
+            <dep>cam_address_attributes_form.cam_address_attributes_form_data_source</dep>
         </deps>
     </settings>
-    <dataSource name="cam_customer_attributes_form_data_source">
+    <dataSource name="cam_address_attributes_form_data_source">
         <argument name="data" xsi:type="array">
             <item name="js_config" xsi:type="array">
                 <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
             </item>
         </argument>
         <settings>
-            <validateUrl path="cam/customer/validate"/>
-            <submitUrl path="cam/customer/save"/>
+            <validateUrl path="cam/address/validate"/>
+            <submitUrl path="cam/address/save"/>
         </settings>
-        <dataProvider class="Mvn\Cam\Ui\DataProvider\Customer\Attributes\DataProvider" name="cam_customer_attributes_form_data_source">
+        <dataProvider class="Mvn\Cam\Ui\DataProvider\Address\Attributes\DataProvider" name="cam_address_attributes_form_data_source">
             <settings>
                 <requestFieldName>id</requestFieldName>
                 <primaryFieldName>attribute_id</primaryFieldName>
@@ -53,7 +53,7 @@
         <field name="frontend_label[0]" sortOrder="10" formElement="input">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="source" xsi:type="string">customer_attributes</item>
+                    <item name="source" xsi:type="string">address_attributes</item>
                 </item>
             </argument>
             <settings>
@@ -80,7 +80,7 @@
         <field name="frontend_input" sortOrder="20" formElement="select">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="source" xsi:type="string">customer_attributes</item>
+                    <item name="source" xsi:type="string">address_attributes</item>
                 </item>
             </argument>
             <settings>
@@ -180,7 +180,7 @@
         <field name="is_required" component="Mvn_Cam/js/components/visible-on-option/yesno" sortOrder="40" formElement="checkbox">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="source" xsi:type="string">customer_attributes</item>
+                    <item name="source" xsi:type="string">address_attributes</item>
                     <item name="default" xsi:type="number">0</item>
                     <item name="valuesForOptions" xsi:type="array">
                         <item name="text" xsi:type="string">text</item>
@@ -534,7 +534,7 @@
             <formElements>
                 <multiselect>
                     <settings>
-                        <options class="Mvn\Cam\Model\Attribute\Source\CustomerForm"/>
+                        <options class="Mvn\Cam\Model\Attribute\Source\AddressForm"/>
                     </settings>
                 </multiselect>
             </formElements>
