@@ -22,5 +22,5 @@ php bin/magento setup:upgrade
 - You may need to run deploy if your site is in production mode.
 
 # Contact
-- My info: https://danieltruong.com
-- If you have any questions, just email me at: dev@danieltruong.com
+- My info: https://laptc.dev
+- If you have any questions, just email me at: info@laptc.dev
