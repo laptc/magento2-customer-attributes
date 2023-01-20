@@ -1,16 +1,17 @@
 <?php
+
 /**
  * Copyright © Mvn, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
 
-namespace Mvn\Cam\Controller\Adminhtml\Customer;
+namespace Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\Customer;
 
 /**
  * Class Attribute
- * @package Mvn\Cam\Controller\Adminhtml\Customer
+ * @package Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\Customer
  */
-abstract class Attribute extends \Mvn\Cam\Controller\Adminhtml\AbstractAction
+abstract class Attribute extends \Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\AbstractAction
 {
     /**
      * Authorization level of a basic admin session
@@ -39,13 +40,13 @@ abstract class Attribute extends \Mvn\Cam\Controller\Adminhtml\AbstractAction
     /**
      * Attribute constructor.
      * @param \Magento\Backend\App\Action\Context $context
-     * @param \Mvn\Cam\Helper\Data $helper
+     * @param \Tangkoko\CustomerAttributesManagement\Helper\Data $helper
      * @param \Magento\Framework\Cache\FrontendInterface $attributeLabelCache
      * @param \Magento\Framework\Registry $coreRegistry
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
-        \Mvn\Cam\Helper\Data $helper,
+        \Tangkoko\CustomerAttributesManagement\Helper\Data $helper,
         \Magento\Framework\Cache\FrontendInterface $attributeLabelCache,
         \Magento\Framework\Registry $coreRegistry
     ) {

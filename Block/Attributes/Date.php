@@ -1,16 +1,17 @@
 <?php
+
 /**
  * Copyright © 2019 Mvn. All rights reserved.
  * See COPYING.txt for license details.
  */
 
-namespace Mvn\Cam\Block\Attributes;
+namespace Tangkoko\CustomerAttributesManagement\Block\Attributes;
 
 use Magento\Framework\Api\ArrayObjectSearch;
 
 /**
  * Class Date
- * @package Mvn\Cam\Block\Attributes
+ * @package Tangkoko\CustomerAttributesManagement\Block\Attributes
  */
 class Date extends AbstractElement
 {
@@ -67,9 +68,10 @@ class Date extends AbstractElement
     /**
      * @return string
      */
-    public function getAttributeValue(){
+    public function getAttributeValue()
+    {
         $value = parent::getAttributeValue();
-        if($value){
+        if ($value) {
             $dateFormat = $this->getDateFormat();
             $value = $this->_localeDate->date($value)->format(str_replace("M", "m", $dateFormat));
         }
@@ -85,7 +87,7 @@ class Date extends AbstractElement
     {
         $html = "";
         $attribute = $this->getAttribute();
-        if($attribute){
+        if ($attribute) {
             $this->dateElement->setData([
                 'extra_params' => $this->getHtmlExtraParams(),
                 'name' => $attribute->getAttributeCode(),

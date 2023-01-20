@@ -1,16 +1,17 @@
 <?php
+
 /**
  * Copyright © 2019 Mvn. All rights reserved.
  * See COPYING.txt for license details.
  */
 
-namespace Mvn\Cam\Block\Customer\Form\Edit;
+namespace Tangkoko\CustomerAttributesManagement\Block\Customer\Form\Edit;
 
 /**
  * Class Attributes
- * @package Mvn\Cam\Block\Customer\Form\Edit
+ * @package Tangkoko\CustomerAttributesManagement\Block\Customer\Form\Edit
  */
-class Attributes extends  \Mvn\Cam\Block\Customer\Form\Attributes
+class Attributes extends  \Tangkoko\CustomerAttributesManagement\Block\Customer\Form\Attributes
 {
 
     /**

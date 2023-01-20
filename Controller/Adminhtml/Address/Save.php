@@ -1,11 +1,12 @@
 <?php
+
 /**
  *
  * Copyright © Mvn, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
 
-namespace Mvn\Cam\Controller\Adminhtml\Address;
+namespace Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\Address;
 
 use Magento\Framework\App\Action\HttpPostActionInterface as HttpPostActionInterface;
 use Magento\Framework\Serialize\Serializer\FormData;
@@ -23,7 +24,7 @@ use Magento\Customer\Api\AddressMetadataInterface;
  *
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-class Save extends \Mvn\Cam\Controller\Adminhtml\Address\Attribute implements HttpPostActionInterface
+class Save extends \Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\Address\Attribute implements HttpPostActionInterface
 {
     /**
      * @var \Magento\Catalog\Helper\Product
@@ -63,7 +64,7 @@ class Save extends \Mvn\Cam\Controller\Adminhtml\Address\Attribute implements Ht
     /**
      * Save constructor.
      * @param \Magento\Backend\App\Action\Context $context
-     * @param \Mvn\Cam\Helper\Data $helper
+     * @param \Tangkoko\CustomerAttributesManagement\Helper\Data $helper
      * @param \Magento\Framework\Cache\FrontendInterface $attributeLabelCache
      * @param \Magento\Framework\Registry $coreRegistry
      * @param \Magento\Catalog\Helper\Product $productHelper
@@ -76,7 +77,7 @@ class Save extends \Mvn\Cam\Controller\Adminhtml\Address\Attribute implements Ht
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
-        \Mvn\Cam\Helper\Data $helper,
+        \Tangkoko\CustomerAttributesManagement\Helper\Data $helper,
         \Magento\Framework\Cache\FrontendInterface $attributeLabelCache,
         \Magento\Framework\Registry $coreRegistry,
         \Magento\Catalog\Helper\Product $productHelper,
@@ -146,7 +147,7 @@ class Save extends \Mvn\Cam\Controller\Adminhtml\Address\Attribute implements Ht
                     $this->messageManager->addErrorMessage(
                         __(
                             'Attribute code "%1" is invalid. Please use only letters (a-z or A-Z), ' .
-                            'numbers (0-9) or underscore(_) in this field, first character should be a letter.',
+                                'numbers (0-9) or underscore(_) in this field, first character should be a letter.',
                             $attributeCode
                         )
                     );
@@ -201,7 +202,7 @@ class Save extends \Mvn\Cam\Controller\Adminhtml\Address\Attribute implements Ht
                     $data['frontend_input']
                 );
 
-                if($data['frontend_input'] == "multiselect"){
+                if ($data['frontend_input'] == "multiselect") {
                     $data['source_model'] = \Magento\Eav\Model\Entity\Attribute\Source\Table::class;
                 }
 
@@ -215,13 +216,13 @@ class Save extends \Mvn\Cam\Controller\Adminhtml\Address\Attribute implements Ht
                 $data['default_value'] = $this->getRequest()->getParam($defaultValueField);
             }
 
-            $data['is_visible_in_grid'] = ((bool) $data['is_used_in_grid'])?1:0;
-            $data['is_searchable_in_grid'] = ((bool) $data['is_filterable_in_grid'])?1:0;
+            $data['is_visible_in_grid'] = ((bool) $data['is_used_in_grid']) ? 1 : 0;
+            $data['is_searchable_in_grid'] = ((bool) $data['is_filterable_in_grid']) ? 1 : 0;
 
-            if(!empty($data['option']['delete'])){
-                $data['option']['value'] = (isset($data['option']['value']))?$data['option']['value']:[];
-                foreach ($data['option']['delete'] as $id => $isDeleted){
-                    if($isDeleted){
+            if (!empty($data['option']['delete'])) {
+                $data['option']['value'] = (isset($data['option']['value'])) ? $data['option']['value'] : [];
+                foreach ($data['option']['delete'] as $id => $isDeleted) {
+                    if ($isDeleted) {
                         $data['option']['value'][$id] = $isDeleted;
                     }
                 }
@@ -232,13 +233,13 @@ class Save extends \Mvn\Cam\Controller\Adminhtml\Address\Attribute implements Ht
                 $data['default_value'] = $this->getRequest()->getParam($defaultValueField);
             }
 
-            if(isset($data['default']) && is_array($data['default'])){
+            if (isset($data['default']) && is_array($data['default'])) {
                 $data['default_value'] = implode(',', $data['default']);
             }
 
             $scopeDataFields = ["is_visible", "is_required", "default_value", "multiline_count"];
-            foreach ($scopeDataFields as $fieldName){
-                if(isset($data[$fieldName])){
+            foreach ($scopeDataFields as $fieldName) {
+                if (isset($data[$fieldName])) {
                     $data["scope_$fieldName"] = $data[$fieldName];
                 }
             }
@@ -252,7 +253,7 @@ class Save extends \Mvn\Cam\Controller\Adminhtml\Address\Attribute implements Ht
 
             if (!$attributeId) {
                 $model->setEntityTypeId($this->entityTypeId);
-                $model->setIsUserDefined($model->getIsVisible()?0:1);
+                $model->setIsUserDefined($model->getIsVisible() ? 0 : 1);
             }
 
             try {

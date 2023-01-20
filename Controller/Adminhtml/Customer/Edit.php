@@ -1,15 +1,17 @@
 <?php
+
 /**
  * Copyright © 2019 Mvn. All rights reserved.
  * See COPYING.txt for license details.
  */
-namespace Mvn\Cam\Controller\Adminhtml\Customer;
+
+namespace Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\Customer;
 
 /**
  * Class Edit
- * @package Mvn\Cam\Controller\Adminhtml\Customer
+ * @package Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\Customer
  */
-class Edit extends \Mvn\Cam\Controller\Adminhtml\Customer\Attribute
+class Edit extends \Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\Customer\Attribute
 {
     /**
      * @return \Magento\Framework\Controller\ResultInterface

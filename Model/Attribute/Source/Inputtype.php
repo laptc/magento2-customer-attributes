@@ -1,14 +1,15 @@
 <?php
+
 /**
  * Copyright © Mvn, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
 
-namespace Mvn\Cam\Model\Attribute\Source;
+namespace Tangkoko\CustomerAttributesManagement\Model\Attribute\Source;
 
 /**
  * Class Inputtype
- * @package Mvn\Cam\Model\Attribute\Source
+ * @package Tangkoko\CustomerAttributesManagement\Model\Attribute\Source
  */
 class Inputtype extends \Magento\Eav\Model\Adminhtml\System\Config\Source\Inputtype
 {
@@ -49,8 +50,7 @@ class Inputtype extends \Magento\Eav\Model\Adminhtml\System\Config\Source\Inputt
      */
     public function toOptionArray()
     {
-        $inputTypes = [
-        ];
+        $inputTypes = [];
 
         $response = new \Magento\Framework\DataObject();
         $response->setTypes([]);

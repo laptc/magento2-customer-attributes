@@ -16,9 +16,9 @@
     </argument>
     <settings>
         <buttons>
-            <button name="save" class="Mvn\Cam\Block\Adminhtml\Address\Attribute\Button\Save"/>
-            <button name="delete" class="Mvn\Cam\Block\Adminhtml\Address\Attribute\Button\Delete"/>
-            <button name="cancel" class="Mvn\Cam\Block\Adminhtml\Address\Attribute\Button\Cancel"/>
+            <button name="save" class="Tangkoko\CustomerAttributesManagement\Block\Adminhtml\Address\Attribute\Button\Save"/>
+            <button name="delete" class="Tangkoko\CustomerAttributesManagement\Block\Adminhtml\Address\Attribute\Button\Delete"/>
+            <button name="cancel" class="Tangkoko\CustomerAttributesManagement\Block\Adminhtml\Address\Attribute\Button\Cancel"/>
         </buttons>
         <namespace>cam_address_attributes_form</namespace>
         <!--<ajaxSave>true</ajaxSave>-->
@@ -38,7 +38,7 @@
             <validateUrl path="cam/address/validate"/>
             <submitUrl path="cam/address/save"/>
         </settings>
-        <dataProvider class="Mvn\Cam\Ui\DataProvider\Address\Attributes\DataProvider" name="cam_address_attributes_form_data_source">
+        <dataProvider class="Tangkoko\CustomerAttributesManagement\Ui\DataProvider\Address\Attributes\DataProvider" name="cam_address_attributes_form_data_source">
             <settings>
                 <requestFieldName>id</requestFieldName>
                 <primaryFieldName>attribute_id</primaryFieldName>
@@ -91,7 +91,7 @@
             <formElements>
                 <select>
                     <settings>
-                        <options class="Mvn\Cam\Model\Attribute\Source\Inputtype"/>
+                        <options class="Tangkoko\CustomerAttributesManagement\Model\Attribute\Source\Inputtype"/>
                     </settings>
                 </select>
             </formElements>
@@ -534,7 +534,7 @@
             <formElements>
                 <multiselect>
                     <settings>
-                        <options class="Mvn\Cam\Model\Attribute\Source\AddressForm"/>
+                        <options class="Tangkoko\CustomerAttributesManagement\Model\Attribute\Source\AddressForm"/>
                     </settings>
                 </multiselect>
             </formElements>

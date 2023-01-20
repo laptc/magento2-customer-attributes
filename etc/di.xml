@@ -8,7 +8,7 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
 
-    <type name="Mvn\Cam\Model\Attribute\Source\CustomerForm">
+    <type name="Tangkoko\CustomerAttributesManagement\Model\Attribute\Source\CustomerForm">
         <arguments>
             <argument name="optionsArray" xsi:type="array">
                 <item name="adminhtml_customer" xsi:type="string" translatable="true">Admin Customer</item>
@@ -20,7 +20,7 @@
         </arguments>
     </type>
 
-    <type name="Mvn\Cam\Model\Attribute\Source\AddressForm">
+    <type name="Tangkoko\CustomerAttributesManagement\Model\Attribute\Source\AddressForm">
         <arguments>
             <argument name="optionsArray" xsi:type="array">
                 <item name="adminhtml_customer_address" xsi:type="string" translatable="true">Admin Customer Address</item>

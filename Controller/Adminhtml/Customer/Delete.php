@@ -1,12 +1,14 @@
 <?php
+
 /**
  *
  * Copyright © Mvn, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
-namespace Mvn\Cam\Controller\Adminhtml\Customer;
 
-class Delete extends \Mvn\Cam\Controller\Adminhtml\Customer\Attribute
+namespace Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\Customer;
+
+class Delete extends \Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\Customer\Attribute
 {
     /**
      * @return \Magento\Backend\Model\View\Result\Redirect

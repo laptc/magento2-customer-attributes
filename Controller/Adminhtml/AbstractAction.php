@@ -1,13 +1,15 @@
 <?php
+
 /**
  * Copyright © 2019 MVN. All rights reserved.
  * See COPYING.txt for license details.
  */
-namespace Mvn\Cam\Controller\Adminhtml;
+
+namespace Tangkoko\CustomerAttributesManagement\Controller\Adminhtml;
 
 /**
  * Class AbstractAction
- * @package Mvn\Cam\Controller\Adminhtml
+ * @package Tangkoko\CustomerAttributesManagement\Controller\Adminhtml
  */
 abstract class AbstractAction extends \Magento\Backend\App\Action
 {
@@ -17,19 +19,19 @@ abstract class AbstractAction extends \Magento\Backend\App\Action
     protected $resultFactory;
 
     /**
-     * @var \Mvn\Cam\Helper\Data
+     * @var \Tangkoko\CustomerAttributesManagement\Helper\Data
      */
     protected $helper;
 
     /**
      * AbstractAction constructor.
      * @param \Magento\Backend\App\Action\Context $context
-     * @param \Mvn\Cam\Helper\Data $helper
+     * @param \Tangkoko\CustomerAttributesManagement\Helper\Data $helper
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
-        \Mvn\Cam\Helper\Data $helper
-    ){
+        \Tangkoko\CustomerAttributesManagement\Helper\Data $helper
+    ) {
         parent::__construct($context);
         $this->helper = $helper;
         $this->resultFactory = $context->getResultFactory();
@@ -39,7 +41,8 @@ abstract class AbstractAction extends \Magento\Backend\App\Action
      * @param $data
      * @return mixed
      */
-    public function createJsonResult($data){
+    public function createJsonResult($data)
+    {
         $resultJson = $this->resultFactory->create(\Magento\Framework\Controller\ResultFactory::TYPE_JSON);
         return $resultJson->setData($data);
     }
@@ -47,7 +50,8 @@ abstract class AbstractAction extends \Magento\Backend\App\Action
     /**
      * @return \Magento\Framework\Controller\ResultInterface
      */
-    public function createPageResult(){
+    public function createPageResult()
+    {
         $resultPage = $this->resultFactory->create(\Magento\Framework\Controller\ResultFactory::TYPE_PAGE);
         return $resultPage;
     }
@@ -55,7 +59,8 @@ abstract class AbstractAction extends \Magento\Backend\App\Action
     /**
      * @return \Magento\Framework\Controller\ResultInterface
      */
-    public function createRedirectResult(){
+    public function createRedirectResult()
+    {
         $resultRedirect = $this->resultFactory->create(\Magento\Framework\Controller\ResultFactory::TYPE_REDIRECT);
         return $resultRedirect;
     }
@@ -63,7 +68,8 @@ abstract class AbstractAction extends \Magento\Backend\App\Action
     /**
      * @return \Magento\Framework\Controller\ResultInterface
      */
-    public function createForwardResult(){
+    public function createForwardResult()
+    {
         $resultForward = $this->resultFactory->create(\Magento\Framework\Controller\ResultFactory::TYPE_FORWARD);
         return $resultForward;
     }

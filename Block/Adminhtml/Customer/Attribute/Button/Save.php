@@ -1,13 +1,15 @@
 <?php
+
 /**
  * Copyright © Mvn, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
-namespace Mvn\Cam\Block\Adminhtml\Customer\Attribute\Button;
+
+namespace Tangkoko\CustomerAttributesManagement\Block\Adminhtml\Customer\Attribute\Button;
 
 /**
  * Class Save
- * @package Mvn\Cam\Block\Adminhtml\Customer\Attribute\Button
+ * @package Tangkoko\CustomerAttributesManagement\Block\Adminhtml\Customer\Attribute\Button
  */
 class Save extends Generic
 {

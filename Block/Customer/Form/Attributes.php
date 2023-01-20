@@ -1,14 +1,15 @@
 <?php
+
 /**
  * Copyright © 2019 Mvn. All rights reserved.
  * See COPYING.txt for license details.
  */
 
-namespace Mvn\Cam\Block\Customer\Form;
+namespace Tangkoko\CustomerAttributesManagement\Block\Customer\Form;
 
 /**
  * Class Attributes
- * @package Mvn\Cam\Block\Customer\Form
+ * @package Tangkoko\CustomerAttributesManagement\Block\Customer\Form
  */
 class Attributes extends \Magento\Framework\View\Element\Template
 {
@@ -64,7 +65,8 @@ class Attributes extends \Magento\Framework\View\Element\Template
      * @param string $code
      * @return $this
      */
-    public function setFormCode($code){
+    public function setFormCode($code)
+    {
         $this->code = $code;
         return $this;
     }
@@ -72,7 +74,8 @@ class Attributes extends \Magento\Framework\View\Element\Template
     /**
      * @return string
      */
-    public function getFormCode(){
+    public function getFormCode()
+    {
         return $this->code;
     }
 
@@ -80,7 +83,8 @@ class Attributes extends \Magento\Framework\View\Element\Template
      * @return \Magento\Customer\Api\Data\AttributeMetadataInterface[]
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function getFormAttributes(){
+    public function getFormAttributes()
+    {
         return $this->customerMetadata->getAttributes($this->getFormCode());
     }
 
@@ -89,14 +93,14 @@ class Attributes extends \Magento\Framework\View\Element\Template
      */
     protected function _prepareLayout()
     {
-        if($this->getFormCode()){
+        if ($this->getFormCode()) {
             $attributes = $this->getFormAttributes();
-            if(!empty($attributes)){
+            if (!empty($attributes)) {
                 usort($attributes, function ($attribute1, $attribute2) {
                     return $attribute1->getSortOrder() <=> $attribute2->getSortOrder();
                 });
-                foreach ($attributes as $attribute){
-                    if($attribute->isVisible() && $attribute->isUserDefined()){
+                foreach ($attributes as $attribute) {
+                    if ($attribute->isVisible() && $attribute->isUserDefined()) {
                         $this->addChild($attribute->getAttributeCode(), $this->getBlockForAttribute($attribute->getFrontendInput()), [
                             'attribute' => $attribute,
                             'form_data' => $this->getFormData(),
@@ -113,28 +117,30 @@ class Attributes extends \Magento\Framework\View\Element\Template
      * @param string $inputType
      * @return string
      */
-    public function getBlockForAttribute($inputType){
+    public function getBlockForAttribute($inputType)
+    {
         $blockName = "Text";
-        if($inputType){
+        if ($inputType) {
             $blockNames = [];
             foreach (explode('_', $inputType) as $name) {
                 $blockNames[] = ucfirst($name);
             };
             $blockName = implode("", $blockNames);
         }
-        return "Mvn\Cam\Block\Attributes\\$blockName";
+        return "Tangkoko\CustomerAttributesManagement\Block\Attributes\\$blockName";
     }
 
     /**
      * @return array|mixed|null
      */
-    public function getFormData(){
+    public function getFormData()
+    {
         $data = $this->getData('form_data');
         if ($data === null) {
             $customer = $this->customerSession->getCustomer();
             if ($customer && $customer->getId()) {
                 $data = $customer;
-            }else{
+            } else {
                 $formData = $this->customerSession->getCustomerFormData(true);
                 if ($formData) {
                     $data = new \Magento\Framework\DataObject();
@@ -152,9 +158,10 @@ class Attributes extends \Magento\Framework\View\Element\Template
      * @return string
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function getDefaultValue($attribute){
+    public function getDefaultValue($attribute)
+    {
         $defaultValue = "";
-        if($attribute){
+        if ($attribute) {
             /**
              * @var \Magento\Customer\Model\Attribute $attributeModel
              */

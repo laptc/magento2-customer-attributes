@@ -5,11 +5,11 @@
  * See COPYING.txt for license details.
  */
 
-namespace Mvn\Cam\Helper;
+namespace Tangkoko\CustomerAttributesManagement\Helper;
 
 /**
  * Class Data
- * @package Mvn\Cam\Helper
+ * @package Tangkoko\CustomerAttributesManagement\Helper
  */
 class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {
@@ -44,7 +44,8 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      * @param string $scope
      * @return mixed
      */
-    public function getStoreConfig($path, $scope = \Magento\Framework\App\Config\ScopeConfigInterface::SCOPE_TYPE_DEFAULT){
+    public function getStoreConfig($path, $scope = \Magento\Framework\App\Config\ScopeConfigInterface::SCOPE_TYPE_DEFAULT)
+    {
         return $this->scopeConfig->getValue($path, $scope);
     }
 
@@ -54,7 +55,8 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      * @param string $scope
      * @return $this
      */
-    public function saveConfig($path, $value, $scope = \Magento\Framework\App\Config\ScopeConfigInterface::SCOPE_TYPE_DEFAULT){
+    public function saveConfig($path, $value, $scope = \Magento\Framework\App\Config\ScopeConfigInterface::SCOPE_TYPE_DEFAULT)
+    {
         $this->configResource->saveConfig(
             $path,
             $value,
@@ -67,7 +69,8 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * @return $this
      */
-    public function reinitConfig(){
+    public function reinitConfig()
+    {
         $this->reinitableConfig->reinit();
         return $this;
     }

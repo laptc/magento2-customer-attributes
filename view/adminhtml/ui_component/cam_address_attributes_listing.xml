@@ -34,7 +34,7 @@
             <updateUrl path="mui/index/render"/>
         </settings>
         <aclResource>Mvn_Cam::address_attributes</aclResource>
-        <dataProvider class="Mvn\Cam\Ui\DataProvider\Address\Attributes\Listing" name="cam_address_attributes_listing_data_source">
+        <dataProvider class="Tangkoko\CustomerAttributesManagement\Ui\DataProvider\Address\Attributes\Listing" name="cam_address_attributes_listing_data_source">
             <settings>
                 <requestFieldName>id</requestFieldName>
                 <primaryFieldName>attribute_id</primaryFieldName>
@@ -112,7 +112,7 @@
                 <label translate="true">Sort Order</label>
             </settings>
         </column>
-        <actionsColumn name="actions" class="Mvn\Cam\Ui\Component\Action\Edit">
+        <actionsColumn name="actions" class="Tangkoko\CustomerAttributesManagement\Ui\Component\Action\Edit">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="indexField" xsi:type="string">attribute_id</item>
