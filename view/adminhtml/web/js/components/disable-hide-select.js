@@ -4,8 +4,8 @@
  */
 define([
     'Magento_Ui/js/form/element/select',
-    'Mvn_Cam/js/components/visible-on-option/strategy',
-    'Mvn_Cam/js/components/disable-on-option/strategy'
+    'Tangkoko_CustomerAttributesManagement/js/components/visible-on-option/strategy',
+    'Tangkoko_CustomerAttributesManagement/js/components/disable-on-option/strategy'
 ], function (Element, visibleStrategy, disableStrategy) {
     'use strict';
 

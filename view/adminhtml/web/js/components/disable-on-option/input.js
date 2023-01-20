@@ -4,7 +4,7 @@
  */
 define([
     'Magento_Ui/js/form/element/abstract',
-    'Mvn_Cam/js/components/disable-on-option/strategy'
+    'Tangkoko_CustomerAttributesManagement/js/components/disable-on-option/strategy'
 ], function (Element, strategy) {
     'use strict';
 

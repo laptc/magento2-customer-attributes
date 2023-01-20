@@ -19,5 +19,5 @@ class Textarea extends AbstractElement
      *
      * @var string
      */
-    protected $_template = "Mvn_Cam::attributes/textarea.phtml";
+    protected $_template = "Tangkoko_CustomerAttributesManagement::attributes/textarea.phtml";
 }

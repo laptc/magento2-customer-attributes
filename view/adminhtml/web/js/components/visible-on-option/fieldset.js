@@ -4,7 +4,7 @@
  */
 define([
     'Magento_Ui/js/form/components/fieldset',
-    'Mvn_Cam/js/components/visible-on-option/strategy'
+    'Tangkoko_CustomerAttributesManagement/js/components/visible-on-option/strategy'
 ], function (Fieldset, strategy) {
     'use strict';
 

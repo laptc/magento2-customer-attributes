@@ -1,28 +1,28 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
-        <add id="Mvn_Cam::attributes"
+        <add id="Tangkoko_CustomerAttributesManagement::attributes"
              title="Attributes"
-             module="Mvn_Cam"
+             module="Tangkoko_CustomerAttributesManagement"
              sortOrder="100"
              parent="Magento_Customer::customer"
-             resource="Mvn_Cam::attributes"/>
+             resource="Tangkoko_CustomerAttributesManagement::attributes"/>
 
-        <add id="Mvn_Cam::customer_attributes"
+        <add id="Tangkoko_CustomerAttributesManagement::customer_attributes"
              title="Customer Attributes"
-             module="Mvn_Cam"
+             module="Tangkoko_CustomerAttributesManagement"
              sortOrder="5"
-             parent="Mvn_Cam::attributes"
+             parent="Tangkoko_CustomerAttributesManagement::attributes"
              action="cam/customer/index/"
-             resource="Mvn_Cam::customer_attributes"/>
+             resource="Tangkoko_CustomerAttributesManagement::customer_attributes"/>
 
-        <add id="Mvn_Cam::address_attributes"
+        <add id="Tangkoko_CustomerAttributesManagement::address_attributes"
              title="Customer Address Attributes"
-             module="Mvn_Cam"
+             module="Tangkoko_CustomerAttributesManagement"
              sortOrder="10"
-             parent="Mvn_Cam::attributes"
+             parent="Tangkoko_CustomerAttributesManagement::attributes"
              action="cam/address/index/"
-             resource="Mvn_Cam::address_attributes"/>
+             resource="Tangkoko_CustomerAttributesManagement::address_attributes"/>
 
     </menu>
 </config>

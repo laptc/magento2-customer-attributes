@@ -24,5 +24,5 @@ class Attributes extends  \Tangkoko\CustomerAttributesManagement\Block\Customer\
      *
      * @var string
      */
-    protected $_template = "Mvn_Cam::customer/form/register/attributes.phtml";
+    protected $_template = "Tangkoko_CustomerAttributesManagement::customer/form/register/attributes.phtml";
 }

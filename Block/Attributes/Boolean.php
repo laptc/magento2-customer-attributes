@@ -19,5 +19,5 @@ class Boolean extends AbstractElement
      *
      * @var string
      */
-    protected $_template = "Mvn_Cam::attributes/boolean.phtml";
+    protected $_template = "Tangkoko_CustomerAttributesManagement::attributes/boolean.phtml";
 }

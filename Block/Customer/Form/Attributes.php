@@ -38,7 +38,7 @@ class Attributes extends \Magento\Framework\View\Element\Template
      *
      * @var string
      */
-    protected $_template = "Mvn_Cam::customer/form/default.phtml";
+    protected $_template = "Tangkoko_CustomerAttributesManagement::customer/form/default.phtml";
 
     /**
      * Attributes constructor.

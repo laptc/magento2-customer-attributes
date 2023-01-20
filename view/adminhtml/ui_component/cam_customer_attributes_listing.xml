@@ -33,7 +33,7 @@
             </storageConfig>
             <updateUrl path="mui/index/render"/>
         </settings>
-        <aclResource>Mvn_Cam::customer_attributes</aclResource>
+        <aclResource>Tangkoko_CustomerAttributesManagement::customer_attributes</aclResource>
         <dataProvider class="Tangkoko\CustomerAttributesManagement\Ui\DataProvider\Customer\Attributes\Listing" name="cam_customer_attributes_listing_data_source">
             <settings>
                 <requestFieldName>id</requestFieldName>

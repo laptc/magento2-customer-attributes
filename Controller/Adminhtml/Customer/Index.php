@@ -19,7 +19,7 @@ class Index extends \Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\
     public function execute()
     {
         $resultPage = $this->createPageResult();
-        $resultPage->setActiveMenu('Mvn_Cam::customer_attributes');
+        $resultPage->setActiveMenu('Tangkoko_CustomerAttributesManagement::customer_attributes');
         $resultPage->getConfig()->getTitle()->prepend(__('Customer Attributes'));
         $resultPage->addBreadcrumb(__('Customer Attributes'), __('Customer Attributes'));
         return $resultPage;
@@ -31,6 +31,6 @@ class Index extends \Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\
      */
     protected function _isAllowed()
     {
-        return $this->_authorization->isAllowed('Mvn_Cam::customer_attributes');
+        return $this->_authorization->isAllowed('Tangkoko_CustomerAttributesManagement::customer_attributes');
     }
 }

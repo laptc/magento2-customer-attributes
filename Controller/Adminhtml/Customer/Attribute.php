@@ -18,7 +18,7 @@ abstract class Attribute extends \Tangkoko\CustomerAttributesManagement\Controll
      *
      * @see _isAllowed()
      */
-    const ADMIN_RESOURCE = 'Mvn_Cam::customer_attributes';
+    const ADMIN_RESOURCE = 'Tangkoko_CustomerAttributesManagement::customer_attributes';
 
     /**
      * @var \Magento\Framework\Cache\FrontendInterface

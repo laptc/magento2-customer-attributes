@@ -18,5 +18,5 @@ class Text extends AbstractElement
      *
      * @var string
      */
-    protected $_template = "Mvn_Cam::attributes/text.phtml";
+    protected $_template = "Tangkoko_CustomerAttributesManagement::attributes/text.phtml";
 }

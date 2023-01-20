@@ -19,5 +19,5 @@ class Select extends AbstractElement
      *
      * @var string
      */
-    protected $_template = "Mvn_Cam::attributes/select.phtml";
+    protected $_template = "Tangkoko_CustomerAttributesManagement::attributes/select.phtml";
 }

@@ -19,7 +19,7 @@ class Multiselect extends AbstractElement
      *
      * @var string
      */
-    protected $_template = "Mvn_Cam::attributes/multiselect.phtml";
+    protected $_template = "Tangkoko_CustomerAttributesManagement::attributes/multiselect.phtml";
 
     /**
      * @return array

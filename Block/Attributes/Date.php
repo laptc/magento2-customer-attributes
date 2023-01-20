@@ -21,7 +21,7 @@ class Date extends AbstractElement
      *
      * @var string
      */
-    protected $_template = "Mvn_Cam::attributes/date.phtml";
+    protected $_template = "Tangkoko_CustomerAttributesManagement::attributes/date.phtml";
 
     /**
      * Constants for borders of date-type customer attributes
