@@ -1,3 +1,146 @@
-<br/>
-<legend class="legend custom-attributes"><span><?= __("Additional Information") ?></span></legend>
-<?= $block->getChildHtml(); ?>
+<?php
+
+/**
+ * @var \Tangkoko\CustomerAttributesManagement\Block\Customer\Form\Attributes $block
+ */
+$formData = $block->getFormData();
+$_dob = $block->getChildBlock($block->getNameInLayout() . '.' . "dob");
+$displayAll = $block->getConfig('general/region/display_all');
+?>
+<?php foreach ($block->getAttributes() as $attribute) : ?>
+
+    <?php switch ($attribute->getAttributeCode()):
+        case "email": ?>
+            <div class="field required">
+                <label for="email_address" class="label"><span><?= $escaper->escapeHtml(__('Email')) ?></span></label>
+                <div class="control">
+                    <input type="email" name="email" autocomplete="email" id="email_address" value="<?= $escaper->escapeHtmlAttr($formData->getEmail()) ?>" title="<?= $escaper->escapeHtmlAttr(__('Email')) ?>" class="input-text" data-mage-init='{"mage/trim-input":{}}' data-validate="{required:true, 'validate-email':true}">
+                </div>
+            </div>
+            <?php break; ?>
+        <?php
+        default: ?>
+            <?= $block->getChildHtml($block->getNameInLayout() . '.' .  $attribute->getAttributeCode()) ?>
+    <?php endswitch ?>
+<?php endforeach; ?>
+
+<div class="field password required">
+    <label for="password" class="label"><span><?= $escaper->escapeHtml(__('Password')) ?></span></label>
+    <div class="control">
+        <input type="password" name="password" id="password" title="<?= $escaper->escapeHtmlAttr(__('Password')) ?>" class="input-text" data-password-min-length="<?=
+                                                                                                                                                                    $escaper->escapeHtmlAttr($block->getMinimumPasswordLength()) ?>" data-password-min-character-sets="<?=
+                                                                                                                                                                                                                                                                        $escaper->escapeHtmlAttr($block->getRequiredCharacterClassesNumber()) ?>" data-validate="{required:true, 'validate-customer-password':true}" autocomplete="off">
+        <div id="password-strength-meter-container" data-role="password-strength-meter" aria-live="polite">
+            <div id="password-strength-meter" class="password-strength-meter">
+                <?= $escaper->escapeHtml(__('Password Strength')) ?>:
+                <span id="password-strength-meter-label" data-role="password-strength-meter-label">
+                    <?= $escaper->escapeHtml(__('No Password')) ?>
+                </span>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="field confirmation required">
+    <label for="password-confirmation" class="label">
+        <span><?= $escaper->escapeHtml(__('Confirm Password')) ?></span>
+    </label>
+    <div class="control">
+        <input type="password" name="password_confirmation" title="<?= $escaper->escapeHtmlAttr(__('Confirm Password')) ?>" id="password-confirmation" class="input-text" data-validate="{required:true, equalTo:'#password'}" autocomplete="off">
+    </div>
+</div>
+<div class="field choice" data-bind="scope: 'showPassword'">
+    <!-- ko template: getTemplate() --><!-- /ko -->
+</div>
+
+<?php $ignore = /* @noEscape */ $_dob && $_dob->isEnabled() ? '\'input[id$="full"]\'' : 'null';
+$scriptString = <<<script
+require([
+    'jquery',
+    'mage/mage'
+], function($){
+
+    var dataForm = $('#form-validate');
+    var ignore = {$ignore};
+
+    dataForm.mage('validation', {
+script;
+if ($_dob && $_dob->isEnabled()) :
+    $scriptString .= <<<script
+        errorPlacement: function(error, element) {
+            if (element.prop('id').search('full') !== -1) {
+                var dobElement = $(element).parents('.customer-dob'),
+                    errorClass = error.prop('class');
+                error.insertAfter(element.parent());
+                dobElement.find('.validate-custom').addClass(errorClass)
+                    .after('<div class="' + errorClass + '"></div>');
+            }
+            else {
+                error.insertAfter(element);
+            }
+        },
+        ignore: ':hidden:not(' + ignore + ')'
+script;
+else :
+    $scriptString .= <<<script
+        ignore: ignore ? ':hidden:not(' + ignore + ')' : ':hidden'
+script;
+endif;
+$scriptString .= <<<script
+    }).find('input:text').attr('autocomplete', 'off');
+});
+script;
+?>
+<?= /* @noEscape */ $secureRenderer->renderTag('script', [], $scriptString, false) ?>
+<?php if ($block->getShowAddressFields()) : ?>
+    <?php
+    $regionJson = /* @noEscape */ $regionProvider->getRegionJson();
+    $regionId = (int) $formData->getRegionId();
+    $countriesWithOptionalZip = /* @noEscape */ $directoryHelper->getCountriesWithOptionalZip(true);
+    ?>
+    <?php // phpcs:ignore Magento2.Legacy.PhtmlTemplate 
+    ?>
+    <script type="text/x-magento-init">
+        {
+        "#country": {
+            "directoryRegionUpdater": {
+                "optionalRegionAllowed": <?= /* @noEscape */ $displayAll ? 'true' : 'false' ?>,
+                "regionListId": "#region_id",
+                "regionInputId": "#region",
+                "postcodeId": "#zip",
+                "form": "#form-validate",
+                "regionJson": <?= /* @noEscape */ $regionJson ?>,
+                "defaultRegion": <?= /* @noEscape */ $regionId ?>,
+                "countriesWithOptionalZip": <?=  /* @noEscape */ $countriesWithOptionalZip ?>
+            }
+        }
+    }
+</script>
+<?php endif; ?>
+<?php // phpcs:ignore Magento2.Legacy.PhtmlTemplate 
+?>
+<script type="text/x-magento-init">
+    {
+        ".field.password": {
+            "passwordStrengthIndicator": {
+                "formSelector": "form.form-create-account"
+            }
+        },
+        "*": {
+            "Magento_Customer/js/block-submit-on-send": {
+                "formId": "form-validate"
+            },
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "showPassword": {
+                        "component": "Magento_Customer/js/show-password",
+                        "passwordSelector": "#password,#password-confirmation"
+                    }
+                }
+            }
+        },
+        "*": {
+            "tkkInputPassword": {}
+        }
+    }
+</script>

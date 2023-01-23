@@ -136,7 +136,7 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
                     }
                     $options = $this->getAttributeOptions($attribute->getId(), $storeId);
                     if ($options && !empty($options)) {
-                        $attributeDefaultValue = explode(",", $attribute->getDefaultValue());
+                        $attributeDefaultValue = explode(",", $attribute->getDefaultValue() ?? "");
                         foreach ($options as $option) {
                             $optionId = $option->getOptionId();
                             if (isset($optionsData[$optionId])) {

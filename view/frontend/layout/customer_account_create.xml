@@ -7,8 +7,22 @@
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <referenceContainer name="form.additional.info">
-            <block class="Tangkoko\CustomerAttributesManagement\Block\Customer\Form\Register\Attributes" name="customer_custom_attributes_info" template="Tangkoko_CustomerAttributesManagement::customer/form/register/attributes.phtml"/>
-        </referenceContainer>
+        <referenceBlock name="customer_form_register">
+            <container name="form.customer.attributes">
+                 <block class="Tangkoko\CustomerAttributesManagement\Block\Customer\Form\Register\Attributes" name="customer_custom_attributes_info" template="Tangkoko_CustomerAttributesManagement::customer/form/register/attributes.phtml">
+                    <arguments>
+                        <argument name="special_blocks" xsi:type="array">
+                            <item name="lastname" xsi:type="string">\Magento\Customer\Block\Widget\Name</item>
+                            <item name="dob" xsi:type="string">\Magento\Customer\Block\Widget\Dob</item>
+                            <item name="taxvat" xsi:type="string">\Magento\Customer\Block\Widget\Taxvat</item>
+                            <item name="gender" xsi:type="string">\Magento\Customer\Block\Widget\Gender</item>
+                        </argument>
+                    </arguments>
+                 </block>
+            </container>
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Tangkoko_CustomerAttributesManagement::customer/form/register.phtml</argument>
+            </action>
+        </referenceBlock>
     </body>
 </page>

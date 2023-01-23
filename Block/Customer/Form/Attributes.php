@@ -7,6 +7,8 @@
 
 namespace Tangkoko\CustomerAttributesManagement\Block\Customer\Form;
 
+use Magento\Framework\View\Element\BlockInterface;
+
 /**
  * Class Attributes
  * @package Tangkoko\CustomerAttributesManagement\Block\Customer\Form
@@ -39,6 +41,9 @@ class Attributes extends \Magento\Framework\View\Element\Template
      * @var string
      */
     protected $_template = "Tangkoko_CustomerAttributesManagement::customer/form/default.phtml";
+
+    protected $attributes;
+
 
     /**
      * Attributes constructor.
@@ -89,23 +94,37 @@ class Attributes extends \Magento\Framework\View\Element\Template
     }
 
     /**
+     * Return attributes
+     *
+     * @return \Magento\Customer\Api\Data\AttributeMetadataInterface[]
+     */
+    public function getAttributes()
+    {
+        return $this->attributes;
+    }
+
+    /**
      * @return \Magento\Framework\View\Element\Template
      */
     protected function _prepareLayout()
     {
         if ($this->getFormCode()) {
-            $attributes = $this->getFormAttributes();
-            if (!empty($attributes)) {
-                usort($attributes, function ($attribute1, $attribute2) {
+            $this->attributes = $this->getFormAttributes();
+            if (!empty($this->attributes)) {
+                usort($this->attributes, function ($attribute1, $attribute2) {
                     return $attribute1->getSortOrder() <=> $attribute2->getSortOrder();
                 });
-                foreach ($attributes as $attribute) {
-                    if ($attribute->isVisible() && $attribute->isUserDefined()) {
-                        $this->addChild($attribute->getAttributeCode(), $this->getBlockForAttribute($attribute->getFrontendInput()), [
-                            'attribute' => $attribute,
-                            'form_data' => $this->getFormData(),
-                            'default_value' => $this->getDefaultValue($attribute)
-                        ]);
+
+                foreach ($this->attributes as $index => $attribute) {
+                    if ($attribute->isVisible()) {
+                        if ($attribute->isUserDefined() && !isset($this->getSpecialBlocks()[$attribute->getAttributeCode()])) {
+                            $block = $this->getBlockForAttribute($attribute);
+                        } else {
+                            $block = $this->getSpecialBlockForAttribute($attribute);
+                        }
+                        if ($block) {
+                            $this->setChild($this->getNameInLayout() . '.' .  $attribute->getAttributeCode(), $block);
+                        }
                     }
                 }
             }
@@ -114,44 +133,105 @@ class Attributes extends \Magento\Framework\View\Element\Template
     }
 
     /**
-     * @param string $inputType
-     * @return string
+     * @param \Magento\Customer\Api\Data\AttributeMetadataInterface $attribute
+     * @return BlockInterface
      */
-    public function getBlockForAttribute($inputType)
+    public function getBlockForAttribute($attribute)
     {
         $blockName = "Text";
-        if ($inputType) {
-            $blockNames = [];
-            foreach (explode('_', $inputType) as $name) {
-                $blockNames[] = ucfirst($name);
-            };
-            $blockName = implode("", $blockNames);
-        }
-        return "Tangkoko\CustomerAttributesManagement\Block\Attributes\\$blockName";
+
+        $blockNames = [];
+        foreach (explode('_', $attribute->getFrontendInput()) as $name) {
+            $blockNames[] = ucfirst($name);
+        };
+        $blockName = implode("", $blockNames);
+        $block = $this->getLayout()
+            ->createBlock(
+                "Tangkoko\CustomerAttributesManagement\Block\Attributes\\" . $blockName,
+                $attribute->getAttributeCode(),
+                [
+                    "data" => [
+                        'attribute' => $attribute,
+                        'form_data' => $this->getFormData(),
+                        'default_value' => $this->getDefaultValue($attribute)
+                    ]
+                ]
+            );
+        return $block;
     }
 
     /**
-     * @return array|mixed|null
+     * @param \Magento\Customer\Api\Data\AttributeMetadataInterface $attribute
+     * @return BlockInterface
+     */
+    public function getSpecialBlockForAttribute($attribute)
+    {
+        $block = null;
+        switch ($attribute->getAttributeCode()) {
+            case "lastname":
+                $block = $this->getLayout()
+                    ->createBlock($this->getSpecialBlocks()[$attribute->getAttributeCode()])
+                    ->setObject($this->getFormData())
+                    ->setForceUseCustomerAttributes(true);
+                break;
+            case "dob":
+                $block = $this->getLayout()
+                    ->createBlock($this->getSpecialBlocks()[$attribute->getAttributeCode()])
+                    ->setDate($this->getFormData()->getDob());
+                break;
+            case "taxvat":
+                $block = $this->getLayout()->createBlock($this->getSpecialBlocks()[$attribute->getAttributeCode()])
+                    ->setTaxvat($this->getFormData()->getTaxvat());
+                break;
+            case "gender":
+                $block = $this->getLayout()->createBlock($this->getSpecialBlocks()[$attribute->getAttributeCode()])
+                    ->setGender($this->getFormData()->getGender());
+                break;
+            case "firstname":
+                break;
+            case "email":
+                break;
+            default:
+                $block = $this->getLayout()->createBlock($this->getSpecialBlocks()[$attribute->getAttributeCode()])
+                    ->setAttribute($attribute)
+                    ->setFormData($this->getFormData());
+        }
+
+        return $block;
+    }
+
+    /**
+     * Retrieve form data
+     *
+     * @return mixed
      */
     public function getFormData()
     {
+
         $data = $this->getData('form_data');
         if ($data === null) {
-            $customer = $this->customerSession->getCustomer();
-            if ($customer && $customer->getId()) {
-                $data = $customer;
+            if ($this->customerSession->getCustomerData()) {
+                $formData = $this->customerSession->getCustomerData()->__toArray();
+                foreach ($formData["custom_attributes"] as $customAttribute) {
+                    $formData[$customAttribute["attribute_code"]] = $customAttribute["value"];
+                }
             } else {
                 $formData = $this->customerSession->getCustomerFormData(true);
-                if ($formData) {
-                    $data = new \Magento\Framework\DataObject();
-                    $data->addData($formData);
-                    $data->setCustomerData(1);
-                }
+            }
+
+            $data = new \Magento\Framework\DataObject();
+            if ($formData) {
+                $data->addData($formData);
+                $data->setCustomerData(1);
+            }
+            if (isset($data['region_id'])) {
+                $data['region_id'] = (int)$data['region_id'];
             }
             $this->setData('form_data', $data);
         }
         return $data;
     }
+
 
     /**
      * @param \Magento\Customer\Api\Data\AttributeMetadataInterface $attribute

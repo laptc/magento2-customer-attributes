@@ -55,12 +55,13 @@ class Date extends AbstractElement
      * @param array $data
      */
     public function __construct(
+        \Magento\Framework\Serialize\Serializer\Json $jsonEncoder,
         \Magento\Framework\View\Element\Template\Context $context,
         \Magento\Framework\View\Element\Html\Date $dateElement,
         \Magento\Framework\Data\Form\FilterFactory $filterFactory,
         array $data = []
     ) {
-        parent::__construct($context, $data);
+        parent::__construct($jsonEncoder, $context, $data);
         $this->dateElement = $dateElement;
         $this->filterFactory = $filterFactory;
     }
