@@ -164,8 +164,11 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
 
             $attribute->setUsedInForms($attribute->getUsedInForms());
             $data[""] = $attribute->getData();
-        }
+            if (!empty($attribute->getValidateRules())) {
 
+                $data[""]["validate_rules"] = array_key_first($attribute->getValidateRules());
+            }
+        }
         return $data;
     }
 

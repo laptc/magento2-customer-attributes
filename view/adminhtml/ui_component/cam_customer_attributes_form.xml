@@ -393,7 +393,7 @@
                 </checkbox>
             </formElements>
         </field>
-        <field name="frontend_class" component="Tangkoko_CustomerAttributesManagement/js/components/disable-hide-select" sortOrder="50" formElement="select">
+        <field name="validate_rules" component="Tangkoko_CustomerAttributesManagement/js/components/disable-hide-select" sortOrder="50" formElement="select">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="valuesForOptions" xsi:type="array">
@@ -414,7 +414,7 @@
             <settings>
                 <dataType>string</dataType>
                 <label translate="true">Input Validation</label>
-                <dataScope>frontend_class</dataScope>
+                <dataScope>validate_rules</dataScope>
             </settings>
             <formElements>
                 <select>
@@ -521,6 +521,14 @@
                 <dataType>string</dataType>
                 <label translate="true">Sort Order</label>
                 <dataScope>sort_order</dataScope>
+            </settings>
+        </field>
+
+        <field name="frontend_class" sortOrder="87" formElement="input">
+            <settings>
+                <dataType>string</dataType>
+                <label translate="true">Css classes</label>
+                <dataScope>frontend_class</dataScope>
             </settings>
         </field>
 

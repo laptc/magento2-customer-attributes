@@ -177,7 +177,8 @@ class Attributes extends \Magento\Framework\View\Element\Template
             case "dob":
                 $block = $this->getLayout()
                     ->createBlock($this->getSpecialBlocks()[$attribute->getAttributeCode()])
-                    ->setDate($this->getFormData()->getDob());
+                    ->setDate($this->getFormData()->getDob())
+                    ->setHtmlClass($attribute->getFrontendClass());
                 break;
             case "taxvat":
                 $block = $this->getLayout()->createBlock($this->getSpecialBlocks()[$attribute->getAttributeCode()])
@@ -249,6 +250,7 @@ class Attributes extends \Magento\Framework\View\Element\Template
             $attributeModel->loadByCode(\Magento\Customer\Model\Customer::ENTITY, $attribute->getAttributeCode());
             $defaultValue = $attributeModel->getDefaultValue();
         }
+
         return $defaultValue;
     }
 }

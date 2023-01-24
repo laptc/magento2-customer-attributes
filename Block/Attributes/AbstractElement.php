@@ -56,7 +56,7 @@ class AbstractElement extends \Magento\Framework\View\Element\Template
 
         $attribute = $this->getAttribute();
         if ($attribute) {
-            if ($data instanceof \Magento\Framework\DataObject) {
+            if ($data instanceof \Magento\Framework\DataObject && $data->hasData($attribute->getAttributeCode())) {
                 $value = $data->getData($attribute->getAttributeCode());
             } else {
                 $value = $this->getDefaultValue();

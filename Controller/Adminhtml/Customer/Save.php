@@ -207,6 +207,7 @@ class Save extends \Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\C
                 }
             }
 
+
             $defaultValueField = $model->getDefaultValueByInput($data['frontend_input']);
             if ($defaultValueField) {
                 $data['default_value'] = $this->getRequest()->getParam($defaultValueField);
@@ -239,8 +240,14 @@ class Save extends \Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\C
                     $data["scope_$fieldName"] = $data[$fieldName];
                 }
             }
-
             $model->addData($data);
+
+            if (isset($data["validate_rules"]) && !empty($data["validate_rules"])) {
+                $model->setValidateRules([$data["validate_rules"] => true]);
+            } else {
+                $model->setValidateRules(null);
+            }
+
 
             if (!$model->getAttributeSetId()) {
                 $model->setAttributeSetId(CustomerMetadataInterface::ATTRIBUTE_SET_ID_CUSTOMER);
