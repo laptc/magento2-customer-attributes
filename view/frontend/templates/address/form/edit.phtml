@@ -1,0 +1,108 @@
+<?php
+
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var \Magento\Customer\Block\Address\Edit $block */
+/** @var \Magento\Customer\ViewModel\Address $viewModel */
+/** @var \Magento\Framework\Escaper $escaper */
+/** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */
+/** @var \Magento\Customer\ViewModel\Address\RegionProvider $regionProvider */
+$viewModel = $block->getViewModel();
+$regionProvider = $block->getRegionProvider();
+?>
+<?php $_company = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Company::class) ?>
+<?php $_telephone = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Telephone::class) ?>
+<?php $_fax = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Fax::class) ?>
+<?php $_country_id = $block->getAttributeData()->getFrontendLabel('country_id'); ?>
+<?php $_street = $block->getAttributeData()->getFrontendLabel('street'); ?>
+<?php $_city = $block->getAttributeData()->getFrontendLabel('city'); ?>
+<?php $_region = $block->getAttributeData()->getFrontendLabel('region'); ?>
+<?php $_selectRegion = 'Please select a region, state or province.'; ?>
+<?php $_displayAll = $block->getConfig('general/region/display_all'); ?>
+
+<?php $_vatidValidationClass = $viewModel->addressGetAttributeValidationClass('vat_id'); ?>
+<?php $_cityValidationClass = $viewModel->addressGetAttributeValidationClass('city'); ?>
+<?php $_postcodeValidationClass_value = $viewModel->addressGetAttributeValidationClass('postcode'); ?>
+<?php $_postcodeValidationClass = $_postcodeValidationClass_value; ?>
+<?php $_streetValidationClass = $viewModel->addressGetAttributeValidationClass('street'); ?>
+<?php $_streetValidationClassNotRequired = $_streetValidationClass !== null ?
+    trim(str_replace('required-entry', '', $_streetValidationClass)) : ''; ?>
+<?php $_regionValidationClass = $viewModel->addressGetAttributeValidationClass('region'); ?>
+<form class="form-address-edit" action="<?= $escaper->escapeUrl($block->getSaveUrl()) ?>" method="post" id="form-validate" enctype="multipart/form-data" data-hasrequired="<?= $escaper->escapeHtmlAttr(__('* Required Fields')) ?>">
+    <fieldset class="fieldset">
+        <legend class="legend"><span><?= $escaper->escapeHtml(__('Contact Information')) ?></span></legend><br>
+        <?= $block->getBlockHtml('formkey') ?>
+        <input type="hidden" name="success_url" value="<?= $escaper->escapeUrl($block->getSuccessUrl()) ?>">
+        <input type="hidden" name="error_url" value="<?= $escaper->escapeUrl($block->getErrorUrl()) ?>">
+        <?= $block->getChildHtml("form.address.contact-fieldset.container"); ?>
+    </fieldset>
+    <fieldset class="fieldset">
+        <legend class="legend"><span><?= $escaper->escapeHtml(__('Address')) ?></span></legend><br>
+        <?= $block->getChildHtml("form.address.address-fieldset.container"); ?>
+        <?php if ($block->isDefaultBilling()) : ?>
+            <div class="message info">
+                <span><?= $escaper->escapeHtml(__("It's a default billing address.")) ?></span>
+            </div>
+        <?php elseif ($block->canSetAsDefaultBilling()) : ?>
+            <div class="field choice set billing">
+                <input type="checkbox" id="primary_billing" name="default_billing" value="1" class="checkbox">
+                <label class="label" for="primary_billing">
+                    <span><?= $escaper->escapeHtml(__('Use as my default billing address')) ?></span>
+                </label>
+            </div>
+        <?php else : ?>
+            <input type="hidden" name="default_billing" value="1" />
+        <?php endif; ?>
+
+        <?php if ($block->isDefaultShipping()) : ?>
+            <div class="message info">
+                <span><?= $escaper->escapeHtml(__("It's a default shipping address.")) ?></span>
+            </div>
+        <?php elseif ($block->canSetAsDefaultShipping()) : ?>
+            <div class="field choice set shipping">
+                <input type="checkbox" id="primary_shipping" name="default_shipping" value="1" class="checkbox">
+                <label class="label" for="primary_shipping">
+                    <span><?= $escaper->escapeHtml(__('Use as my default shipping address')) ?></span>
+                </label>
+            </div>
+        <?php else : ?>
+            <input type="hidden" name="default_shipping" value="1">
+        <?php endif; ?>
+    </fieldset>
+    <div class="actions-toolbar">
+        <div class="primary">
+            <button type="submit" class="action save primary" data-action="save-address" disabled="disabled" title="<?= $escaper->escapeHtmlAttr(__('Save Address')) ?>">
+                <span><?= $escaper->escapeHtml(__('Save Address')) ?></span>
+            </button>
+        </div>
+        <div class="secondary">
+            <a class="action back" href="<?= $escaper->escapeUrl($block->getBackUrl()) ?>">
+                <span><?= $escaper->escapeHtml(__('Go back')) ?></span>
+            </a>
+        </div>
+    </div>
+</form>
+<script type="text/x-magento-init">
+    {
+        "#form-validate": {
+            "addressValidation": {
+                "postCodes": <?= /* @noEscape */ $block->getPostCodeConfig()->getSerializedPostCodes() ?>
+            }
+        },
+        "#country": {
+            "directoryRegionUpdater": {
+                "optionalRegionAllowed": <?= /* @noEscape */ $_displayAll ? 'true' : 'false' ?>,
+                "regionListId": "#region_id",
+                "regionInputId": "#region",
+                "postcodeId": "#zip",
+                "form": "#form-validate",
+                "regionJson": <?= /* @noEscape */ $regionProvider->getRegionJson(); ?>,
+                "defaultRegion": "<?= (int) $block->getRegionId() ?>",
+                "countriesWithOptionalZip": <?= /* @noEscape */ $viewModel->dataGetCountriesWithOptionalZip(true) ?>
+            }
+        }
+    }
+</script>

@@ -10,14 +10,7 @@
         <referenceBlock name="customer_form_register">
             <container name="form.customer.attributes">
                  <block class="Tangkoko\CustomerAttributesManagement\Block\Customer\Form\Register\Attributes" name="customer_custom_attributes_info" template="Tangkoko_CustomerAttributesManagement::customer/form/register/attributes.phtml">
-                    <arguments>
-                        <argument name="special_blocks" xsi:type="array">
-                            <item name="lastname" xsi:type="string">\Magento\Customer\Block\Widget\Name</item>
-                            <item name="dob" xsi:type="string">\Magento\Customer\Block\Widget\Dob</item>
-                            <item name="taxvat" xsi:type="string">\Magento\Customer\Block\Widget\Taxvat</item>
-                            <item name="gender" xsi:type="string">\Magento\Customer\Block\Widget\Gender</item>
-                        </argument>
-                    </arguments>
+                    
                  </block>
             </container>
             <action method="setTemplate">

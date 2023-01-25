@@ -21,6 +21,19 @@ $formData = $block->getFormData();
 /** @var \Magento\Customer\ViewModel\CreateAccountButton $createAccountButtonViewModel */
 $createAccountButtonViewModel = $block->getData('create_account_button_view_model');
 ?>
+<div class="cs-dashboard-account-selector">
+    <div class="block-title">
+        <strong role="heading" aria-level="2"><?= __('You are'); ?></strong>
+    </div>
+    <ul class="cs-dashboard-account-selector__list">
+        <li class="cs-dashboard-account-selector__item">
+            <a href="<?= $block->escapeUrl($block->getUrl('customer/account/login')); ?>" class="cs-dashboard-account-selector__link cs-dashboard-account-selector__link"><?= __('Already customer'); ?></a>
+        </li>
+        <li class="cs-dashboard-account-selector__item">
+            <a href="<?= $block->escapeUrl($block->getUrl('customer/account/create')); ?>" class="cs-dashboard-account-selector__link cs-dashboard-account-selector__link--active"><?= __('New customer'); ?></a>
+        </li>
+    </ul>
+</div>
 
 
 <?= $block->getChildHtml('form_fields_before') ?>

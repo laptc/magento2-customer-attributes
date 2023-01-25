@@ -1,0 +1,10 @@
+<?php
+
+/**
+ * @var \Tangkoko\CustomerAttributesManagement\Block\Address\Form\Edit\Attributes $block
+ */
+
+?>
+<?php foreach ($block->getAttributes() as $attribute) : ?>
+            <?= $block->getChildHtml($block->getNameInLayout() . '.' .  $attribute->getAttributeCode()) ?>
+<?php endforeach; ?>

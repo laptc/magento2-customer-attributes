@@ -8,6 +8,7 @@
 namespace Tangkoko\CustomerAttributesManagement\Block\Customer\Form;
 
 use Magento\Framework\View\Element\BlockInterface;
+use Tangkoko\CustomerAttributesManagement\Block\Customer\Attributes\SpecialBlockProviderInterface;
 
 /**
  * Class Attributes
@@ -23,7 +24,7 @@ class Attributes extends \Magento\Framework\View\Element\Template
     /**
      * @var \Magento\Customer\Api\CustomerMetadataInterface
      */
-    protected $customerMetadata;
+    protected $metadata;
 
     /**
      * @var \Magento\Customer\Model\AttributeFactory
@@ -34,6 +35,12 @@ class Attributes extends \Magento\Framework\View\Element\Template
      * @var string
      */
     protected $code = "";
+
+    /**
+     *
+     * @var SpecialBlockProviderInterface
+     */
+    protected $specialBlockProvider;
 
     /**
      * Path to template file in theme.
@@ -49,21 +56,23 @@ class Attributes extends \Magento\Framework\View\Element\Template
      * Attributes constructor.
      * @param \Magento\Framework\View\Element\Template\Context $context
      * @param \Magento\Customer\Model\Session $customerSession
-     * @param \Magento\Customer\Api\CustomerMetadataInterface $customerMetadata
+     * @param \Magento\Customer\Api\CustomerMetadataInterface $metadata
      * @param \Magento\Customer\Model\AttributeFactory $attributeFactory
      * @param array $data
      */
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
         \Magento\Customer\Model\Session $customerSession,
-        \Magento\Customer\Api\CustomerMetadataInterface $customerMetadata,
+        \Magento\Customer\Api\MetadataInterface $metadata,
         \Magento\Customer\Model\AttributeFactory $attributeFactory,
+        SpecialBlockProviderInterface $specialBlockProvider,
         array $data = []
     ) {
         parent::__construct($context, $data);
         $this->customerSession = $customerSession;
-        $this->customerMetadata = $customerMetadata;
+        $this->metadata = $metadata;
         $this->attributeFactory = $attributeFactory;
+        $this->specialBlockProvider = $specialBlockProvider;
     }
 
     /**
@@ -90,7 +99,7 @@ class Attributes extends \Magento\Framework\View\Element\Template
      */
     public function getFormAttributes()
     {
-        return $this->customerMetadata->getAttributes($this->getFormCode());
+        return $this->metadata->getAttributes($this->getFormCode());
     }
 
     /**
@@ -116,11 +125,11 @@ class Attributes extends \Magento\Framework\View\Element\Template
                 });
 
                 foreach ($this->attributes as $index => $attribute) {
-                    if ($attribute->isVisible()) {
-                        if ($attribute->isUserDefined() && !isset($this->getSpecialBlocks()[$attribute->getAttributeCode()])) {
+                    if ($attribute->isVisible() && $this->isInFielsdset($attribute)) {
+                        if ($attribute->isUserDefined() && !$this->specialBlockProvider->hasSpecialBlockForAttribute($attribute)) {
                             $block = $this->getBlockForAttribute($attribute);
                         } else {
-                            $block = $this->getSpecialBlockForAttribute($attribute);
+                            $block = $this->specialBlockProvider->getSpecialBlockForAttribute($attribute, $this->getFormData());
                         }
                         if ($block) {
                             $this->setChild($this->getNameInLayout() . '.' .  $attribute->getAttributeCode(), $block);
@@ -130,6 +139,17 @@ class Attributes extends \Magento\Framework\View\Element\Template
             }
         }
         return parent::_prepareLayout();
+    }
+
+    /**
+     * Return true if attribute is in fieldset
+     *
+     * @param \Magento\Customer\Api\Data\AttributeMetadataInterface $attribute
+     * @return boolean
+     */
+    public function isInFielsdset($attribute)
+    {
+        return true;
     }
 
     /**
@@ -157,47 +177,6 @@ class Attributes extends \Magento\Framework\View\Element\Template
                     ]
                 ]
             );
-        return $block;
-    }
-
-    /**
-     * @param \Magento\Customer\Api\Data\AttributeMetadataInterface $attribute
-     * @return BlockInterface
-     */
-    public function getSpecialBlockForAttribute($attribute)
-    {
-        $block = null;
-        switch ($attribute->getAttributeCode()) {
-            case "lastname":
-                $block = $this->getLayout()
-                    ->createBlock($this->getSpecialBlocks()[$attribute->getAttributeCode()])
-                    ->setObject($this->getFormData())
-                    ->setForceUseCustomerAttributes(true);
-                break;
-            case "dob":
-                $block = $this->getLayout()
-                    ->createBlock($this->getSpecialBlocks()[$attribute->getAttributeCode()])
-                    ->setDate($this->getFormData()->getDob())
-                    ->setHtmlClass($attribute->getFrontendClass());
-                break;
-            case "taxvat":
-                $block = $this->getLayout()->createBlock($this->getSpecialBlocks()[$attribute->getAttributeCode()])
-                    ->setTaxvat($this->getFormData()->getTaxvat());
-                break;
-            case "gender":
-                $block = $this->getLayout()->createBlock($this->getSpecialBlocks()[$attribute->getAttributeCode()])
-                    ->setGender($this->getFormData()->getGender());
-                break;
-            case "firstname":
-                break;
-            case "email":
-                break;
-            default:
-                $block = $this->getLayout()->createBlock($this->getSpecialBlocks()[$attribute->getAttributeCode()])
-                    ->setAttribute($attribute)
-                    ->setFormData($this->getFormData());
-        }
-
         return $block;
     }
 
