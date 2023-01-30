@@ -16,8 +16,11 @@ use Magento\Eav\Model\ResourceModel\Entity\Attribute\Group\CollectionFactory;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Filter\FilterManager;
 use Magento\Framework\View\LayoutFactory;
-use Magento\Customer\Model\AttributeFactory;
 use Magento\Customer\Api\CustomerMetadataInterface;
+use Magento\Eav\Api\AttributeRepositoryInterface;
+use Magento\Eav\Model\EntityFactory;
+use Magento\Eav\Model\AttributeFactory;
+use Magento\Framework\Serialize\Serializer\Json;
 
 /**
  * Product attribute save controller.
@@ -61,6 +64,7 @@ class Save extends \Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\C
      */
     private $formDataSerializer;
 
+
     /**
      * Save constructor.
      * @param \Magento\Backend\App\Action\Context $context
@@ -85,10 +89,12 @@ class Save extends \Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\C
         CollectionFactory $groupCollectionFactory,
         FilterManager $filterManager,
         LayoutFactory $layoutFactory,
-        AttributeFactory $attributeFactory,
+        \Magento\Eav\Model\AttributeFactory $attributeFactory,
+        AttributeRepositoryInterface $attributeRepository,
+        EntityFactory $entityFactory,
         FormData $formDataSerializer = null
     ) {
-        parent::__construct($context, $helper, $attributeLabelCache, $coreRegistry);
+        parent::__construct($context, $helper, $attributeLabelCache, $coreRegistry, $attributeFactory, $attributeRepository, $entityFactory);
         $this->productHelper = $productHelper;
         $this->filterManager = $filterManager;
         $this->attributeFactory = $attributeFactory;
@@ -127,14 +133,15 @@ class Save extends \Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\C
         );
 
         if ($data) {
-            $attributeId = $this->getRequest()->getParam('attribute_id');
-            $model = $this->attributeFactory->create();
-            if ($attributeId) {
-                $model->load($attributeId);
+            $attributeCode = $this->getRequest()->getParam('attribute_code');
+            /**
+             * @var \Magento\Customer\Model\Attribute $model
+             */
+            $model = $this->attributeFactory->createAttribute(\Magento\Customer\Model\Attribute::class);
+            if ($attributeCode) {
+                $model =  $this->attributeRepository->get(\Magento\Customer\Api\CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER, $attributeCode);
             }
-            $attributeCode = $model && $model->getId()
-                ? $model->getAttributeCode()
-                : $this->getRequest()->getParam('attribute_code');
+            $attributeId = $model->getId();
             if (strlen($attributeCode) > 0) {
                 $validatorAttrCode = new \Zend_Validate_Regex(
                     ['pattern' => '/^[a-zA-Z\x{600}-\x{6FF}][a-zA-Z\x{600}-\x{6FF}_0-9]{0,30}$/u']
@@ -149,10 +156,13 @@ class Save extends \Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\C
                     );
                     return $this->returnResult(
                         'cam/*/edit',
-                        ['attribute_id' => $attributeId, '_current' => true],
+                        ['attribute_code' => $attributeCode, '_current' => true],
                         ['error' => true]
                     );
                 }
+            }
+            if (isset($data['rule']['conditions'])) {
+                $model->setData('visibility_conditions_arr', $data['rule']['conditions']);
             }
             $data['attribute_code'] = $attributeCode;
 
@@ -166,13 +176,13 @@ class Save extends \Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\C
                     }
                     return $this->returnResult(
                         'cam/*/edit',
-                        ['attribute_id' => $attributeId, '_current' => true],
+                        ['attribute_code' => $attributeCode, '_current' => true],
                         ['error' => true]
                     );
                 }
             }
 
-            if ($attributeId) {
+            if ($attributeCode) {
                 if (!$model->getId()) {
                     $this->messageManager->addErrorMessage(__('This attribute no longer exists.'));
                     return $this->returnResult('cam/*/', [], ['error' => true]);
@@ -260,14 +270,14 @@ class Save extends \Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\C
             }
 
             try {
-                $model->save();
+                $this->attributeRepository->save($model);
                 $this->messageManager->addSuccessMessage(__('You saved the customer attribute.'));
 
                 $this->attributeLabelCache->clean();
                 $this->_session->setAttributeData(false);
                 return $this->returnResult(
                     'cam/*/edit',
-                    ['attribute_id' => $model->getId(), '_current' => true],
+                    ['attribute_code' => $attributeCode, '_current' => true],
                     ['error' => false]
                 );
             } catch (\Exception $e) {
@@ -275,7 +285,7 @@ class Save extends \Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\C
                 $this->_session->setAttributeData($data);
                 return $this->returnResult(
                     'cam/*/edit',
-                    ['attribute_id' => $attributeId, '_current' => true],
+                    ['attribute_code' => $attributeCode, '_current' => true],
                     ['error' => true]
                 );
             }

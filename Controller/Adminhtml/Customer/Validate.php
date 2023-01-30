@@ -13,6 +13,8 @@ use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\App\Action\HttpPostActionInterface as HttpPostActionInterface;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\DataObject;
+use Magento\Eav\Api\AttributeRepositoryInterface;
+use \Magento\Eav\Model\EntityFactory;
 
 /**
  * Class Validate
@@ -53,10 +55,13 @@ class Validate extends \Tangkoko\CustomerAttributesManagement\Controller\Adminht
         \Magento\Framework\Cache\FrontendInterface $attributeLabelCache,
         \Magento\Framework\Registry $coreRegistry,
         \Magento\Framework\View\LayoutFactory $layoutFactory,
+        \Magento\Eav\Model\AttributeFactory $attributeFactory,
+        AttributeRepositoryInterface $attributeRepository,
+        EntityFactory $entityFactory,
         array $multipleAttributeList = [],
         FormData $formDataSerializer = null
     ) {
-        parent::__construct($context, $helper, $attributeLabelCache, $coreRegistry);
+        parent::__construct($context, $helper, $attributeLabelCache, $coreRegistry, $attributeFactory, $attributeRepository, $entityFactory);
         $this->layoutFactory = $layoutFactory;
         $this->multipleAttributeList = $multipleAttributeList;
         $this->formDataSerializer = $formDataSerializer ?: ObjectManager::getInstance()

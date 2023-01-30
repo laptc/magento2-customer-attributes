@@ -15,13 +15,17 @@ class Delete extends \Tangkoko\CustomerAttributesManagement\Controller\Adminhtml
      */
     public function execute()
     {
-        $id = $this->getRequest()->getParam('attribute_id');
+        $code = $this->getRequest()->getParam('attribute_code');
         $resultRedirect = $this->createRedirectResult();
-        if ($id) {
-            $model = $this->_objectManager->create(\Magento\Customer\Model\Attribute::class);
+        if ($code) {
+            $model =  $this->attributeRepository->get($this->entityTypeId, $code);
 
-            // entity type check
-            $model->load($id);
+            if (!$model->getId()) {
+                $this->messageManager->addErrorMessage(__('This attribute no longer exists.'));
+                $resultRedirect = $this->createRedirectResult();
+                return $resultRedirect->setPath('cam/*/');
+            }
+
             if ($model->getEntityTypeId() != $this->entityTypeId) {
                 $this->messageManager->addErrorMessage(__('We can\'t delete the attribute.'));
                 return $resultRedirect->setPath('cam/*/');
@@ -29,7 +33,7 @@ class Delete extends \Tangkoko\CustomerAttributesManagement\Controller\Adminhtml
 
             try {
                 $attributeCode = $model->getAttributeCode();
-                $model->delete();
+                $this->attributeRepository->delete($model);
                 $this->messageManager->addSuccessMessage(__('You deleted the customer attribute: "%1".', $attributeCode));
                 return $resultRedirect->setPath('cam/*/');
             } catch (\Exception $e) {

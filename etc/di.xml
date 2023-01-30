@@ -7,6 +7,12 @@
 
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Tangkoko\CustomerAttributesManagement\Api\Data\ConditionInterface" type="Tangkoko\CustomerAttributesManagement\Model\Data\Condition" />
+    <preference for="Tangkoko\CustomerAttributesManagement\Api\Data\CamAttributeInterface" type="Tangkoko\CustomerAttributesManagement\Model\Data\CamAttribute" />
+    <preference for="Tangkoko\CustomerAttributesManagement\Api\CamAttributeRepositoryInterface" type="Tangkoko\CustomerAttributesManagement\Model\CamAttribute\Repository" />
+    <type name="Magento\Eav\Api\AttributeRepositoryInterface">
+        <plugin name="cam_process_extension_attributes" type="Tangkoko\CustomerAttributesManagement\Plugin\Eav\Model\Attribute\RepositoryPlugin"/>
+    </type>
 
     <type name="Tangkoko\CustomerAttributesManagement\Model\Attribute\Source\CustomerForm">
         <arguments>
@@ -29,5 +35,4 @@
             </argument>
         </arguments>
     </type>
-
 </config>

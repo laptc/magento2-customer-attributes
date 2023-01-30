@@ -548,6 +548,18 @@
             </formElements>
         </field>
     </fieldset>
+
+    <fieldset name="conditions" sortOrder="23">
+        <settings>
+            <collapsible>true</collapsible>
+            <label translate="true">Conditions</label>
+        </settings>
+        <container name="visibility_conditions" sortOrder="10">
+            <htmlContent name="html_content">
+                <block name="visibility_conditions" class="Tangkoko\CustomerAttributesManagement\Block\Adminhtml\Customer\Attribute\Edit\Tab\Visibility\Conditions" />
+            </htmlContent>
+        </container>
+    </fieldset>
     <fieldset name="manage-titles" sortOrder="25">
         <settings>
             <collapsible>true</collapsible>

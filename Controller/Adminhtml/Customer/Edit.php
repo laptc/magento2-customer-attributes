@@ -19,12 +19,10 @@ class Edit extends \Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\C
      */
     public function execute()
     {
-        $id = $this->getRequest()->getParam('attribute_id');
-        $model = $this->_objectManager->create(
-            \Magento\Customer\Model\Attribute::class
-        );
-        if ($id) {
-            $model->load($id);
+        $code = $this->getRequest()->getParam('attribute_code');
+        $model = $this->attributeFactory->createAttribute(\Magento\Customer\Model\Attribute::class);
+        if ($code) {
+            $model =  $this->attributeRepository->get($this->entityTypeId, $code);
 
             if (!$model->getId()) {
                 $this->messageManager->addErrorMessage(__('This attribute no longer exists.'));
@@ -44,13 +42,13 @@ class Edit extends \Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\C
             $model->addData($data);
         }
         $attributeData = $this->getRequest()->getParam('attribute');
-        if (!empty($attributeData) && $id === null) {
+        if (!empty($attributeData) && $code === null) {
             $model->addData($attributeData);
         }
 
         $this->coreRegistry->register('entity_attribute', $model);
 
-        $title = $id ? __('Edit Customer Attribute "%1"', $model->getAttributeCode()) : __('New Customer Attribute');
+        $title = $code ? __('Edit Customer Attribute "%1"', $model->getAttributeCode()) : __('New Customer Attribute');
         $resultPage = $this->createPageResult();
         $resultPage->setActiveMenu(self::ADMIN_RESOURCE);
         $resultPage->getConfig()->getTitle()->prepend($title);
