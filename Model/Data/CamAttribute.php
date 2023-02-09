@@ -10,6 +10,7 @@
 namespace Tangkoko\CustomerAttributesManagement\Model\Data;
 
 use Magento\Customer\Model\FormFactory;
+use Magento\Eav\Api\Data\AttributeInterface;
 use Magento\Framework\Model\AbstractModel;
 use Tangkoko\CustomerAttributesManagement\Api\Data\CamAttributeInterface;
 use Tangkoko\CustomerAttributesManagement\Model\ResourceModel\CamAttribute as ResourceModelCamAttribute;
@@ -100,7 +101,19 @@ class CamAttribute extends AbstractModel implements CamAttributeInterface
     }
 
     /**
-     * @return \Tangkoko\CustomerAttributesManagement\Api\Data\ConditionInterface[]|null
+     * set AttributeId
+     * @param AttributeInterface $attribute
+     * @return self
+     */
+    public function setAttribute($attribute): self
+    {
+        $this->setData("attribute", $attribute);
+        $this->setAttributeId($attribute->getAttributeId());
+        return $this;
+    }
+
+    /**
+     * @return \Tangkoko\CustomerAttributesManagement\Api\Data\ConditionInterface|null
      * 
      */
     public function getConditions()
@@ -110,7 +123,7 @@ class CamAttribute extends AbstractModel implements CamAttributeInterface
     }
 
     /**
-     * @return \Tangkoko\CustomerAttributesManagement\Api\Data\ConditionInterface[]|null
+     * @return \Tangkoko\CustomerAttributesManagement\Api\Data\ConditionInterface|null
      * 
      */
     public function getVisibilityConditions()
@@ -261,5 +274,15 @@ class CamAttribute extends AbstractModel implements CamAttributeInterface
             }
         }
         return $arr;
+    }
+
+    /**
+     * Return true if attribute is visible
+     *
+     * @return boolean
+     */
+    public function isVisible(AbstractModel $model)
+    {
+        return $this->getConditions()->validate($model);
     }
 }

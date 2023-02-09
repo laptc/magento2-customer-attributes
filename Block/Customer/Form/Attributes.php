@@ -7,8 +7,16 @@
 
 namespace Tangkoko\CustomerAttributesManagement\Block\Customer\Form;
 
+use Elasticsearch\Serializers\ArrayToJSONSerializer;
+use Magento\Customer\Api\Data\AttributeMetadataInterface;
 use Magento\Framework\View\Element\BlockInterface;
 use Tangkoko\CustomerAttributesManagement\Block\Customer\Attributes\SpecialBlockProviderInterface;
+use Magento\Eav\Api\AttributeRepositoryInterface;
+use Magento\Eav\Api\Data\AttributeInterface;
+use Magento\Framework\Api\SearchCriteriaBuilderFactory;
+use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Framework\Serialize\SerializerInterface;
+use Tangkoko\CustomerAttributesManagement\Model\Data\Condition\Converter;
 
 /**
  * Class Attributes
@@ -51,6 +59,35 @@ class Attributes extends \Magento\Framework\View\Element\Template
 
     protected $attributes;
 
+    /**
+     *
+     * @var AttributeRepositoryInterface
+     */
+    protected $attributeRepository;
+
+    /**
+     *
+     * @var AttributeInterface[]
+     */
+    protected $attributeModels;
+
+    /**
+     *
+     * @var SearchCriteriaBuilderFactory
+     */
+    protected $searchCriteriaBuilderFactory;
+
+    /**
+     *
+     * @var Converter
+     */
+    protected $converter;
+
+    /**
+     *
+     * @var Json
+     */
+    private $serializer;
 
     /**
      * Attributes constructor.
@@ -66,6 +103,10 @@ class Attributes extends \Magento\Framework\View\Element\Template
         \Magento\Customer\Api\MetadataInterface $metadata,
         \Magento\Customer\Model\AttributeFactory $attributeFactory,
         SpecialBlockProviderInterface $specialBlockProvider,
+        AttributeRepositoryInterface $attributeRepository,
+        SearchCriteriaBuilderFactory $searchCriteriaBuilderFactory,
+        Converter $converter,
+        Json $serializer,
         array $data = []
     ) {
         parent::__construct($context, $data);
@@ -73,6 +114,10 @@ class Attributes extends \Magento\Framework\View\Element\Template
         $this->metadata = $metadata;
         $this->attributeFactory = $attributeFactory;
         $this->specialBlockProvider = $specialBlockProvider;
+        $this->attributeRepository = $attributeRepository;
+        $this->searchCriteriaBuilderFactory = $searchCriteriaBuilderFactory;
+        $this->converter = $converter;
+        $this->serializer = $serializer;
     }
 
     /**
@@ -102,13 +147,47 @@ class Attributes extends \Magento\Framework\View\Element\Template
         return $this->metadata->getAttributes($this->getFormCode());
     }
 
+
     /**
-     * Return attributes
+     * return attribute
      *
-     * @return \Magento\Customer\Api\Data\AttributeMetadataInterface[]
+     * @param string $code
+     * @return AttributeInterface
+     */
+    protected function getAttributeModel(string $code)
+    {
+        if (!$this->attributeModels) {
+            $this->attributeModels = [];
+            $models = $this->attributeRepository->getList(\Magento\Customer\Api\CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER, $this->searchCriteriaBuilderFactory->create()->create());
+            foreach ($models->getItems() as $attributeModel) {
+                $this->attributeModels[$attributeModel->getAttributeCode()] = $attributeModel;
+            }
+        }
+        return $this->attributeModels[$code];
+    }
+
+    /**
+     * return attributes
+     *
+     * @return AttributeMetadataInterface[]
      */
     public function getAttributes()
     {
+        if (!$this->attributes) {
+            $this->attributes = [];
+            $attributes = $this->getFormAttributes();
+            if (!empty($attributes)) {
+                usort($attributes, function ($attribute1, $attribute2) {
+                    return $attribute1->getSortOrder() <=> $attribute2->getSortOrder();
+                });
+
+                foreach ($attributes as $index => $attribute) {
+                    if ($attribute->isVisible() && $this->isInFielsdset($attribute) && $this->getAttributeModel($attribute->getAttributeCode())->getExtensionAttributes()->getCamAttribute()->isVisible($this->customerSession->getCustomer())) {
+                        $this->attributes[] = $attribute;
+                    }
+                }
+            }
+        }
         return $this->attributes;
     }
 
@@ -117,27 +196,20 @@ class Attributes extends \Magento\Framework\View\Element\Template
      */
     protected function _prepareLayout()
     {
-        if ($this->getFormCode()) {
-            $this->attributes = $this->getFormAttributes();
-            if (!empty($this->attributes)) {
-                usort($this->attributes, function ($attribute1, $attribute2) {
-                    return $attribute1->getSortOrder() <=> $attribute2->getSortOrder();
-                });
 
-                foreach ($this->attributes as $index => $attribute) {
-                    if ($attribute->isVisible() && $this->isInFielsdset($attribute)) {
-                        if ($attribute->isUserDefined() && !$this->specialBlockProvider->hasSpecialBlockForAttribute($attribute)) {
-                            $block = $this->getBlockForAttribute($attribute);
-                        } else {
-                            $block = $this->specialBlockProvider->getSpecialBlockForAttribute($attribute, $this->getFormData());
-                        }
-                        if ($block) {
-                            $this->setChild($this->getNameInLayout() . '.' .  $attribute->getAttributeCode(), $block);
-                        }
-                    }
+        if ($this->getFormCode()) {
+            foreach ($this->getAttributes() as $index => $attribute) {
+                if ($attribute->isUserDefined() && !$this->specialBlockProvider->hasSpecialBlockForAttribute($attribute)) {
+                    $block = $this->getBlockForAttribute($attribute);
+                } else {
+                    $block = $this->specialBlockProvider->getSpecialBlockForAttribute($attribute, $this->getFormData());
+                }
+                if ($block) {
+                    $this->setChild($this->getNameInLayout() . '.' .  $attribute->getAttributeCode(), $block);
                 }
             }
         }
+
         return parent::_prepareLayout();
     }
 
@@ -227,9 +299,31 @@ class Attributes extends \Magento\Framework\View\Element\Template
              */
             $attributeModel = $this->attributeFactory->create();
             $attributeModel->loadByCode(\Magento\Customer\Model\Customer::ENTITY, $attribute->getAttributeCode());
-            $defaultValue = $attributeModel->getDefaultValue();
+            $defaultValue = $this->getAttributeModel($attribute->getAttributeCode())->getDefaultValue();
         }
 
         return $defaultValue;
+    }
+
+
+    /**
+     * Return attribute configuration json encoded
+     *
+     * @return string
+     */
+    public function getJsonConfig()
+    {
+        $rules = [];
+        foreach ($this->getAttributes() as $attribute) {
+            $attributeModel = $this->getAttributeModel($attribute->getAttributeCode());
+            if ($attributeModel->getExtensionAttributes()->getCamAttribute()->getVisibilityConditions()->getConditions()) {
+                $rules[$attribute->getAttributeCode()] = $this->converter->dataModelToArray($attributeModel->getExtensionAttributes()->getCamAttribute()->getVisibilityConditions());
+            }
+        }
+
+
+        return $this->serializer->serialize(
+            ["conditions" => $rules, "model" => $this->customerSession->getCustomer()->toJson()]
+        );
     }
 }

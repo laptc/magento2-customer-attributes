@@ -138,19 +138,24 @@ class Customer extends \Magento\Rule\Model\Condition\AbstractCondition
      */
     public function validate(\Magento\Framework\Model\AbstractModel $model)
     {
-        $address = $model;
-        if (!$address instanceof \Magento\Quote\Model\Quote\Address) {
-            if ($model->getQuote()->isVirtual()) {
-                $address = $model->getQuote()->getBillingAddress();
-            } else {
-                $address = $model->getQuote()->getShippingAddress();
-            }
-        }
+        return parent::validate($model);
+    }
 
-        if ('payment_method' == $this->getAttribute() && !$address->hasPaymentMethod()) {
-            $address->setPaymentMethod($model->getQuote()->getPayment()->getMethod());
-        }
+    /**
+     * Validate product attribute value for condition
+     *
+     * @param   object|array|int|string|float|bool|null $validatedValue product attribute value
+     * @return  bool
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     */
+    public function validateAttribute($validatedValue)
+    {
 
-        return parent::validate($address);
+        if ($this->attributes[$this->getAttribute()]->getIsVisible() && $this->attributes[$this->getAttribute()]->getIsUserDefined()) {
+            return true;
+        }
+        return parent::validateAttribute($validatedValue);
     }
 }

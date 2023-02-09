@@ -7,9 +7,13 @@
 
 namespace Tangkoko\CustomerAttributesManagement\Block\Address\Form\Edit;
 
+use Magento\Eav\Api\AttributeRepositoryInterface;
 use Magento\Framework\DataObject;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Tangkoko\CustomerAttributesManagement\Block\Customer\Attributes\SpecialBlockProviderInterface;
+use Magento\Framework\Api\SearchCriteriaBuilderFactory;
+use Magento\Framework\Serialize\Serializer\Json;
+use Tangkoko\CustomerAttributesManagement\Model\Data\Condition\Converter;
 
 /**
  * Class Attributes
@@ -54,10 +58,14 @@ class Attributes extends  \Tangkoko\CustomerAttributesManagement\Block\Customer\
         SpecialBlockProviderInterface $specialBlockProvider,
         \Magento\Customer\Api\AddressRepositoryInterface $addressRepository,
         \Magento\Customer\Api\Data\AddressInterfaceFactory $addressDataFactory,
+        AttributeRepositoryInterface $attributeRepository,
+        SearchCriteriaBuilderFactory $searchCriteriaBuilderFactory,
+        Converter $converter,
+        Json $serializer,
         array $data = []
 
     ) {
-        parent::__construct($context, $customerSession, $metadata, $attributeFactory, $specialBlockProvider, $data);
+        parent::__construct($context, $customerSession, $metadata, $attributeFactory, $specialBlockProvider, $attributeRepository, $searchCriteriaBuilderFactory, $converter, $serializer, $data);
         $this->customerSession = $customerSession;
         $this->addressRepository = $addressRepository;
         $this->addressDataFactory = $addressDataFactory;

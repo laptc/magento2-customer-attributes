@@ -8,7 +8,6 @@ $_dob = $block->getChildBlock($block->getNameInLayout() . '.' . "dob");
 $displayAll = $block->getConfig('general/region/display_all');
 ?>
 <?php foreach ($block->getAttributes() as $attribute) : ?>
-
     <?php switch ($attribute->getAttributeCode()):
         case "email": ?>
             <div class="field required">
@@ -94,3 +93,5 @@ script;
         }
     }
 </script>
+
+<?= $block->getJsonConfig() ?>

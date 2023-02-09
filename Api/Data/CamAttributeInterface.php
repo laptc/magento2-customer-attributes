@@ -39,7 +39,7 @@ interface CamAttributeInterface
 
     /**
      * set condition
-     * @param \Tangkoko\CustomerAttributesManagement\Api\Data\ConditionInterface[] $conditions
+     * @param \Tangkoko\CustomerAttributesManagement\Api\Data\ConditionInterface $conditions
      * @return self
      */
     public function setVisibilityConditions($conditions);

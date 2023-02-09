@@ -80,9 +80,12 @@ class RepositoryPlugin
         return $result;
     }
 
+
+
     public function afterGet(AttributeRepositoryInterface $subject, \Magento\Eav\Api\Data\AttributeInterface $attribute)
     {
         $camAttribute = $this->camAttributeRepository->get($attribute->getAttributeId());
+        $camAttribute->setAttribute($attribute);
         $attribute->getExtensionAttributes()->setCamAttribute($camAttribute);
         return $attribute;
     }
