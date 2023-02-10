@@ -6,5 +6,16 @@
 
 ?>
 <?php foreach ($block->getAttributes() as $attribute) : ?>
-            <?= $block->getChildHtml($block->getNameInLayout() . '.' .  $attribute->getAttributeCode()) ?>
+    <?= $block->getChildHtml($block->getNameInLayout() . '.' .  $attribute->getAttributeCode()) ?>
 <?php endforeach; ?>
+
+
+<script type="text/x-magento-init">
+    {
+        "<?= $block->getFormSelector() ?>": {
+            "camDependencies": {
+                "config":<?= $block->getJsonConfig() ?> 
+            }
+        }
+    }
+</script>

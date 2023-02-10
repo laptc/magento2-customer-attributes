@@ -8,7 +8,7 @@
 
 namespace Tangkoko\CustomerAttributesManagement\Model\Rule\Condition;
 
-use Tangkoko\CustomerAttributesManagement\Api\Data\ConditionInterface;
+use Magento\Rule\Model\Condition\ConditionInterface as ConditionConditionInterface;
 
 /**
  * @api
@@ -29,19 +29,32 @@ class Combine extends \Magento\Rule\Model\Condition\Combine
     protected $_conditionCustomer;
 
     /**
+     * @var \Tangkoko\CustomerAttributesManagement\Model\Rule\Condition\Address
+     */
+    protected $_conditionAddress;
+
+    /**
+     *
+     * @var ConditionInterface[][]
+     */
+    protected $conditions = [];
+
+    /**
+     *
      * @param \Magento\Rule\Model\Condition\Context $context
      * @param \Magento\Framework\Event\ManagerInterface $eventManager
      * @param \Tangkoko\CustomerAttributesManagement\Model\Rule\Condition\Customer $conditionCustomer
+     * @param \Tangkoko\CustomerAttributesManagement\Model\Rule\Condition\Address $conditionAddress
      * @param array $data
      */
     public function __construct(
         \Magento\Rule\Model\Condition\Context $context,
         \Magento\Framework\Event\ManagerInterface $eventManager,
-        \Tangkoko\CustomerAttributesManagement\Model\Rule\Condition\Customer $conditionCustomer,
+        array $conditions = [],
         array $data = []
     ) {
         $this->_eventManager = $eventManager;
-        $this->_conditionCustomer = $conditionCustomer;
+        $this->conditions = $conditions;
         parent::__construct($context, $data);
         $this->setType(\Tangkoko\CustomerAttributesManagement\Model\Rule\Condition\Combine::class);
     }
@@ -53,26 +66,26 @@ class Combine extends \Magento\Rule\Model\Condition\Combine
      */
     public function getNewChildSelectOptions()
     {
-
-        $customerAttributes = $this->_conditionCustomer->loadAttributeOptions()->getAttributeOption();
-        $attributes = [];
-        foreach ($customerAttributes as $code => $label) {
-            $attributes[] = [
-                'value' => 'Tangkoko\CustomerAttributesManagement\Model\Rule\Condition\Customer|' . $code,
-                'label' => $label,
-            ];
+        $groups = [
+            [
+                'value' => \Tangkoko\CustomerAttributesManagement\Model\Rule\Condition\Combine::class,
+                'label' => __('Conditions combination')
+            ]
+        ];
+        foreach ($this->conditions as $code => $conditionArr) {
+            $options = $conditionArr["value"]->loadAttributeOptions()->getAttributeOption();
+            foreach ($options as $code => $label) {
+                $attributes[] = [
+                    'value' => get_class($conditionArr["value"]) . '|' . $code,
+                    'label' => $label,
+                ];
+            }
+            $groups[] = ['label' => $conditionArr["label"], 'value' => $attributes];
         }
-
         $conditions = parent::getNewChildSelectOptions();
         $conditions = array_merge_recursive(
             $conditions,
-            [
-                [
-                    'value' => \Tangkoko\CustomerAttributesManagement\Model\Rule\Condition\Combine::class,
-                    'label' => __('Conditions combination')
-                ],
-                ['label' => __('Customer Attribute'), 'value' => $attributes]
-            ]
+            $groups
         );
 
         $additional = new \Magento\Framework\DataObject();

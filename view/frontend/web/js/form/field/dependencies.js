@@ -30,6 +30,7 @@ define([
                         self.parseCondition(field, subCondition);
                     });
                 break;
+                case "Tangkoko\\CustomerAttributesManagement\\Model\\Rule\\Condition\\Address":
                 case "Tangkoko\\CustomerAttributesManagement\\Model\\Rule\\Condition\\Customer":
                     $("input[name="+ condition.attribute +"],select[name="+ condition.attribute +"]").change(function(){
                         self.updateField(field);
@@ -60,6 +61,7 @@ define([
 
                     return result;
                 break;
+                case "Tangkoko\\CustomerAttributesManagement\\Model\\Rule\\Condition\\Address":
                 case "Tangkoko\\CustomerAttributesManagement\\Model\\Rule\\Condition\\Customer":
                     const value = $("input[name="+ condition.attribute +"],select[name="+ condition.attribute +"]").val();
                     switch(condition.operator){

@@ -40,7 +40,7 @@ class Delete extends \Tangkoko\CustomerAttributesManagement\Controller\Adminhtml
                 $this->messageManager->addErrorMessage($e->getMessage());
                 return $resultRedirect->setPath(
                     'cam/*/edit',
-                    ['attribute_id' => $this->getRequest()->getParam('attribute_id')]
+                    ['attribute_code' => $this->getRequest()->getParam('attribute_code')]
                 );
             }
         }

@@ -26,7 +26,7 @@ class CamAttribute extends AbstractModel implements CamAttributeInterface
 
     /**
      *
-     * @var \Magento\SalesRule\Model\Rule\Condition\CombineFactory
+     * @var \Tangkoko\CustomerAttributesManagement\Model\Rule\Condition\CombineFactory
      */
     protected $condCombineFactory;
 
@@ -42,11 +42,18 @@ class CamAttribute extends AbstractModel implements CamAttributeInterface
      */
     protected $form;
 
+
+    /**
+     *
+     * @var \Tangkoko\CustomerAttributesManagement\Model\Rule\Condition\Address\CombineFactory
+     */
+    protected $addressCondCombineFactory;
+
     /**
      *
      * @param \Magento\Framework\Model\Context $context
      * @param \Magento\Framework\Registry $registry
-     * @param \Magento\SalesRule\Model\Rule\Condition\CombineFactory $condCombineFactory
+     * @param \Tangkoko\CustomerAttributesManagement\Model\Rule\Condition\CombineFactory $condCombineFactory
      * @param \Magento\Framework\Serialize\Serializer\Json $serializer
      * @param \Magento\Framework\Model\ResourceModel\AbstractResource|null $resource
      * @param \Magento\Framework\Data\Collection\AbstractDb|null $resourceCollection
@@ -175,7 +182,11 @@ class CamAttribute extends AbstractModel implements CamAttributeInterface
      */
     public function getConditionsInstance()
     {
-        return $this->condCombineFactory->create();
+        /**
+         * @var AttributeInterface $attribute
+         */
+        $attribute = $this->getAttribute();
+        return $this->condCombineFactory->create($attribute->getEntityTypeId());
     }
 
     /**

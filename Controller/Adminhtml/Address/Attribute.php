@@ -7,6 +7,9 @@
 
 namespace Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\Address;
 
+use Magento\Eav\Api\AttributeRepositoryInterface;
+use \Magento\Eav\Model\EntityFactory;
+
 /**
  * Class Attribute
  * @package Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\Customer
@@ -38,6 +41,24 @@ abstract class Attribute extends \Tangkoko\CustomerAttributesManagement\Controll
     protected $coreRegistry = null;
 
     /**
+     *
+     * @var \Magento\Eav\Model\AttributeFactory
+     */
+    protected  $attributeFactory;
+
+    /**
+     *
+     * @var AttributeRepositoryInterface
+     */
+    protected $attributeRepository;
+
+    /**
+     *
+     * @var EntityFactory
+     */
+    protected $entityFactory;
+
+    /**
      * Attribute constructor.
      * @param \Magento\Backend\App\Action\Context $context
      * @param \Tangkoko\CustomerAttributesManagement\Helper\Data $helper
@@ -48,11 +69,17 @@ abstract class Attribute extends \Tangkoko\CustomerAttributesManagement\Controll
         \Magento\Backend\App\Action\Context $context,
         \Tangkoko\CustomerAttributesManagement\Helper\Data $helper,
         \Magento\Framework\Cache\FrontendInterface $attributeLabelCache,
-        \Magento\Framework\Registry $coreRegistry
+        \Magento\Framework\Registry $coreRegistry,
+        \Magento\Eav\Model\AttributeFactory $attributeFactory,
+        AttributeRepositoryInterface $attributeRepository,
+        EntityFactory $entityFactory
     ) {
         $this->coreRegistry = $coreRegistry;
         $this->attributeLabelCache = $attributeLabelCache;
         parent::__construct($context, $helper);
+        $this->attributeFactory = $attributeFactory;
+        $this->attributeRepository = $attributeRepository;
+        $this->entityFactory = $entityFactory;
     }
 
     /**

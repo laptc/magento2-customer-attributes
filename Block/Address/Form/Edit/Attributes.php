@@ -137,4 +137,22 @@ class Attributes extends  \Tangkoko\CustomerAttributesManagement\Block\Customer\
         }
         return !isset($addressFieldset[$attribute->getAttributeCode()]) || $addressFieldset[$attribute->getAttributeCode()] === false;
     }
+
+    /**
+     * return attribute
+     *
+     * @param string $code
+     * @return AttributeInterface
+     */
+    protected function getAttributeModel(string $code)
+    {
+        if (!$this->attributeModels) {
+            $this->attributeModels = [];
+            $models = $this->attributeRepository->getList(\Magento\Customer\Api\AddressMetadataInterface::ENTITY_TYPE_ADDRESS, $this->searchCriteriaBuilderFactory->create()->create());
+            foreach ($models->getItems() as $attributeModel) {
+                $this->attributeModels[$attributeModel->getAttributeCode()] = $attributeModel;
+            }
+        }
+        return $this->attributeModels[$code];
+    }
 }

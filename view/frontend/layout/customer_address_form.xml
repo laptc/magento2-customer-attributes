@@ -20,6 +20,7 @@
                             <item name="postcode" xsi:type="boolean">true</item>
                         </argument>
                         <argument name="fieldset" xsi:type="string">contact</argument>
+                        <argument xsi:type="string" name="form_selector">.form-address-edit</argument>
                     </arguments>
                 </block>
             </container>

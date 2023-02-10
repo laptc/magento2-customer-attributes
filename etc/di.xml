@@ -35,4 +35,39 @@
             </argument>
         </arguments>
     </type>
+
+    <type name="Tangkoko\CustomerAttributesManagement\Model\Rule\Condition\Combine">
+        <arguments>
+            <argument name="conditions" xsi:type="array">
+                <item name="customer" xsi:type="array">
+                    <item name="label" xsi:type="string" translatable="true"></item>
+                    <item name="value" xsi:type="object">Tangkoko\CustomerAttributesManagement\Model\Rule\Condition\Customer</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Tangkoko\CustomerAttributesManagement\Model\Rule\Condition\CombineFactory">
+         <arguments>
+            <argument name="instanceNames" xsi:type="array">
+                <item name="1" xsi:type="string">Tangkoko\CustomerAttributesManagement\Model\Rule\Condition\Combine</item>
+                <item name="2" xsi:type="string">Tangkoko\CustomerAttributesManagement\Model\Rule\Condition\Address\Combine</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <virtualType name="Tangkoko\CustomerAttributesManagement\Model\Rule\Condition\Address\Combine" type="Tangkoko\CustomerAttributesManagement\Model\Rule\Condition\Combine">
+        <arguments>
+            <argument name="conditions" xsi:type="array">
+                <item name="customer" xsi:type="array">
+                    <item name="label" xsi:type="string" translatable="true">Customer attributes</item>
+                    <item name="value" xsi:type="object">Tangkoko\CustomerAttributesManagement\Model\Rule\Condition\Customer</item>
+                </item>
+                <item name="address" xsi:type="array">
+                    <item name="label" xsi:type="string" translatable="true">Customer address attributes</item>
+                    <item name="value" xsi:type="object">Tangkoko\CustomerAttributesManagement\Model\Rule\Condition\Address</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
 </config>

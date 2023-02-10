@@ -80,6 +80,22 @@ class RepositoryPlugin
         return $result;
     }
 
+    /**
+     * Retrieve all attributes for entity type
+     *
+     * @param string $entityTypeCode
+     * @param \Magento\Framework\Api\SearchCriteriaInterface $searchCriteria
+     * @return \Magento\Eav\Api\Data\AttributeSearchResultsInterface
+     */
+    public function afterGetList(AttributeRepositoryInterface $subject, \Magento\Eav\Api\Data\AttributeSearchResultsInterface $list, $entityTypeCode, \Magento\Framework\Api\SearchCriteriaInterface $searchCriteria)
+    {
+        foreach ($list->getItems() as $item) {
+            /** @var  \Magento\Eav\Api\Data\AttributeInterface $item */
+            $item->getExtensionAttributes()->getCamAttribute()->setAttribute($item);
+        }
+        return $list;
+    }
+
 
 
     public function afterGet(AttributeRepositoryInterface $subject, \Magento\Eav\Api\Data\AttributeInterface $attribute)
