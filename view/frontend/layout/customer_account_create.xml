@@ -10,7 +10,9 @@
         <referenceBlock name="customer_form_register">
             <container name="form.customer.attributes">
                  <block class="Tangkoko\CustomerAttributesManagement\Block\Customer\Form\Register\Attributes" name="customer_custom_attributes_info" template="Tangkoko_CustomerAttributesManagement::customer/form/register/attributes.phtml">
-                    
+                    <arguments>
+                        <argument xsi:type="string" name="form_selector">.form-create-account</argument>
+                    </arguments>
                  </block>
             </container>
             <action method="setTemplate">

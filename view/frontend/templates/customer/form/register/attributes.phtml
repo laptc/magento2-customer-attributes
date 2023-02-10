@@ -144,3 +144,12 @@ script;
         }
     }
 </script>
+<script type="text/x-magento-init">
+    {
+        "<?= $block->getFormSelector() ?>": {
+            "camDependencies": {
+                "config":<?= $block->getJsonConfig() ?> 
+            }
+        }
+    }
+</script>
