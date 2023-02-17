@@ -14,6 +14,15 @@
         <plugin name="cam_process_extension_attributes" type="Tangkoko\CustomerAttributesManagement\Plugin\Eav\Model\Attribute\RepositoryPlugin"/>
     </type>
 
+    <type name="Magento\Eav\Model\Entity\Attribute\Backend\AbstractBackend">
+        <plugin name="cam_by_pass_attribute_validation" type="Tangkoko\CustomerAttributesManagement\Plugin\Eav\Model\Entity\Attribute\Backend"/>
+    </type>
+
+    <type name="Magento\Eav\Model\Config">
+        <plugin name="load_customer_cam_attributes" type="Tangkoko\CustomerAttributesManagement\Plugin\Eav\Model\ResourceModel\Entity\Attribute\Collection"/>
+    </type>
+
+
     <type name="Tangkoko\CustomerAttributesManagement\Model\Attribute\Source\CustomerForm">
         <arguments>
             <argument name="optionsArray" xsi:type="array">

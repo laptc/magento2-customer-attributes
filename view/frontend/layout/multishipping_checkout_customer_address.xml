@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd" label="Multishipping Checkout Customer Address Edit Form" design_abstraction="custom">
+    <update handle="customer_address_form.xml"/>
+    <body>
+        <referenceBlock name="customer_address_edit">
+            <container name="form.address.contact-fieldset.container">
+                <block class="Tangkoko\CustomerAttributesManagement\Block\Address\Form\Edit\Attributes" name="form.address.contact-fieldset.attributes" template="Tangkoko_CustomerAttributesManagement::address/form/edit/attributes.phtml">
+                    <arguments>
+                        <argument name="address_fieldset" xsi:type="array">
+                            <item name="street" xsi:type="boolean">true</item>
+                            <item name="country_id" xsi:type="boolean">true</item>
+                            <item name="region_id" xsi:type="boolean">true</item>
+                            <item name="city" xsi:type="boolean">true</item>
+                            <item name="postcode" xsi:type="boolean">true</item>
+                        </argument>
+                        <argument name="fieldset" xsi:type="string">contact</argument>
+                        <argument xsi:type="string" name="form_selector">.form-address-edit</argument>
+                    </arguments>
+                </block>
+            </container>
+            <container name="form.address.address-fieldset.container">
+                <block class="Tangkoko\CustomerAttributesManagement\Block\Address\Form\Edit\Attributes" name="form.address.address-fieldset.attributes" template="Tangkoko_CustomerAttributesManagement::address/form/edit/attributes.phtml">
+                    <arguments>
+                        <argument name="address_fieldset" xsi:type="array">
+                            <item name="street" xsi:type="boolean">true</item>
+                            <item name="country_id" xsi:type="boolean">true</item>
+                            <item name="region_id" xsi:type="boolean">true</item>
+                            <item name="city" xsi:type="boolean">true</item>
+                            <item name="postcode" xsi:type="boolean">true</item>
+                        </argument>
+                        <argument name="fieldset" xsi:type="string">address</argument>
+                    </arguments>
+                </block>
+            </container>
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Tangkoko_CustomerAttributesManagement::address/form/edit.phtml</argument>
+            </action>
+        </referenceBlock>
+    </body>
+</page>
