@@ -8,6 +8,9 @@
 
 namespace Tangkoko\CustomerAttributesManagement\Plugin\Eav\Model\Entity\Attribute;
 
+use Magento\Customer\Api\AddressMetadataInterface;
+use Magento\Customer\Api\CustomerMetadataInterface;
+
 class Backend
 {
 
@@ -23,7 +26,7 @@ class Backend
     {
 
         $attribute = $subject->getAttribute();
-        if (!$attribute->getExtensionAttributes() || !$attribute->getExtensionAttributes()->getCamAttribute()) {
+        if (!in_array($subject->getAttribute()->getEntityTypeId(), [AddressMetadataInterface::ENTITY_TYPE_ADDRESS, CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER]) || !$attribute->getExtensionAttributes() || !$attribute->getExtensionAttributes()->getCamAttribute()) {
             return $proceed($object);
         }
         $byPassValidate = false;
