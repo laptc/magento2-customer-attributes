@@ -11,7 +11,7 @@ use Tangkoko\CustomerAttributesManagement\Block\Attributes\AbstractElement;
 $attribute = $block->getAttribute();
 if ($attribute) :
 ?>
-    <input type="hidden" name="<?= $attribute->getAttributeCode() ?>" id="<?= $attribute->getAttributeCode() ?>" value="<?= $block->escapeHtmlAttr($block->getAttributeValue()) ?>" title="<?= $block->escapeHtmlAttr(__($attribute->getStoreLabel())) ?>" class="input-text <?= $attribute->getFrontendClass() ?>" data-validate="<?= $escaper->escapeHtmlAttr($block->getValidationRules($attribute)) ?>" />
+    <input type="hidden" name="<?= $attribute->getAttributeCode() ?>" id="<?= $attribute->getAttributeCode() ?>" value="<?= $block->escapeHtmlAttr($block->getValue()) ?>" title="<?= $block->escapeHtmlAttr(__($attribute->getStoreLabel())) ?>" class="input-text <?= $attribute->getFrontendClass() ?>" data-validate="<?= $escaper->escapeHtmlAttr($block->getValidationRules($attribute)) ?>" />
 <?php
 endif;
 ?>

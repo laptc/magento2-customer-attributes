@@ -16,7 +16,7 @@ if ($attribute) :
         <div class="control">
             <select multiple name="<?= $attribute->getAttributeCode() ?>[]" id="<?= $attribute->getAttributeCode() ?>" title="<?= $block->escapeHtmlAttr(__($attribute->getStoreLabel())) ?>" class="<?= $attribute->getFrontendClass() ?>">
                 <?php foreach ($attribute->getOptions() as $option) : ?>
-                    <option value="<?= $option->getValue() ?>" <?= in_array($option->getValue(), $block->getAttributeValue()) ? "selected" : "" ?>><?= $option->getLabel() ?></option>
+                    <option value="<?= $option->getValue() ?>" <?= in_array($option->getValue(), $block->getValue()) ? "selected" : "" ?>><?= $option->getLabel() ?></option>
                 <?php endforeach; ?>
             </select>
         </div>

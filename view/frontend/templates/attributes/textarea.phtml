@@ -13,7 +13,7 @@ if ($attribute) :
             </span>
         </label>
         <div class="control">
-            <textarea type="text" name="<?= $attribute->getAttributeCode() ?>" id="<?= $attribute->getAttributeCode() ?>" title="<?= $block->escapeHtmlAttr(__($attribute->getStoreLabel())) ?>" class="input-text <?= $attribute->getFrontendClass() ?>"><?= $block->escapeHtmlAttr($block->getAttributeValue()) ?></textarea>
+            <textarea type="text" name="<?= $attribute->getAttributeCode() ?>" id="<?= $attribute->getAttributeCode() ?>" title="<?= $block->escapeHtmlAttr(__($attribute->getStoreLabel())) ?>" class="input-text <?= $attribute->getFrontendClass() ?>"><?= $block->escapeHtmlAttr($block->getValue()) ?></textarea>
         </div>
     </div>
 <?php
