@@ -72,7 +72,7 @@ class AbstractElement extends \Magento\Framework\View\Element\Template
     public function getValidationRules($attribute)
     {
         $rules = [];
-        if ($attribute->isRequired()) {
+        if ($attribute->getIsRequired()) {
             $rules["required"] = true;
         }
         foreach ($attribute->getValidationRules() as $rule) {

@@ -22,6 +22,11 @@
         <plugin name="load_customer_cam_attributes" type="Tangkoko\CustomerAttributesManagement\Plugin\Eav\Model\ResourceModel\Entity\Attribute\Collection"/>
     </type>
 
+
+    <type name="Magento\Customer\Model\AttributeMetadataDataProvider">
+        <plugin name="add_customer_cam_attributes" type="Tangkoko\CustomerAttributesManagement\Plugin\Customer\Model\AttributeMetadataDataProvider"/>
+    </type>
+
     <type name="Tangkoko\CustomerAttributesManagement\Model\Attribute\Source\CustomerForm">
         <arguments>
             <argument name="optionsArray" xsi:type="array">

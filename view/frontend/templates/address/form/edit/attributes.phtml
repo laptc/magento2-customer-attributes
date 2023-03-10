@@ -1,11 +1,11 @@
 <?php
 
 /**
- * @var \Tangkoko\CustomerAttributesManagement\Block\Address\Form\Edit\Attributes $block
+ * @var \Tangkoko\CustomerAttributesManagement\Block\Form\Attributes $block
  */
 
 ?>
-<?php foreach ($block->getAttributes() as $attribute) : ?>
+<?php foreach ($block->getViewModel()->getAttributes($block->getFormCode()) as $attribute) : ?>
     <?= $block->getChildHtml($block->getNameInLayout() . '.' .  $attribute->getAttributeCode()) ?>
 <?php endforeach; ?>
 

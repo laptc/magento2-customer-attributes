@@ -9,7 +9,7 @@
 $attribute = $block->getAttribute();
 if ($attribute) :
 ?>
-    <div class="field <?= $attribute->getAttributeCode() ?> <?= $attribute->isRequired() ? "required" : "" ?>">
+    <div class="field <?= $attribute->getAttributeCode() ?> <?= $attribute->getIsRequired() ? "required" : "" ?>">
         <label for="<?= $attribute->getAttributeCode() ?>" class="label">
             <span>
                 <?= $block->escapeHtml(__($attribute->getStoreLabel())) ?>

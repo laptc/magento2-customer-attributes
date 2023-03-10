@@ -1,15 +1,31 @@
 <?php
 
-namespace Tangkoko\CustomerAttributesManagement\Block\Customer\Attributes;
+namespace Tangkoko\CustomerAttributesManagement\Block\Address\Attributes;
 
 use Magento\Framework\DataObject;
 use Magento\Framework\View\Element\AbstractBlock;
+use Tangkoko\CustomerAttributesManagement\Block\Customer\Attributes\SpecialBlockProviderInterface;
+use Magento\Customer\ViewModel\Address as AddressViewModel;
 
-class SpecialBlockProvider implements SpecialBlockProviderInterface
+class BlockFactory
 {
+    /**
+     *
+     * @var AbstractBlock[]
+     */
     private $specialBlocks;
 
+    /**
+     *
+     * @var \Magento\Framework\View\LayoutInterface
+     */
     private $layout;
+
+    /**
+     *
+     * @var AddressViewModel
+     */
+    private $addressViewModel;
 
     /**
      * constructor
@@ -18,10 +34,12 @@ class SpecialBlockProvider implements SpecialBlockProviderInterface
      */
     public function __construct(
         \Magento\Framework\View\Element\Context $context,
+        AddressViewModel $addressViewModel,
         $specialBlocks = []
     ) {
         $this->specialBlocks = $specialBlocks;
         $this->layout = $context->getLayout();
+        $this->addressViewModel = $addressViewModel;
     }
 
 
@@ -50,34 +68,32 @@ class SpecialBlockProvider implements SpecialBlockProviderInterface
             case "lastname":
                 $block = $this->getLayout()
                     ->createBlock($this->specialBlocks[$attribute->getAttributeCode()])
+                    ->setData("attribute", $attribute)
                     ->setObject($formData)
-                    ->setForceUseCustomerAttributes(true)
                     ->setHtmlClass($attribute->getFrontendClass());
+
                 break;
-            case "dob":
-                $block = $this->getLayout()
-                    ->createBlock($this->specialBlocks[$attribute->getAttributeCode()])
-                    ->setDate($formData->getDob())
-                    ->setHtmlClass($attribute->getFrontendClass());
-                break;
-            case "taxvat":
-                $block = $this->getLayout()->createBlock($this->specialBlocks[$attribute->getAttributeCode()])
-                    ->setTaxvat($formData->getTaxvat())
-                    ->setHtmlClass($attribute->getFrontendClass());
-                break;
-            case "gender":
-                $block = $this->getLayout()->createBlock($this->specialBlocks[$attribute->getAttributeCode()])
-                    ->setGender($formData->getGender())
-                    ->setHtmlClass($attribute->getFrontendClass());
+            case "prefix":
                 break;
             case "firstname":
                 break;
-            case "email":
+            case "region":
+                break;
+            case "region_id":
+                $block = $this->getLayout()->createBlock($this->specialBlocks[$attribute->getAttributeCode()])
+                    ->setData("attribute", $attribute)
+                    ->setData("view_model", $this->addressViewModel)
+                    ->setFormData($formData)
+                    ->setRegion("region", $formData->getRegion())
+                    ->setData($attribute->getAttributeCode(), $formData->getData($attribute->getAttributeCode()))
+                    ->setHtmlClass($attribute->getFrontendClass());
                 break;
             default:
                 $block = $this->getLayout()->createBlock($this->specialBlocks[$attribute->getAttributeCode()])
-                    ->setAttribute($attribute)
+                    ->setData("attribute", $attribute)
+                    ->setData("view_model", $this->addressViewModel)
                     ->setFormData($formData)
+                    ->setData($attribute->getAttributeCode(), $formData->getData($attribute->getAttributeCode()))
                     ->setHtmlClass($attribute->getFrontendClass());
         }
 
