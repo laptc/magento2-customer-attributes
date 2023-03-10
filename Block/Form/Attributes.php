@@ -31,6 +31,24 @@ class Attributes extends \Magento\Framework\View\Element\Template
 
     protected SerializerInterface $serializer;
 
+    const BASE_ADDRESS_ATTRIBUTES = [
+        "postcode",
+        "street",
+        "lastname",
+        "region_id",
+        "city",
+        "country_id"
+    ];
+
+    /**
+     *
+     * @var string[]
+     */
+    protected array $fields = [];
+
+
+    protected $attributes = [];
+
     /**
      * Constructor
      *
@@ -53,19 +71,87 @@ class Attributes extends \Magento\Framework\View\Element\Template
     protected function _prepareLayout()
     {
         if ($this->getFormCode()) {
-
-            foreach ($this->getViewModel()->getAttributes($this->getFormCode()) as $index => $attribute) {
-                if ($attribute->getIsUserDefined()) {
-                    $block = $this->attributeFactory->create($attribute, $this->getFormData());
-                }
-                if ($block) {
-                    $this->setChild($this->getNameInLayout() . '.' .  $attribute->getAttributeCode(), $block);
-                }
-            }
+            $this->prepareFieldSetsField();
+            $this->createChildBlocks();
         }
 
         return parent::_prepareLayout();
     }
+
+    protected function createChildBlocks()
+    {
+        foreach ($this->getViewModel()->getAttributes($this->getFormCode()) as $attributeCode => $attribute) {
+            $block = null;
+            if ($attribute->getIsUserDefined() || in_array($attribute->getAttributeCode(), self::BASE_ADDRESS_ATTRIBUTES)) {
+                $block = $this->attributeFactory->create($attribute, $this->getFormData());
+                if ($attributeViewModel = $this->getViewModel()->getAttributeViewModel()) {
+                    $block->setViewModel($attributeViewModel);
+                }
+            }
+            if ($block) {
+                $this->setChild($this->getNameInLayout() . '.' .  $attribute->getAttributeCode(), $block);
+            }
+        }
+    }
+
+    /**
+     * Prepare system fields to display
+     *
+     * @return void
+     */
+    protected function prepareFieldSetsField(): void
+    {
+        if ($this->getFieldsets() && is_array($this->getFieldsets())) {
+            foreach ($this->getFieldsets() as $fieldsetName => $fieldset) {
+                if (isset($fieldset["fields"]) && is_array($fieldset["fields"])) {
+                    $this->fields += $fieldset["fields"];
+                }
+            }
+        }
+    }
+
+    public function getAttributes(string $fieldsetName = null)
+    {
+        $attributes = $this->getViewModel()->getAttributes($this->getFormCode());
+        if (is_null($fieldsetName)) {
+            return $attributes;
+        }
+
+
+        $fieldsets = $this->getFieldsets();
+        $fieldsetAttributes = [];
+        if (isset($fieldsets[$fieldsetName])) {
+            if (isset($fieldsets[$fieldsetName]["fields"]) && is_array($fieldsets[$fieldsetName]["fields"])) {
+                $fields = $fieldsets[$fieldsetName]["fields"];
+                $fieldsetAttributes = array_filter(
+                    $attributes,
+                    function ($attribute) use ($fields) {
+                        if (array_key_exists($attribute->getAttributeCode(), $fields)) {
+                            return true;
+                        }
+                        return false;
+                    }
+                );
+            } else {
+                $fieldsetAttributes = array_filter(
+                    $attributes,
+                    function ($attribute) use ($fieldsets) {
+                        foreach ($fieldsets as $fieldset) {
+                            if (isset($fieldset["fields"])) {
+                                if (array_key_exists($attribute->getAttributeCode(), $fieldset["fields"])) {
+                                    return false;
+                                }
+                            }
+                        }
+                        return true;
+                    }
+                );
+            }
+        }
+
+        return $fieldsetAttributes;
+    }
+
 
 
 

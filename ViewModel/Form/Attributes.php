@@ -9,11 +9,13 @@
 namespace Tangkoko\CustomerAttributesManagement\ViewModel\Form;
 
 use Magento\Framework\DataObject;
+use Magento\Framework\Model\AbstractModel;
 use Tangkoko\CustomerAttributesManagement\Model\Attribute\ProviderInterface;
 use Tangkoko\CustomerAttributesManagement\Model\Data\Condition\Converter;
 use Tangkoko\CustomerAttributesManagement\Model\Form\DataResolverInterface;
+use Magento\Framework\View\Element\Block\ArgumentInterface;
 
-class Attributes implements \Magento\Framework\View\Element\Block\ArgumentInterface
+class Attributes implements ArgumentInterface
 {
 
     protected ProviderInterface $attributeProvider;
@@ -30,6 +32,8 @@ class Attributes implements \Magento\Framework\View\Element\Block\ArgumentInterf
      */
     protected DataResolverInterface $dataResolver;
 
+    protected ?ArgumentInterface $attributeViewModel;
+
 
     /**
      * Attributes constructor.
@@ -40,11 +44,13 @@ class Attributes implements \Magento\Framework\View\Element\Block\ArgumentInterf
     public function __construct(
         ProviderInterface $attributeProvider,
         Converter $converter,
-        DataResolverInterface $dataResolver
+        DataResolverInterface $dataResolver,
+        ?ArgumentInterface $attributeViewModel = null
     ) {
         $this->attributeProvider = $attributeProvider;
         $this->converter = $converter;
         $this->dataResolver = $dataResolver;
+        $this->attributeViewModel = $attributeViewModel;
     }
 
 
@@ -58,8 +64,8 @@ class Attributes implements \Magento\Framework\View\Element\Block\ArgumentInterf
     {
         $attributes = [];
         foreach ($this->attributeProvider->getAttributes($formCode) as  $attribute) {
-            if ($attribute->getIsVisible() && $this->isInFielsdset($attribute) && $attribute->getExtensionAttributes()->getCamAttribute() && $attribute->getExtensionAttributes()->getCamAttribute()->isVisible($this->getFormData())) {
-                $attributes[] = $attribute;
+            if ($attribute->getIsVisible() && $attribute->getExtensionAttributes()->getCamAttribute() && $attribute->getExtensionAttributes()->getCamAttribute()->isVisible($this->getFormData())) {
+                $attributes[$attribute->getAttributeCode()] = $attribute;
             }
         }
         return $attributes;
@@ -70,12 +76,11 @@ class Attributes implements \Magento\Framework\View\Element\Block\ArgumentInterf
     /**
      * Return true if attribute is in fieldset
      *
-     * @param \Magento\Customer\Api\Data\AttributeMetadataInterface $attribute
-     * @return boolean
+     * @return ?ArgumentInterface
      */
-    public function isInFielsdset($attribute)
+    public function getAttributeViewModel(): ?ArgumentInterface
     {
-        return true;
+        return $this->attributeViewModel;
     }
 
 
@@ -99,9 +104,9 @@ class Attributes implements \Magento\Framework\View\Element\Block\ArgumentInterf
     /**
      * Return form data
      *
-     * @return mixed
+     * @return AbstractModel
      */
-    public function getFormData(): mixed
+    public function getFormData(): AbstractModel
     {
         return $this->dataResolver->getFormData();
     }

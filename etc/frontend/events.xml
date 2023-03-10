@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="cam_create_attribute_dob_block">
+        <observer name="set_dob" instance="Tangkoko\CustomerAttributesManagement\Observer\SetDob" />
+    </event>
+</config>

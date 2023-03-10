@@ -3,12 +3,52 @@
 /**
  * @var \Tangkoko\CustomerAttributesManagement\Block\Form\Attributes $block
  */
-
+$editBlock = $block->getLayout()->getBlock("customer_address_edit");
 ?>
-<?php foreach ($block->getViewModel()->getAttributes($block->getFormCode()) as $attribute) : ?>
-    <?= $block->getChildHtml($block->getNameInLayout() . '.' .  $attribute->getAttributeCode()) ?>
-<?php endforeach; ?>
+<?php foreach ($block->getFieldsets() as $fieldsetName => $fieldset) : ?>
+    <fieldset class="fieldset">
+        <legend class="legend"><span><?= $escaper->escapeHtml($fieldset["title"]) ?></span></legend><br>
+        <?php if ($fieldsetName == "contact") : ?>
+            <?= $block->getBlockHtml('formkey') ?>
+            <input type="hidden" name="success_url" value="<?= $escaper->escapeUrl($editBlock->getSuccessUrl()) ?>">
+            <input type="hidden" name="error_url" value="<?= $escaper->escapeUrl($editBlock->getErrorUrl()) ?>">
+        <?php endif; ?>
+        <?php foreach ($block->getAttributes($fieldsetName) as $attribute) : ?>
+            <?= $block->getChildHtml($block->getNameInLayout() . '.' .  $attribute->getAttributeCode()) ?>
+        <?php endforeach; ?>
+        <?php if ($fieldsetName == "address") : ?>
+            <?php if ($editBlock->isDefaultBilling()) : ?>
+                <div class="message info">
+                    <span><?= $escaper->escapeHtml(__("It's a default billing address.")) ?></span>
+                </div>
+            <?php elseif ($editBlock->canSetAsDefaultBilling()) : ?>
+                <div class="field choice set billing">
+                    <input type="checkbox" id="primary_billing" name="default_billing" value="1" class="checkbox">
+                    <label class="label" for="primary_billing">
+                        <span><?= $escaper->escapeHtml(__('Use as my default billing address')) ?></span>
+                    </label>
+                </div>
+            <?php else : ?>
+                <input type="hidden" name="default_billing" value="1" />
+            <?php endif; ?>
 
+            <?php if ($editBlock->isDefaultShipping()) : ?>
+                <div class="message info">
+                    <span><?= $escaper->escapeHtml(__("It's a default shipping address.")) ?></span>
+                </div>
+            <?php elseif ($editBlock->canSetAsDefaultShipping()) : ?>
+                <div class="field choice set shipping">
+                    <input type="checkbox" id="primary_shipping" name="default_shipping" value="1" class="checkbox">
+                    <label class="label" for="primary_shipping">
+                        <span><?= $escaper->escapeHtml(__('Use as my default shipping address')) ?></span>
+                    </label>
+                </div>
+            <?php else : ?>
+                <input type="hidden" name="default_shipping" value="1">
+            <?php endif; ?>
+        <?php endif; ?>
+    </fieldset>
+<?php endforeach; ?>
 
 <script type="text/x-magento-init">
     {

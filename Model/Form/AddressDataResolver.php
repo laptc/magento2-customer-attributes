@@ -8,7 +8,9 @@
 
 namespace Tangkoko\CustomerAttributesManagement\Model\Form;
 
+use Magento\Customer\Model\AddressFactory;
 use Magento\Customer\Model\Data\Address;
+use Magento\Customer\Model\Address as AddressModel;
 use Magento\Framework\View\LayoutInterface;
 
 class AddressDataResolver implements DataResolverInterface
@@ -16,9 +18,14 @@ class AddressDataResolver implements DataResolverInterface
 
     private LayoutInterface $layout;
 
-    public function __construct(LayoutInterface $layout)
-    {
+    private AddressFactory $addressFactory;
+
+    public function __construct(
+        LayoutInterface $layout,
+        AddressFactory $addressFactory
+    ) {
         $this->layout = $layout;
+        $this->addressFactory = $addressFactory;
     }
 
     /**
@@ -26,8 +33,12 @@ class AddressDataResolver implements DataResolverInterface
      *
      * @return Address
      */
-    public function getFormData(): Address
+    public function getFormData(): AddressModel
     {
-        return $this->layout->getBlock("customer_address_edit")->getAddress();
+        /**
+         * @var Address $addressData
+         */
+        $addressData =  $this->layout->getBlock("customer_address_edit")->getAddress();
+        return $this->addressFactory->create($addressData->__toArray());
     }
 }

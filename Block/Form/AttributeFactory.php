@@ -13,10 +13,10 @@ use Magento\Framework\Model\AbstractModel;
 use Magento\Framework\View\Element\AbstractBlock;
 use Magento\Framework\View\Element\BlockInterface;
 use Magento\Framework\View\LayoutInterface;
+use Magento\Framework\Event\ManagerInterface;
 
 class AttributeFactory
 {
-
 
     /**
      * 
@@ -27,6 +27,8 @@ class AttributeFactory
 
     private LayoutInterface $layout;
 
+    private ManagerInterface $eventManager;
+
     /**
      *
      * @param LayoutInterface $layout
@@ -34,13 +36,15 @@ class AttributeFactory
      */
     public function __construct(
         LayoutInterface $layout,
+        ManagerInterface $eventManager,
         ?array $attributeBlocks = []
     ) {
         $this->attributeBlocks = $attributeBlocks;
         $this->layout = $layout;
+        $this->eventManager = $eventManager;
     }
 
-    public function create(AttributeInterface $attribute, \Magento\Framework\DataObject $object): BlockInterface
+    public function create(AttributeInterface $attribute, AbstractModel $object): BlockInterface
     {
         if (isset($this->attributeBlocks[$attribute->getAttributeCode()])) {
             $blockType = $this->attributeBlocks[$attribute->getAttributeCode()];
@@ -56,12 +60,15 @@ class AttributeFactory
                     "data" => [
                         'attribute' => $attribute,
                         'object' => $object,
+                        'form_data' => $object,
                         $attribute->getAttributeCode() => $object->getData($attribute->getAttributeCode()),
-                        'default_value' => $attribute->getDefaultValue()
+                        'default_value' => $attribute->getDefaultValue(),
+                        'value' => $object->getData($attribute->getAttributeCode())
                     ]
                 ]
             );
-
+        $this->eventManager->dispatch("cam_create_attribute_block", ["block" => $block, "attribute" => $attribute, "object" => $object]);
+        $this->eventManager->dispatch("cam_create_attribute_{$attribute->getAttributeCode()}_block", ["block" => $block, "attribute" => $attribute, "object" => $object]);
         return $block;
     }
 

@@ -8,14 +8,14 @@
 
 namespace Tangkoko\CustomerAttributesManagement\Model\Form;
 
-use Magento\Framework\DataObject;
+use Magento\Framework\Model\AbstractModel;
 
 interface DataResolverInterface
 {
     /**
      * Return data to display in form
      *
-     * @return mixed
+     * @return AbstractModel
      */
-    public function getFormData(): mixed;
+    public function getFormData(): AbstractModel;
 }
