@@ -13,6 +13,8 @@
         <column xsi:type="smallint" name="attribute_id" unsigned="true" nullable="false" identity="false"
                 comment="Attribute ID"/>
         <column xsi:type="mediumtext" name="visibility_conditions_serialized" nullable="true" comment="Conditions Serialized"/>
+        <column xsi:type="varchar" name="placeholder" nullable="true" length="225" comment="Placeholder"/>
+        <column xsi:type="varchar" name="fieldset" nullable="true" length="225" comment="Fieldset"/>
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="attribute_id"/>
         </constraint>

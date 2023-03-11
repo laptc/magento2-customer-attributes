@@ -2,7 +2,9 @@
     "cam_customer_eav_attribute": {
         "column": {
             "attribute_id": true,
-            "visibility_conditions_serialized": true
+            "visibility_conditions_serialized": true,
+            "placeholder": true,
+            "fieldset": true
         },
         "constraint": {
             "PRIMARY": true,

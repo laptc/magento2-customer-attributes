@@ -236,6 +236,48 @@ class CamAttribute extends AbstractModel implements CamAttributeInterface
     }
 
     /**
+     * get fieldset
+     * @param string $fieldset
+     * @return self
+     */
+    public function getFieldset()
+    {
+        return $this->getData(static::FIELDSET);
+    }
+
+    /**
+     * set fieldset
+     * @param string $fieldset
+     * @return self
+     */
+    public function setFieldset(string $fieldset)
+    {
+        $this->setData(static::FIELDSET, $fieldset);
+        return $this;
+    }
+
+    /**
+     * get placeholder
+     * @param string $fieldset
+     * @return self
+     */
+    public function getPlaceholder()
+    {
+        return $this->getData(static::PLACEHOLDER);
+    }
+
+    /**
+     * set placeholder
+     * @param string $placeholder
+     * @return self
+     */
+    public function setPlaceholder(string $placeholder)
+    {
+        $this->setData(static::PLACEHOLDER, $placeholder);
+        return $this;
+    }
+
+    /**
      * Initialize rule model data from array
      *
      * @param array $data
@@ -245,13 +287,18 @@ class CamAttribute extends AbstractModel implements CamAttributeInterface
     {
         $this->_resetConditions();
         $arr = [];
-        $arr['conditions'] = $data['visibility_conditions_arr'];
+        if (isset($data['visibility_conditions_arr'])) {
+            $arr['conditions'] = $data['visibility_conditions_arr'];
 
-        $arr = $this->_convertFlatToRecursive($arr);
 
+            $arr = $this->_convertFlatToRecursive($arr);
+        }
         if (isset($arr['conditions'])) {
             $this->getConditions()->setVisibilityConditions([])->loadArray($arr['conditions'][1]);
         }
+
+        $this->setFieldset($data["fieldset"]);
+        $this->setPlaceholder($data["placeholder"]);
         return $this;
     }
 

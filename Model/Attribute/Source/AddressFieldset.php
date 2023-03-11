@@ -7,7 +7,7 @@
 
 namespace Tangkoko\CustomerAttributesManagement\Model\Attribute\Source;
 
-class AddressForm implements \Magento\Framework\Data\OptionSourceInterface
+class AddressFieldset implements \Magento\Framework\Data\OptionSourceInterface
 {
     /**
      * @var array
@@ -15,7 +15,7 @@ class AddressForm implements \Magento\Framework\Data\OptionSourceInterface
     private $optionsArray;
 
     /**
-     * AddressForm constructor.
+     * AddressFieldset constructor.
      * @param array $optionsArray
      */
     public function __construct(array $optionsArray = [])

@@ -64,11 +64,13 @@ class RepositoryPlugin
     {
 
         $camAttribute = $attribute->getExtensionAttributes()->getCamAttribute();
+
         if (!$camAttribute) {
             $camAttribute = $this->camAttributeFactory->create();
         }
 
-        if ($attribute->getData("visibility_conditions_arr")) {
+        if ($attribute->getData()) {
+
             $camAttribute->loadPost($attribute->getData());
 
             $camAttribute->setAttributeId($attribute->getAttributeId())->setVisibilityConditionsSerialized($this->json->serialize($this->converter->dataModelToArray($camAttribute->getVisibilityConditions())));

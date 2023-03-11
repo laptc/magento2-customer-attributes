@@ -393,7 +393,7 @@
                 </checkbox>
             </formElements>
         </field>
-        <field name="frontend_class" component="Tangkoko_CustomerAttributesManagement/js/components/disable-hide-select" sortOrder="50" formElement="select">
+        <field name="validate_rules" component="Tangkoko_CustomerAttributesManagement/js/components/disable-hide-select" sortOrder="50" formElement="select">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="valuesForOptions" xsi:type="array">
@@ -414,7 +414,7 @@
             <settings>
                 <dataType>string</dataType>
                 <label translate="true">Input Validation</label>
-                <dataScope>frontend_class</dataScope>
+                <dataScope>validate_rules</dataScope>
             </settings>
             <formElements>
                 <select>
@@ -524,6 +524,22 @@
             </settings>
         </field>
 
+        <field name="frontend_class" sortOrder="87" formElement="input">
+            <settings>
+                <dataType>string</dataType>
+                <label translate="true">Css classes</label>
+                <dataScope>frontend_class</dataScope>
+            </settings>
+        </field>
+
+        <field name="placeholder" sortOrder="89" formElement="input">
+            <settings>
+                <dataType>string</dataType>
+                <label translate="true">Placeholder</label>
+                <dataScope>placeholder</dataScope>
+            </settings>
+        </field>
+
 
         <field name="used_in_forms" sortOrder="90" formElement="multiselect">
             <settings>
@@ -539,6 +555,21 @@
                 </multiselect>
             </formElements>
         </field>
+         <field name="fieldset" sortOrder="95" formElement="select">
+            <settings>
+                <dataType>string</dataType>
+                <label translate="true">Fieldset to Use in</label>
+                <dataScope>fieldset</dataScope>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Tangkoko\CustomerAttributesManagement\Model\Attribute\Source\AddressFieldset"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        
     </fieldset>
     <fieldset name="conditions" sortOrder="23">
         <settings>

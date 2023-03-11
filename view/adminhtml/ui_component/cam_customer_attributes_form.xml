@@ -532,6 +532,14 @@
             </settings>
         </field>
 
+        <field name="placeholder" sortOrder="89" formElement="input">
+            <settings>
+                <dataType>string</dataType>
+                <label translate="true">Placeholder</label>
+                <dataScope>placeholder</dataScope>
+            </settings>
+        </field>
+
 
         <field name="used_in_forms" sortOrder="90" formElement="multiselect">
             <settings>
@@ -545,6 +553,20 @@
                         <options class="Tangkoko\CustomerAttributesManagement\Model\Attribute\Source\CustomerForm"/>
                     </settings>
                 </multiselect>
+            </formElements>
+        </field>
+        <field name="fieldset" sortOrder="95" formElement="select">
+            <settings>
+                <dataType>string</dataType>
+                <label translate="true">Fieldset to Use in</label>
+                <dataScope>fieldset</dataScope>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Tangkoko\CustomerAttributesManagement\Model\Attribute\Source\CustomerFieldset"/>
+                    </settings>
+                </select>
             </formElements>
         </field>
     </fieldset>

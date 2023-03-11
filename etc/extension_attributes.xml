@@ -15,6 +15,8 @@
            <join reference_table="cam_customer_eav_attribute" reference_field="attribute_id" join_on_field="attribute_id">
               <field>attribute_id</field>
               <field>visibility_conditions_serialized</field>
+              <field>fieldset</field>
+              <field>placeholder</field>
            </join>
         </attribute>
     </extension_attributes>

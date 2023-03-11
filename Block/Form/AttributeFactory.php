@@ -51,7 +51,6 @@ class AttributeFactory
         } else {
             $blockType = $this->getBlockTypeForAttribute($attribute);
         }
-
         $block = $this->layout
             ->createBlock(
                 $blockType,

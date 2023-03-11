@@ -49,6 +49,23 @@
         </arguments>
     </type>
 
+    <type name="Tangkoko\CustomerAttributesManagement\Model\Attribute\Source\AddressFieldset">
+        <arguments>
+            <argument name="optionsArray" xsi:type="array">
+                <item name="contact" xsi:type="string" translatable="true">Contact informations</item>
+                <item name="address" xsi:type="string" translatable="true">Address</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Tangkoko\CustomerAttributesManagement\Model\Attribute\Source\CustomerFieldset">
+        <arguments>
+            <argument name="optionsArray" xsi:type="array">
+                <item name="default" xsi:type="string" translatable="true">Default</item>
+            </argument>
+        </arguments>
+    </type>
+
     <type name="Tangkoko\CustomerAttributesManagement\Model\Rule\Condition\Combine">
         <arguments>
             <argument name="conditions" xsi:type="array">

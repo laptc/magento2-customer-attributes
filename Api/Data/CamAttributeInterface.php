@@ -17,6 +17,10 @@ interface CamAttributeInterface
 
     const VISIBILITY_CONDITIONS_SERIALIZED = "visibility_conditions_serialized";
 
+    const FIELDSET = "fieldset";
+
+    const PLACEHOLDER = "placeholder";
+
     /**
      * Return int
      *
@@ -58,4 +62,32 @@ interface CamAttributeInterface
      * @return self
      */
     public function setVisibilityConditionsSerialized($conditions);
+
+
+    /**
+     * get fieldset
+     * @param string $fieldset
+     * @return self
+     */
+    public function getFieldset();
+    /**
+     * set fieldset
+     * @param string $fieldset
+     * @return self
+     */
+    public function setFieldset(string $fieldset);
+
+    /**
+     * get placeholder
+     * @param string $fieldset
+     * @return self
+     */
+    public function getPlaceholder();
+
+    /**
+     * set placeholder
+     * @param string $placeholder
+     * @return self
+     */
+    public function setPlaceholder(string $placeholder);
 }
