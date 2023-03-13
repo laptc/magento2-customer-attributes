@@ -270,6 +270,7 @@ class Save extends \Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\C
             }
 
             try {
+                $model->save();
                 $this->attributeRepository->save($model);
                 $this->messageManager->addSuccessMessage(__('You saved the customer attribute.'));
 

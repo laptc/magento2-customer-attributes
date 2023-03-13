@@ -21,15 +21,19 @@ class DefaultFieldsetResolver
      */
     private $entityTypeFieldsets = [];
 
+    private \Magento\Eav\Model\Config $eavConfig;
+
     /**
      * Constructor
      *
      * @param array|null $entityTypeFieldsets
      */
     public function __construct(
+        \Magento\Eav\Model\Config $eavConfig,
         ?array $entityTypeFieldsets = []
     ) {
         $this->entityTypeFieldsets = $entityTypeFieldsets;
+        $this->eavConfig = $eavConfig;
     }
 
     /**
@@ -40,8 +44,9 @@ class DefaultFieldsetResolver
      */
     public function getDefaultFieldset(AttributeInterface  $attribute): ?string
     {
-        if (isset($this->entityTypeFieldsets[$attribute->getEntityTypeId()])) {
-            $fieldsets = $this->entityTypeFieldsets[$attribute->getEntityTypeId()]->toOptionArray();
+        $code = $this->eavConfig->getEntityType($attribute->getEntityTypeId())->getEntityTypeCode();
+        if (isset($this->entityTypeFieldsets[$code])) {
+            $fieldsets = $this->entityTypeFieldsets[$code]->toOptionArray();
             return $fieldsets[0]["value"];
         }
         return null;

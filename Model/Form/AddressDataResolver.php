@@ -22,6 +22,13 @@ class AddressDataResolver implements DataResolverInterface
 
     private CustomerDataResolver $customerDataResolver;
 
+    /**
+     * Contructor
+     *
+     * @param LayoutInterface $layout
+     * @param AddressFactory $addressFactory
+     * @param CustomerDataResolver $customerDataResolver
+     */
     public function __construct(
         LayoutInterface $layout,
         AddressFactory $addressFactory,

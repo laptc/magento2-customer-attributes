@@ -6,9 +6,9 @@
  * See COPYING.txt for license details.
  */
 
-namespace Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\Customer;
+namespace Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\Address;
 
-class Delete extends \Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\Customer\Attribute
+class Delete extends \Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\Address\Attribute
 {
     /**
      * @return \Magento\Backend\Model\View\Result\Redirect

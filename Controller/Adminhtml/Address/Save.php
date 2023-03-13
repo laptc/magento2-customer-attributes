@@ -134,14 +134,19 @@ class Save extends \Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\A
         );
 
         if ($data) {
+
             $attributeCode = $this->getRequest()->getParam('attribute_code');
             /**
              * @var \Magento\Customer\Model\Attribute $model
              */
             $model = $this->attributeFactory->createAttribute(\Magento\Customer\Model\Attribute::class);
             if ($attributeCode) {
-                $model =  $this->attributeRepository->get(\Magento\Customer\Api\AddressMetadataInterface::ENTITY_TYPE_ADDRESS, $attributeCode);
+                try {
+                    $model =  $this->attributeRepository->get(\Magento\Customer\Api\AddressMetadataInterface::ENTITY_TYPE_ADDRESS, $attributeCode);
+                } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
+                }
             }
+
             $attributeId = $model->getId();
             if (strlen($attributeCode) > 0) {
                 $validatorAttrCode = new \Zend_Validate_Regex(
@@ -162,6 +167,7 @@ class Save extends \Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\A
                     );
                 }
             }
+
             if (isset($data['rule']['conditions'])) {
                 $model->setData('visibility_conditions_arr', $data['rule']['conditions']);
             }
@@ -183,8 +189,8 @@ class Save extends \Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\A
                 }
             }
 
-            if ($attributeCode) {
-                if (!$model->getId()) {
+            if ($model->getId()) {
+                if (!$attributeCode) {
                     $this->messageManager->addErrorMessage(__('This attribute no longer exists.'));
                     return $this->returnResult('cam/*/', [], ['error' => true]);
                 }
@@ -217,7 +223,6 @@ class Save extends \Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\A
                     $data['backend_type'] = $model->getBackendTypeByInput($data['frontend_input']);
                 }
             }
-
 
             $defaultValueField = $model->getDefaultValueByInput($data['frontend_input']);
             if ($defaultValueField) {
@@ -271,6 +276,7 @@ class Save extends \Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\A
             }
 
             try {
+                $model->save();
                 $this->attributeRepository->save($model);
                 $this->messageManager->addSuccessMessage(__('You saved the customer address attribute.'));
 

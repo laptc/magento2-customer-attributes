@@ -52,7 +52,7 @@
         <arguments>
             <argument name="attributeProvider" xsi:type="object">Tangkoko\CustomerAttributesManagement\Model\Address\Attribute\Provider</argument>
             <argument name="dataResolver" xsi:type="object">Tangkoko\CustomerAttributesManagement\Model\Form\AddressDataResolver</argument>
-            <argument name="attributeViewModel" xsi:type="object">Magento\Customer\ViewModel\Address</argument>
+            <argument name="attributeViewModel" xsi:type="object">Tangkoko\CustomerAttributesManagement\ViewModel\Address</argument>
             <argument name="fieldsets" xsi:type="object">Tangkoko\CustomerAttributesManagement\Model\Attribute\Source\AddressFieldset</argument>
         </arguments>
     </virtualType>

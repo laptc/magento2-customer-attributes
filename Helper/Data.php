@@ -13,65 +13,15 @@ namespace Tangkoko\CustomerAttributesManagement\Helper;
  */
 class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {
-    /**
-     * @var \Magento\Config\Model\ResourceModel\Config
-     */
-    protected $configResource;
+    const XML_STREET_PLACEHOLDER_CONFIG_PATH = "cam/address/street_placeholders";
 
     /**
-     * @var \Magento\Framework\App\Config\ReinitableConfigInterface
+     * Return steet place holders
+     *
+     * @return string[]
      */
-    protected $reinitableConfig;
-
-    /**
-     * Data constructor.
-     * @param \Magento\Framework\App\Helper\Context $context
-     * @param \Magento\Config\Model\ResourceModel\Config $configResource
-     * @param \Magento\Framework\App\Config\ReinitableConfigInterface $reinitableConfig
-     */
-    public function __construct(
-        \Magento\Framework\App\Helper\Context $context,
-        \Magento\Config\Model\ResourceModel\Config $configResource,
-        \Magento\Framework\App\Config\ReinitableConfigInterface $reinitableConfig
-    ) {
-        parent::__construct($context);
-        $this->configResource = $configResource;
-        $this->reinitableConfig = $reinitableConfig;
-    }
-
-    /**
-     * @param $path
-     * @param string $scope
-     * @return mixed
-     */
-    public function getStoreConfig($path, $scope = \Magento\Framework\App\Config\ScopeConfigInterface::SCOPE_TYPE_DEFAULT)
+    public function getStreetPlaceholders(): array
     {
-        return $this->scopeConfig->getValue($path, $scope);
-    }
-
-    /**
-     * @param $path
-     * @param $value
-     * @param string $scope
-     * @return $this
-     */
-    public function saveConfig($path, $value, $scope = \Magento\Framework\App\Config\ScopeConfigInterface::SCOPE_TYPE_DEFAULT)
-    {
-        $this->configResource->saveConfig(
-            $path,
-            $value,
-            $scope,
-            0
-        );
-        return $this;
-    }
-
-    /**
-     * @return $this
-     */
-    public function reinitConfig()
-    {
-        $this->reinitableConfig->reinit();
-        return $this;
+        return explode("\n", $this->scopeConfig->getValue(static::XML_STREET_PLACEHOLDER_CONFIG_PATH) ?? "");
     }
 }

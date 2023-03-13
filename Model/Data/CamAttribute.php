@@ -57,6 +57,12 @@ class CamAttribute extends AbstractModel implements CamAttributeInterface
 
     /**
      *
+     * @var \Magento\Eav\Model\Config
+     */
+    protected  \Magento\Eav\Model\Config $eavConfig;
+
+    /**
+     *
      * @param \Magento\Framework\Model\Context $context
      * @param \Magento\Framework\Registry $registry
      * @param \Tangkoko\CustomerAttributesManagement\Model\Rule\Condition\CombineFactory $condCombineFactory
@@ -72,11 +78,13 @@ class CamAttribute extends AbstractModel implements CamAttributeInterface
         \Magento\Framework\Serialize\Serializer\Json $serializer,
         \Magento\Framework\Data\FormFactory $formFactory,
         DefaultFieldsetResolver $defaultFieldsetResolver,
+        \Magento\Eav\Model\Config $eavConfig,
         \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
         \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
         array $data = [],
     ) {
         parent::__construct($context, $registry, $resource, $resourceCollection, $data);
+        $this->eavConfig = $eavConfig;
         $this->serializer = $serializer;
         $this->condCombineFactory = $condCombineFactory;
         $this->formFactory = $formFactory;
@@ -146,6 +154,7 @@ class CamAttribute extends AbstractModel implements CamAttributeInterface
 
         if (empty($this->getData(static::VISIBILITY_CONDITIONS))) {
             $this->_resetConditions();
+
             $conditionsInstance = $this->getData(static::VISIBILITY_CONDITIONS);
             // Load rule conditions if it is applicable
             if ($this->hasVisibilityConditionsSerialized()) {
@@ -174,6 +183,7 @@ class CamAttribute extends AbstractModel implements CamAttributeInterface
      */
     protected function _resetConditions($conditions = null)
     {
+
         if (null === $conditions) {
             $conditions = $this->getConditionsInstance();
         }
@@ -194,7 +204,7 @@ class CamAttribute extends AbstractModel implements CamAttributeInterface
          * @var AttributeInterface $attribute
          */
         $attribute = $this->getAttribute();
-        return $this->condCombineFactory->create($attribute->getEntityTypeId());
+        return $this->condCombineFactory->create($this->eavConfig->getEntityType($attribute->getEntityTypeId())->getEntityTypeCode());
     }
 
     /**

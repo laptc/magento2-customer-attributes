@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!--
+  Created on Fri Nov 22 2019
+  @author : Nicolas RENAULT <nrenault@tangkoko.com>
+  @copyright (c) 2019 Tangkoko
+ -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+      <tab id="tangkoko" translate="label" sortOrder="10">
+          <label>Tangkoko</label>
+      </tab>
+      <section id="cam" translate="label" type="text" sortOrder="1001" showInDefault="1" showInWebsite="1" showInStore="1">
+          <label>CAM</label>
+          <tab>tangkoko</tab>
+          <resource>Tangkoko_Cam::config_cam</resource>
+          <group id="address" translate="label" type="text" sortOrder="10" showInDefault="1">
+              <label>Address</label>
+              <field id="street_placeholders" translate="label comment" type="textarea" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                  <label>Street placeholders</label>
+                  <comment>Use line separator for each street fields</comment>
+              </field>
+          </group>
+      </section>
+    </system>
+</config>

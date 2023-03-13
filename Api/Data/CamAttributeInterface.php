@@ -8,6 +8,7 @@
 
 namespace Tangkoko\CustomerAttributesManagement\Api\Data;
 
+
 interface CamAttributeInterface
 {
 

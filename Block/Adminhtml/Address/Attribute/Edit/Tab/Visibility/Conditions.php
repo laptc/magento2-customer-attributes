@@ -12,6 +12,7 @@ namespace Tangkoko\CustomerAttributesManagement\Block\Adminhtml\Address\Attribut
 use Magento\Backend\Block\Widget\Form\Renderer\Fieldset;
 use \Magento\Customer\Model\Attribute;
 use Tangkoko\CustomerAttributesManagement\Model\Data\CamAttribute;
+use Tangkoko\CustomerAttributesManagement\Model\Data\CamAttributeFactory;
 
 /**
  * Block for rendering Conditions tab on Sales Rules creation page.
@@ -38,15 +39,29 @@ class Conditions extends \Magento\Backend\Block\Widget\Form\Generic implements
      */
     protected $_nameInLayout = 'visibility_conditions';
 
+    /**
+     *
+     * @var CamAttributeFactory
+     */
+    protected CamAttributeFactory $camAttributeFactory;
 
     /**
+     *
+     * @var \Magento\Eav\Model\Config
+     */
+    protected  \Magento\Eav\Model\Config $eavConfig;
+
+
+    /**
+     * Constructor
+     *
      * @param \Magento\Backend\Block\Template\Context $context
      * @param \Magento\Framework\Registry $registry
      * @param \Magento\Framework\Data\FormFactory $formFactory
      * @param \Magento\Rule\Block\Conditions $conditions
      * @param \Magento\Backend\Block\Widget\Form\Renderer\Fieldset $rendererFieldset
+     * @param CamAttributeFactory $camAttributeFactory
      * @param array $data
-     * @param \Magento\SalesRule\Model\RuleFactory|null $ruleFactory
      */
     public function __construct(
         \Magento\Backend\Block\Template\Context $context,
@@ -54,10 +69,14 @@ class Conditions extends \Magento\Backend\Block\Widget\Form\Generic implements
         \Magento\Framework\Data\FormFactory $formFactory,
         \Magento\Rule\Block\Conditions $conditions,
         \Magento\Backend\Block\Widget\Form\Renderer\Fieldset $rendererFieldset,
+        CamAttributeFactory $camAttributeFactory,
+        \Magento\Eav\Model\Config $eavConfig,
         array $data = []
     ) {
         $this->_rendererFieldset = $rendererFieldset;
         $this->_conditions = $conditions;
+        $this->camAttributeFactory = $camAttributeFactory;
+        $this->eavConfig = $eavConfig;
         parent::__construct($context, $registry, $formFactory, $data);
     }
 
@@ -148,6 +167,11 @@ class Conditions extends \Magento\Backend\Block\Widget\Form\Generic implements
     protected function addTabToForm($attribute, $fieldsetId = 'conditions_fieldset', $formName = 'cam_address_attributes_form')
     {
         $model = $attribute->getExtensionAttributes()->getCamAttribute();
+        if (is_null($model)) {
+            $model = $this->camAttributeFactory->create()->setAttribute($attribute);
+        }
+        $attribute->getExtensionAttributes()->setCamAttribute($model);
+        $attribute->setEntityTypeId($this->eavConfig->getEntityType(\Magento\Customer\Api\AddressMetadataInterface::ENTITY_TYPE_ADDRESS)->getId());
         $conditionsFieldSetId = $formName . $fieldsetId . '_' . $attribute->getId();
         $newChildUrl = $this->getUrl(
             'cam/address/newConditionHtml/form/' . $conditionsFieldSetId,

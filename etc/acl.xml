@@ -9,6 +9,13 @@
                         <resource id="Tangkoko_CustomerAttributesManagement::address_attributes" title="Customer Address Attributes" translate="title" sortOrder="10"/>
                     </resource>
                 </resource>
+                <resource id="Magento_Backend::stores">
+                    <resource id="Magento_Backend::stores_settings">
+                        <resource id="Magento_Config::config">
+                            <resource id="Tangkoko_Cam::config_cam" title="Tangkoko CAM" translate="title" />
+                        </resource>
+                    </resource>
+                </resource>
             </resource>
         </resources>
     </acl>
