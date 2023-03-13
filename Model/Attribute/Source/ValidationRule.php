@@ -7,16 +7,18 @@
 
 namespace Tangkoko\CustomerAttributesManagement\Model\Attribute\Source;
 
-class AddressFieldset implements \Magento\Framework\Data\OptionSourceInterface
+/**
+ * Class Options
+ */
+class ValidationRule implements \Magento\Framework\Data\OptionSourceInterface
 {
-
     /**
      * @var array
      */
     private $optionsArray;
 
     /**
-     * AddressFieldset constructor.
+     * CustomerFieldset constructor.
      * @param array $optionsArray
      */
     public function __construct(array $optionsArray = [])
@@ -32,6 +34,7 @@ class AddressFieldset implements \Magento\Framework\Data\OptionSourceInterface
     public function toOptionArray()
     {
         //sort array elements using key value
+        ksort($this->optionsArray);
         $options = [];
         foreach ($this->optionsArray as $value => $label) {
             $options[] = [

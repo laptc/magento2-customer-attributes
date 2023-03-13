@@ -31,7 +31,6 @@ class AddressForm implements \Magento\Framework\Data\OptionSourceInterface
     public function toOptionArray()
     {
         //sort array elements using key value
-        ksort($this->optionsArray);
         $options = [];
         foreach ($this->optionsArray as $value => $label) {
             $options[] = [

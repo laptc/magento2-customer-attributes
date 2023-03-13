@@ -419,7 +419,7 @@
             <formElements>
                 <select>
                     <settings>
-                        <options class="Magento\Eav\Model\Adminhtml\Attribute\Validation\Rules\Options"/>
+                        <options class="Tangkoko\CustomerAttributesManagement\Model\Attribute\Source\ValidationRule"/>
                     </settings>
                 </select>
             </formElements>

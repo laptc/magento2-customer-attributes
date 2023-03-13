@@ -12,22 +12,15 @@
             <container name="form.address.fieldset.container">
                 <block class="Tangkoko\CustomerAttributesManagement\Block\Form\Attributes" name="form.address.fieldset.attributes" template="Tangkoko_CustomerAttributesManagement::address/form/edit/attributes.phtml">
                     <arguments>
-                        <argument name="fieldsets" xsi:type="array">
-                            <item name="contact" xsi:type="array">
-                                <item name="title" xsi:type="string" translate="true">Contact informations</item>
-                            </item>
-                            <item name="address" xsi:type="array">
-                                <item name="title" xsi:type="string" translate="true">Address</item>
-                                <item name="fields" xsi:type="array">
-                                    <item name="street" xsi:type="boolean">true</item>
-                                    <item name="country_id" xsi:type="boolean">true</item>
-                                    <item name="country" xsi:type="boolean">true</item>
-                                    <item name="region_id" xsi:type="boolean">true</item>
-                                    <item name="region" xsi:type="boolean">true</item>
-                                    <item name="city" xsi:type="boolean">true</item>
-                                    <item name="postcode" xsi:type="boolean">true</item>
-                                </item>
-                            </item>
+                        <argument name="fields" xsi:type="array">
+                            <item name="street" xsi:type="boolean">true</item>
+                            <item name="city" xsi:type="boolean">true</item>
+                            <item name="postcode" xsi:type="boolean">true</item>
+                            <item name="region" xsi:type="boolean">false</item>
+                            <item name="region_id" xsi:type="boolean">true</item>
+                            <item name="country" xsi:type="boolean">true</item>
+                            <item name="country_id" xsi:type="boolean">true</item>
+                            <item name="lastname" xsi:type="boolean">true</item>
                         </argument>
                         <argument xsi:type="string" name="form_selector">.form-address-edit</argument>
                         <argument xsi:type="string" name="form_code">customer_address_edit</argument>

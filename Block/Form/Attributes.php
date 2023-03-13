@@ -7,15 +7,9 @@
 
 namespace Tangkoko\CustomerAttributesManagement\Block\Form;
 
-use Elasticsearch\Serializers\ArrayToJSONSerializer;
-use Magento\Customer\Api\Data\AttributeMetadataInterface;
-use Tangkoko\CustomerAttributesManagement\Block\Customer\Attributes\SpecialBlockProviderInterface;
 use Magento\Eav\Api\Data\AttributeInterface;
-use Magento\Framework\Api\SearchCriteriaBuilderFactory;
 use Magento\Framework\DataObject;
-use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\Serialize\SerializerInterface;
-use Tangkoko\CustomerAttributesManagement\Model\Data\Condition\Converter;
 use Magento\Framework\View\Element\Template;
 
 /**
@@ -31,23 +25,8 @@ class Attributes extends \Magento\Framework\View\Element\Template
 
     protected SerializerInterface $serializer;
 
-    const BASE_ADDRESS_ATTRIBUTES = [
-        "postcode",
-        "street",
-        "lastname",
-        "region_id",
-        "city",
-        "country_id"
-    ];
 
-    /**
-     *
-     * @var string[]
-     */
-    protected array $fields = [];
-
-
-    protected $attributes = [];
+    protected $fieldsetAttributes = [];
 
     /**
      * Constructor
@@ -71,7 +50,6 @@ class Attributes extends \Magento\Framework\View\Element\Template
     protected function _prepareLayout()
     {
         if ($this->getFormCode()) {
-            $this->prepareFieldSetsField();
             $this->createChildBlocks();
         }
 
@@ -82,11 +60,13 @@ class Attributes extends \Magento\Framework\View\Element\Template
     {
         foreach ($this->getViewModel()->getAttributes($this->getFormCode()) as $attributeCode => $attribute) {
             $block = null;
-            if ($attribute->getIsUserDefined() || in_array($attribute->getAttributeCode(), self::BASE_ADDRESS_ATTRIBUTES)) {
+            $fields = $this->getFields();
+            if ($attribute->getIsUserDefined() || (in_array($attribute->getAttributeCode(), array_keys($fields)) && $fields[$attribute->getAttributeCode()])) {
                 $block = $this->attributeFactory->create($attribute, $this->getFormData());
                 if ($attributeViewModel = $this->getViewModel()->getAttributeViewModel()) {
                     $block->setViewModel($attributeViewModel);
                 }
+                $this->fieldsetAttributes[$attribute->getExtensionAttributes()->getCamAttribute()->getFieldset()][] = $attribute;
             }
             if ($block) {
                 $this->setChild($this->getNameInLayout() . '.' .  $attribute->getAttributeCode(), $block);
@@ -94,62 +74,19 @@ class Attributes extends \Magento\Framework\View\Element\Template
         }
     }
 
+
     /**
-     * Prepare system fields to display
+     * return field
      *
-     * @return void
+     * @param string $fieldsetName
+     * @return AttributeInterface[]
      */
-    protected function prepareFieldSetsField(): void
+    public function getAttributes(string $fieldsetName)
     {
-        if ($this->getFieldsets() && is_array($this->getFieldsets())) {
-            foreach ($this->getFieldsets() as $fieldsetName => $fieldset) {
-                if (isset($fieldset["fields"]) && is_array($fieldset["fields"])) {
-                    $this->fields += $fieldset["fields"];
-                }
-            }
+        if (isset($this->fieldsetAttributes[$fieldsetName])) {
+            return $this->fieldsetAttributes[$fieldsetName];
         }
-    }
-
-    public function getAttributes(string $fieldsetName = null)
-    {
-        $attributes = $this->getViewModel()->getAttributes($this->getFormCode());
-        if (is_null($fieldsetName)) {
-            return $attributes;
-        }
-
-
-        $fieldsets = $this->getFieldsets();
-        $fieldsetAttributes = [];
-        if (isset($fieldsets[$fieldsetName])) {
-            if (isset($fieldsets[$fieldsetName]["fields"]) && is_array($fieldsets[$fieldsetName]["fields"])) {
-                $fields = $fieldsets[$fieldsetName]["fields"];
-                $fieldsetAttributes = array_filter(
-                    $attributes,
-                    function ($attribute) use ($fields) {
-                        if (array_key_exists($attribute->getAttributeCode(), $fields)) {
-                            return true;
-                        }
-                        return false;
-                    }
-                );
-            } else {
-                $fieldsetAttributes = array_filter(
-                    $attributes,
-                    function ($attribute) use ($fieldsets) {
-                        foreach ($fieldsets as $fieldset) {
-                            if (isset($fieldset["fields"])) {
-                                if (array_key_exists($attribute->getAttributeCode(), $fieldset["fields"])) {
-                                    return false;
-                                }
-                            }
-                        }
-                        return true;
-                    }
-                );
-            }
-        }
-
-        return $fieldsetAttributes;
+        return [];
     }
 
 
@@ -177,7 +114,6 @@ class Attributes extends \Magento\Framework\View\Element\Template
      */
     public function getJsonConfig()
     {
-
         return $this->serializer->serialize(
             ["conditions" => $this->getViewModel()->getRules($this->getFormCode()), "model" => $this->getViewModel()->getFormData()->toArray()]
         );

@@ -9,7 +9,7 @@
 
 namespace Tangkoko\CustomerAttributesManagement\Model\Data;
 
-use Magento\Customer\Model\FormFactory;
+use Tangkoko\CustomerAttributesManagement\Model\Attribute\DefaultFieldsetResolver;
 use Magento\Eav\Api\Data\AttributeInterface;
 use Magento\Framework\Model\AbstractModel;
 use Tangkoko\CustomerAttributesManagement\Api\Data\CamAttributeInterface;
@@ -51,6 +51,12 @@ class CamAttribute extends AbstractModel implements CamAttributeInterface
 
     /**
      *
+     * @var DefaultFieldsetResolver
+     */
+    protected  DefaultFieldsetResolver $defaultFieldsetResolver;
+
+    /**
+     *
      * @param \Magento\Framework\Model\Context $context
      * @param \Magento\Framework\Registry $registry
      * @param \Tangkoko\CustomerAttributesManagement\Model\Rule\Condition\CombineFactory $condCombineFactory
@@ -65,6 +71,7 @@ class CamAttribute extends AbstractModel implements CamAttributeInterface
         \Tangkoko\CustomerAttributesManagement\Model\Rule\Condition\CombineFactory $condCombineFactory,
         \Magento\Framework\Serialize\Serializer\Json $serializer,
         \Magento\Framework\Data\FormFactory $formFactory,
+        DefaultFieldsetResolver $defaultFieldsetResolver,
         \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
         \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
         array $data = [],
@@ -73,6 +80,7 @@ class CamAttribute extends AbstractModel implements CamAttributeInterface
         $this->serializer = $serializer;
         $this->condCombineFactory = $condCombineFactory;
         $this->formFactory = $formFactory;
+        $this->defaultFieldsetResolver = $defaultFieldsetResolver;
     }
 
 
@@ -242,7 +250,7 @@ class CamAttribute extends AbstractModel implements CamAttributeInterface
      */
     public function getFieldset()
     {
-        return $this->getData(static::FIELDSET);
+        return $this->getData(static::FIELDSET) ??  $this->defaultFieldsetResolver->getDefaultFieldset($this->getAttribute());
     }
 
     /**

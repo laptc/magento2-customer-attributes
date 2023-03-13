@@ -14,6 +14,7 @@ use Tangkoko\CustomerAttributesManagement\Model\Attribute\ProviderInterface;
 use Tangkoko\CustomerAttributesManagement\Model\Data\Condition\Converter;
 use Tangkoko\CustomerAttributesManagement\Model\Form\DataResolverInterface;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
+use Magento\Framework\Data\OptionSourceInterface;
 
 class Attributes implements ArgumentInterface
 {
@@ -34,23 +35,30 @@ class Attributes implements ArgumentInterface
 
     protected ?ArgumentInterface $attributeViewModel;
 
+    protected OptionSourceInterface $fieldsets;
+
 
     /**
      * Attributes constructor.
-     * @param \Magento\Customer\Model\Session $customerSession
-     * @param \Magento\Customer\Api\CustomerMetadataInterface $metadata
-     * @param \Magento\Customer\Model\AttributeFactory $attributeFactory
+     *
+     * @param ProviderInterface $attributeProvider
+     * @param Converter $converter
+     * @param DataResolverInterface $dataResolver
+     * @param OptionSourceInterface $fieldsets
+     * @param ArgumentInterface|null $attributeViewModel
      */
     public function __construct(
         ProviderInterface $attributeProvider,
         Converter $converter,
         DataResolverInterface $dataResolver,
+        OptionSourceInterface $fieldsets,
         ?ArgumentInterface $attributeViewModel = null
     ) {
         $this->attributeProvider = $attributeProvider;
         $this->converter = $converter;
         $this->dataResolver = $dataResolver;
         $this->attributeViewModel = $attributeViewModel;
+        $this->fieldsets = $fieldsets;
     }
 
 
@@ -69,6 +77,21 @@ class Attributes implements ArgumentInterface
             }
         }
         return $attributes;
+    }
+
+
+    /**
+     * return fieldsets
+     *
+     * @return array
+     */
+    public function getFieldsets(): array
+    {
+        $fieldsets = [];
+        foreach ($this->fieldsets->toOptionArray() as $fieldset) {
+            $fieldsets[$fieldset["value"]] = $fieldset["label"];
+        }
+        return $fieldsets;
     }
 
 

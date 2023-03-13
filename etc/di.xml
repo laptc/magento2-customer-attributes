@@ -27,6 +27,24 @@
         <plugin name="add_customer_cam_attributes" type="Tangkoko\CustomerAttributesManagement\Plugin\Customer\Model\AttributeMetadataDataProvider"/>
     </type>
 
+    <type name="Tangkoko\CustomerAttributesManagement\Model\Attribute\Source\ValidationRule">
+        <arguments>
+            <argument name="optionsArray" xsi:type="array">
+                <item name="" xsi:type="string" translatable="true">None</item>
+                <item name="validate-number" xsi:type="string" translatable="true">Decimal Number</item>
+                <item name="validate-digits" xsi:type="string" translatable="true">Integer Number</item>
+                <item name="validate-email" xsi:type="string" translatable="true">Email</item>
+                <item name="validate-url" xsi:type="string" translatable="true">URL</item>
+                <item name="validate-alpha" xsi:type="string" translatable="true">Letters</item>
+                <item name="validate-alphanum" xsi:type="string" translatable="true">Letters (a-z, A-Z) or Numbers (0-9)</item>
+                <item name="validate-range" xsi:type="string" translatable="true">Number range ( max - max). css class : range-[0-9]-[0-9]</item>
+                <item name="validate-date" xsi:type="string" translatable="true">Date</item>
+                <item name="validate-length" xsi:type="string" translatable="true">String length ( css class minimum-length-[0-9] maximum-length-[0-9])</item>
+            </argument>
+        </arguments>
+    </type>
+
+
     <type name="Tangkoko\CustomerAttributesManagement\Model\Attribute\Source\CustomerForm">
         <arguments>
             <argument name="optionsArray" xsi:type="array">
@@ -66,6 +84,16 @@
         </arguments>
     </type>
 
+
+    <type name="Tangkoko\CustomerAttributesManagement\Model\Attribute\DefaultFieldsetResolver">
+        <arguments>
+            <argument name="entityTypeFieldsets" xsi:type="array">
+                <item name="1" xsi:type="object">Tangkoko\CustomerAttributesManagement\Model\Attribute\Source\CustomerFieldset</item>
+                <item name="2" xsi:type="object">Tangkoko\CustomerAttributesManagement\Model\Attribute\Source\AddressFieldset</item>
+            </argument>
+        </arguments>
+    </type>
+
     <type name="Tangkoko\CustomerAttributesManagement\Model\Rule\Condition\Combine">
         <arguments>
             <argument name="conditions" xsi:type="array">
@@ -100,4 +128,6 @@
             </argument>
         </arguments>
     </virtualType>
+
+
 </config>
