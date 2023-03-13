@@ -117,7 +117,7 @@ class Date extends AbstractElement
         $validators = [];
         $attribute = $this->getAttribute();
         if ($attribute !== null) {
-            if ($attribute->isRequired()) {
+            if ($attribute->getIsRequired()) {
                 $validators['required'] = true;
             }
             $validators['validate-date'] = [

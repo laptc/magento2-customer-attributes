@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    
+
+    <table name="cam_customer_eav_attribute" resource="default" engine="innodb" comment="CAM Customer Eav Attribute">
+        <column xsi:type="smallint" name="attribute_id" unsigned="true" nullable="false" identity="false"
+                comment="Attribute ID"/>
+        <column xsi:type="mediumtext" name="visibility_conditions_serialized" nullable="true" comment="Conditions Serialized"/>
+        <column xsi:type="varchar" name="placeholder" nullable="true" length="225" comment="Placeholder"/>
+        <column xsi:type="varchar" name="fieldset" nullable="true" length="225" comment="Fieldset"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="attribute_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="CAM_ATTRIBUTE_ATTRIBUTE_ID_EAV_ATTRIBUTE_ATTRIBUTE_ID"
+                    table="cam_customer_eav_attribute" column="attribute_id" referenceTable="eav_attribute"
+                    referenceColumn="attribute_id" onDelete="CASCADE"/>
+    </table>
+   
+</schema>

@@ -7,7 +7,7 @@ $formData = $block->getFormData();
 $_dob = $block->getChildBlock($block->getNameInLayout() . '.' . "dob");
 $displayAll = $block->getConfig('general/region/display_all');
 ?>
-<?php foreach ($block->getAttributes() as $attribute) : ?>
+<?php foreach ($block->getViewModel()->getAttributes($block->getFormCode()) as $attribute) : ?>
 
     <?php switch ($attribute->getAttributeCode()):
         case "email": ?>
@@ -141,6 +141,15 @@ script;
         },
         "*": {
             "tkkInputPassword": {}
+        }
+    }
+</script>
+<script type="text/x-magento-init">
+    {
+        "<?= $block->getFormSelector() ?>": {
+            "camDependencies": {
+                "config":<?= $block->getJsonConfig() ?> 
+            }
         }
     }
 </script>

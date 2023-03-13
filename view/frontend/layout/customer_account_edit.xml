@@ -9,7 +9,12 @@
     <body>
         <referenceBlock name="customer_edit">
             <container name="form.customer.attributes">
-                 <block class="Tangkoko\CustomerAttributesManagement\Block\Customer\Form\Edit\Attributes" name="customer_custom_attributes_info" template="Tangkoko_CustomerAttributesManagement::customer/form/edit/attributes.phtml">
+                 <block class="Tangkoko\CustomerAttributesManagement\Block\Form\Attributes" name="customer_custom_attributes_info" template="Tangkoko_CustomerAttributesManagement::customer/form/edit/attributes.phtml">
+                    <arguments>
+                        <argument xsi:type="string" name="form_selector">.form-edit-account</argument>
+                        <argument xsi:type="string" name="form_code">customer_account_edit</argument>
+                        <argument xsi:type="object" name="view_model">Tangkoko\CustomerAttributesManagement\ViewModel\Form\Attributes</argument>
+                    </arguments>
                  </block>
             </container>
             <action method="setTemplate">

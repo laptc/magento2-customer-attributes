@@ -9,7 +9,7 @@ namespace Tangkoko\CustomerAttributesManagement\Ui\DataProvider\Address\Attribut
 
 use Magento\Framework\Stdlib\ArrayManager;
 use Magento\Store\Api\StoreRepositoryInterface;
-use Magento\Customer\Model\ResourceModel\Address\Attribute\CollectionFactory;
+use Magento\Customer\Model\ResourceModel\Attribute\CollectionFactory;
 use Magento\Eav\Model\Entity\Attribute as EavAttribute;
 use Magento\Ui\Component\Form\Element\Input;
 use Magento\Ui\Component\Form\Field;
@@ -17,11 +17,12 @@ use Magento\Ui\Component\Form\Element\DataType\Text;
 use Magento\Store\Model\Store;
 use Magento\Framework\App\RequestInterface;
 use Magento\Customer\Model\AttributeFactory;
+use Magento\Eav\Api\AttributeRepositoryInterface;
 use Magento\Eav\Model\ResourceModel\Entity\Attribute\Option\CollectionFactory as OptionCollectionFactory;
 
 /**
  * Class DataProvider
- * @package Tangkoko\CustomerAttributesManagement\Ui\DataProvider\Address\Attributes
+ * @package Tangkoko\CustomerAttributesManagement\Ui\DataProvider\Customer\Attributes
  */
 class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
 {
@@ -56,6 +57,12 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
     protected $attribute;
 
     /**
+     *
+     * @var AttributeRepositoryInterface
+     */
+    protected $attributeRepository;
+
+    /**
      * @param string $name
      * @param string $primaryFieldName
      * @param string $requestFieldName
@@ -78,6 +85,7 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
         RequestInterface $request,
         AttributeFactory $attributeFactory,
         OptionCollectionFactory $attrOptionCollectionFactory,
+        AttributeRepositoryInterface $attributeRepository,
         array $meta = [],
         array $data = []
     ) {
@@ -88,6 +96,7 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
         $this->request = $request;
         $this->attributeFactory = $attributeFactory;
         $this->attrOptionCollectionFactory = $attrOptionCollectionFactory;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -97,9 +106,9 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
     {
         if (!$this->attribute) {
             $attribute = $this->attributeFactory->create();
-            $attributeId = $this->request->getParam('attribute_id');
-            if ($attributeId) {
-                $attribute->load($attributeId);
+            $attributeCode = $this->request->getParam('attribute_code');
+            if ($attributeCode) {
+                $attribute = $this->attributeRepository->get(\Magento\Customer\Api\AddressMetadataInterface::ENTITY_TYPE_ADDRESS, $attributeCode);
             }
             $this->attribute = $attribute;
         }
@@ -136,7 +145,7 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
                     }
                     $options = $this->getAttributeOptions($attribute->getId(), $storeId);
                     if ($options && !empty($options)) {
-                        $attributeDefaultValue = explode(",", $attribute->getDefaultValue());
+                        $attributeDefaultValue = explode(",", $attribute->getDefaultValue() ?? "");
                         foreach ($options as $option) {
                             $optionId = $option->getOptionId();
                             if (isset($optionsData[$optionId])) {
@@ -163,9 +172,13 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
             }
 
             $attribute->setUsedInForms($attribute->getUsedInForms());
-            $data[""] = $attribute->getData();
-        }
+            $data[""] = array_merge($attribute->getData(), $attribute->getExtensionAttributes()->getCamAttribute()->getData());
 
+            if (!empty($attribute->getValidateRules())) {
+
+                $data[""]["validate_rules"] = array_key_first($attribute->getValidateRules());
+            }
+        }
         return $data;
     }
 

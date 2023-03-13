@@ -6,7 +6,7 @@
 ?>
 <div class="field country required">
     <label class="label" for="country">
-        <span><?= /* @noEscape */ $block->getAttribute()->getFrontendLabel('country_id') ?></span>
+        <span><?= /* @noEscape */ $block->getAttribute()->getFrontendLabel() ?></span>
     </label>
     <div class="control">
         <?= $block->getCountryHtmlSelect() ?>

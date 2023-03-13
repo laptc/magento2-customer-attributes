@@ -393,33 +393,18 @@
                 </checkbox>
             </formElements>
         </field>
-        <field name="frontend_class" component="Tangkoko_CustomerAttributesManagement/js/components/disable-hide-select" sortOrder="50" formElement="select">
+        <field name="validate_rules"  sortOrder="50" formElement="select">
             <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="valuesForOptions" xsi:type="array">
-                        <item name="text" xsi:type="string">text</item>
-                        <item name="textarea" xsi:type="string">textarea</item>
-                        <item name="texteditor" xsi:type="string">texteditor</item>
-                        <item name="date" xsi:type="string">date</item>
-                        <item name="boolean" xsi:type="string">boolean</item>
-                        <item name="multiselect" xsi:type="string">multiselect</item>
-                        <item name="select" xsi:type="string">select</item>
-                        <item name="price" xsi:type="string">price</item>
-                    </item>
-                    <item name="valuesForEnable" xsi:type="array">
-                        <item name="text" xsi:type="string">text</item>
-                    </item>
-                </item>
             </argument>
             <settings>
                 <dataType>string</dataType>
                 <label translate="true">Input Validation</label>
-                <dataScope>frontend_class</dataScope>
+                <dataScope>validate_rules</dataScope>
             </settings>
             <formElements>
                 <select>
                     <settings>
-                        <options class="Magento\Eav\Model\Adminhtml\Attribute\Validation\Rules\Options"/>
+                        <options class="Tangkoko\CustomerAttributesManagement\Model\Attribute\Source\ValidationRule"/>
                     </settings>
                 </select>
             </formElements>
@@ -524,6 +509,22 @@
             </settings>
         </field>
 
+        <field name="frontend_class" sortOrder="87" formElement="input">
+            <settings>
+                <dataType>string</dataType>
+                <label translate="true">Css classes</label>
+                <dataScope>frontend_class</dataScope>
+            </settings>
+        </field>
+
+        <field name="placeholder" sortOrder="89" formElement="input">
+            <settings>
+                <dataType>string</dataType>
+                <label translate="true">Placeholder</label>
+                <dataScope>placeholder</dataScope>
+            </settings>
+        </field>
+
 
         <field name="used_in_forms" sortOrder="90" formElement="multiselect">
             <settings>
@@ -539,6 +540,32 @@
                 </multiselect>
             </formElements>
         </field>
+         <field name="fieldset" sortOrder="95" formElement="select">
+            <settings>
+                <dataType>string</dataType>
+                <label translate="true">Fieldset to Use in</label>
+                <dataScope>fieldset</dataScope>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Tangkoko\CustomerAttributesManagement\Model\Attribute\Source\AddressFieldset"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        
+    </fieldset>
+    <fieldset name="conditions" sortOrder="23">
+        <settings>
+            <collapsible>true</collapsible>
+            <label translate="true">Conditions</label>
+        </settings>
+        <container name="visibility_conditions" sortOrder="10">
+            <htmlContent name="html_content">
+                <block name="visibility_conditions" class="Tangkoko\CustomerAttributesManagement\Block\Adminhtml\Address\Attribute\Edit\Tab\Visibility\Conditions" />
+            </htmlContent>
+        </container>
     </fieldset>
     <fieldset name="manage-titles" sortOrder="25">
         <settings>

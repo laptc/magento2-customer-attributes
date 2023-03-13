@@ -1,14 +1,13 @@
 <?php
 
 /**
- * @var \Tangkoko\CustomerAttributesManagement\Block\Customer\Form\Attributes $block
+ * @var \Tangkoko\CustomerAttributesManagement\Block\Form\Attributes $block
  */
 $formData = $block->getFormData();
 $_dob = $block->getChildBlock($block->getNameInLayout() . '.' . "dob");
 $displayAll = $block->getConfig('general/region/display_all');
 ?>
-<?php foreach ($block->getAttributes() as $attribute) : ?>
-
+<?php foreach ($block->getViewModel()->getAttributes($block->getFormCode()) as $attribute) : ?>
     <?php switch ($attribute->getAttributeCode()):
         case "email": ?>
             <div class="field required">
@@ -24,34 +23,6 @@ $displayAll = $block->getConfig('general/region/display_all');
     <?php endswitch ?>
 <?php endforeach; ?>
 
-<div class="field password required">
-    <label for="password" class="label"><span><?= $escaper->escapeHtml(__('Password')) ?></span></label>
-    <div class="control">
-        <input type="password" name="password" id="password" title="<?= $escaper->escapeHtmlAttr(__('Password')) ?>" class="input-text" data-password-min-length="<?=
-                                                                                                                                                                    $escaper->escapeHtmlAttr($block->getMinimumPasswordLength()) ?>" data-password-min-character-sets="<?=
-                                                                                                                                                                                                                                                                        $escaper->escapeHtmlAttr($block->getRequiredCharacterClassesNumber()) ?>" data-validate="{required:true, 'validate-customer-password':true}" autocomplete="off">
-        <div id="password-strength-meter-container" data-role="password-strength-meter" aria-live="polite">
-            <div id="password-strength-meter" class="password-strength-meter">
-                <?= $escaper->escapeHtml(__('Password Strength')) ?>:
-                <span id="password-strength-meter-label" data-role="password-strength-meter-label">
-                    <?= $escaper->escapeHtml(__('No Password')) ?>
-                </span>
-            </div>
-        </div>
-    </div>
-
-</div>
-<div class="field confirmation required">
-    <label for="password-confirmation" class="label">
-        <span><?= $escaper->escapeHtml(__('Confirm Password')) ?></span>
-    </label>
-    <div class="control">
-        <input type="password" name="password_confirmation" title="<?= $escaper->escapeHtmlAttr(__('Confirm Password')) ?>" id="password-confirmation" class="input-text" data-validate="{required:true, equalTo:'#password'}" autocomplete="off">
-    </div>
-</div>
-<div class="field choice" data-bind="scope: 'showPassword'">
-    <!-- ko template: getTemplate() --><!-- /ko -->
-</div>
 
 <?php $ignore = /* @noEscape */ $_dob->isEnabled() ? '\'input[id$="full"]\'' : 'null';
 $scriptString = <<<script
@@ -119,6 +90,15 @@ script;
         },
         "*": {
             "tkkInputPassword": {}
+        }
+    }
+</script>
+<script type="text/x-magento-init">
+    {
+        "<?= $block->getFormSelector() ?>": {
+            "camDependencies": {
+                "config":<?= $block->getJsonConfig() ?> 
+            }
         }
     }
 </script>

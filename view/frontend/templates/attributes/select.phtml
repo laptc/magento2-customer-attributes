@@ -9,7 +9,7 @@
 $attribute = $block->getAttribute();
 if ($attribute) :
 ?>
-    <div class="field <?= $attribute->getAttributeCode() ?> <?= $attribute->isRequired() ? "required" : "" ?>">
+    <div class="field <?= $attribute->getAttributeCode() ?> <?= $attribute->getIsRequired() ? "required" : "" ?>">
         <label for="<?= $attribute->getAttributeCode() ?>" class="label">
             <span>
                 <?= $block->escapeHtml(__($attribute->getStoreLabel())) ?>
@@ -18,7 +18,7 @@ if ($attribute) :
         <div class="control">
             <select name="<?= $attribute->getAttributeCode() ?>" id="<?= $attribute->getAttributeCode() ?>" title="<?= $block->escapeHtmlAttr(__($attribute->getStoreLabel())) ?>" class="<?= $attribute->getFrontendClass() ?>">
                 <?php foreach ($attribute->getOptions() as $option) : ?>
-                    <option value="<?= $option->getValue() ?>" <?= ($block->escapeHtmlAttr($block->getAttributeValue()) == $option->getValue()) ? "selected" : "" ?>><?= $option->getLabel() ?></option>
+                    <option value="<?= $option->getValue() ?>" <?= ($block->escapeHtmlAttr($block->getValue()) == $option->getValue()) ? "selected" : "" ?>><?= $option->getLabel() ?></option>
                 <?php endforeach; ?>
             </select>
         </div>

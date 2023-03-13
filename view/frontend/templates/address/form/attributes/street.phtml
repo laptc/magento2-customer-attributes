@@ -3,15 +3,11 @@
 /**
  * @var \Tangkoko\CustomerAttributesManagement\Block\Address\Form\Attributes\Street $block
  */
-$_street = $block->getAttribute()->getFrontendLabel('street');
+$_street = $block->getAttribute()->getFrontendLabel();
 $viewModel = $block->getViewModel();
 $_streetValidationClass = $viewModel->addressGetAttributeValidationClass('street');
 $_streetValidationClassNotRequired = $_streetValidationClass !== null ? trim(str_replace('required-entry', '', $_streetValidationClass)) : '';
 ?>
-
-
-
-
 <div class="field street required">
     <label for="street_1" class="label"><span><?= /* @noEscape */ $_street  ?></span></label>
     <div class="control">

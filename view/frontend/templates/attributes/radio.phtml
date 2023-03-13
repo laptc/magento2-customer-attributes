@@ -9,7 +9,7 @@
 $attribute = $block->getAttribute();
 if ($attribute) :
 ?>
-    <div class="field <?= $attribute->getAttributeCode() ?> <?= $attribute->isRequired() ? "required" : "" ?>">
+    <div class="field <?= $attribute->getAttributeCode() ?> <?= $attribute->getIsRequired() ? "required" : "" ?>">
         <label for="<?= $attribute->getAttributeCode() ?>" class="label">
             <span>
                 <?= $block->escapeHtml(__($attribute->getStoreLabel())) ?>
@@ -17,7 +17,7 @@ if ($attribute) :
         </label>
         <?php foreach ($attribute->getOptions() as $option) : ?>
             <div class="control">
-                <input type="radio" data-validate="<?= $escaper->escapeHtmlAttr($block->getValidationRules($attribute)) ?>" value="<?= $option->getValue() ?>" id="<?= $attribute->getAttributeCode() ?>-<?= $option->getValue() ?>" class="<?= $attribute->getFrontendClass() ?>" <?= ($block->escapeHtmlAttr($block->getAttributeValue()) == $option->getValue()) ? "checked" : "" ?> />
+                <input type="radio" data-validate="<?= $escaper->escapeHtmlAttr($block->getValidationRules($attribute)) ?>" value="<?= $option->getValue() ?>" id="<?= $attribute->getAttributeCode() ?>-<?= $option->getValue() ?>" class="<?= $attribute->getFrontendClass() ?>" <?= ($block->escapeHtmlAttr($block->getValue()) == $option->getValue()) ? "checked" : "" ?> />
                 <label for="<?= $attribute->getAttributeCode() ?>-<?= $option->getValue() ?>"></label>
             </div>
         <?php endforeach; ?>
