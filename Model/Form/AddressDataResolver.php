@@ -20,12 +20,16 @@ class AddressDataResolver implements DataResolverInterface
 
     private AddressFactory $addressFactory;
 
+    private CustomerDataResolver $customerDataResolver;
+
     public function __construct(
         LayoutInterface $layout,
-        AddressFactory $addressFactory
+        AddressFactory $addressFactory,
+        CustomerDataResolver $customerDataResolver
     ) {
         $this->layout = $layout;
         $this->addressFactory = $addressFactory;
+        $this->customerDataResolver = $customerDataResolver;
     }
 
     /**
@@ -40,6 +44,6 @@ class AddressDataResolver implements DataResolverInterface
          */
         $addressData =  $this->layout->getBlock("customer_address_edit")->getAddress();
 
-        return $this->addressFactory->create()->load($addressData->getId());
+        return $this->addressFactory->create()->load($addressData->getId())->addData($this->customerDataResolver->getFormData()->toArray());
     }
 }

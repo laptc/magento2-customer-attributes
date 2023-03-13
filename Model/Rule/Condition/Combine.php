@@ -73,6 +73,7 @@ class Combine extends \Magento\Rule\Model\Condition\Combine
             ]
         ];
         foreach ($this->conditions as $code => $conditionArr) {
+            $attributes = [];
             $options = $conditionArr["value"]->loadAttributeOptions()->getAttributeOption();
             foreach ($options as $code => $label) {
                 $attributes[] = [
