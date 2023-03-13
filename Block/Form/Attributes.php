@@ -61,7 +61,7 @@ class Attributes extends \Magento\Framework\View\Element\Template
         foreach ($this->getViewModel()->getAttributes($this->getFormCode()) as $attributeCode => $attribute) {
             $block = null;
             $fields = $this->getFields();
-            if ($attribute->getIsUserDefined() || (in_array($attribute->getAttributeCode(), array_keys($fields)) && $fields[$attribute->getAttributeCode()])) {
+            if ($attribute->getIsUserDefined() || (is_array($fields) && in_array($attribute->getAttributeCode(), array_keys($fields)) && $fields[$attribute->getAttributeCode()])) {
                 $block = $this->attributeFactory->create($attribute, $this->getFormData());
                 if ($attributeViewModel = $this->getViewModel()->getAttributeViewModel()) {
                     $block->setViewModel($attributeViewModel);
