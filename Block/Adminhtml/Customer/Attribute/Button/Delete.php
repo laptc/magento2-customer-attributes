@@ -21,10 +21,9 @@ class Delete extends Generic implements ButtonProviderInterface
                 'label' => __('Delete'),
                 'class' => 'delete',
                 'id' => 'attribute-delete-button',
-                'data_attribute' => [
-                    'url' => $this->getDeleteUrl(),
-                ],
-                'on_click' => 'deleteConfirm("' . __('Are you sure you want to delete this attribute? Only do this if you know what you are doing.') . '","' . $this->getDeleteUrl() . '")',
+                'on_click' => 'deleteConfirm(\'' . __(
+                    'Are you sure you want to delete this attribute ?'
+                ) . '\', \'' . $this->getDeleteUrl() . '\', {"data": {}})',
                 'sort_order' => 20,
             ];
             return $data;
