@@ -11,7 +11,7 @@
     <type name="Tangkoko\CustomerAttributesManagement\Block\Form\AttributeFactory">
         <arguments>
             <argument name="attributeBlocks" xsi:type="array">
-                <item name="lastname" xsi:type="string">\Magento\Customer\Block\Widget\Name</item>
+                <item name="lastname" xsi:type="string">\Tangkoko\CustomerAttributesManagement\Block\Form\Attributes\Name</item>
                 <item name="dob" xsi:type="string">\Magento\Customer\Block\Widget\Dob</item>
                 <item name="taxvat" xsi:type="string">\Magento\Customer\Block\Widget\Taxvat</item>
                 <item name="gender" xsi:type="string">\Magento\Customer\Block\Widget\Gender</item>
@@ -45,6 +45,7 @@
             <argument name="attributeProvider" xsi:type="object">Tangkoko\CustomerAttributesManagement\Model\Attribute\Provider</argument>
             <argument name="dataResolver" xsi:type="object">Tangkoko\CustomerAttributesManagement\Model\Form\CustomerDataResolver</argument>
             <argument name="fieldsets" xsi:type="object">Tangkoko\CustomerAttributesManagement\Model\Attribute\Source\CustomerFieldset</argument>
+            <argument name="attributeViewModel" xsi:type="object">Tangkoko\CustomerAttributesManagement\ViewModel\Customer</argument>
         </arguments>
     </type>
 
@@ -56,5 +57,4 @@
             <argument name="fieldsets" xsi:type="object">Tangkoko\CustomerAttributesManagement\Model\Attribute\Source\AddressFieldset</argument>
         </arguments>
     </virtualType>
-
 </config>

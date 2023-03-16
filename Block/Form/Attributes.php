@@ -11,6 +11,7 @@ use Magento\Eav\Api\Data\AttributeInterface;
 use Magento\Framework\DataObject;
 use Magento\Framework\Serialize\SerializerInterface;
 use Magento\Framework\View\Element\Template;
+use Magento\Framework\Event\ManagerInterface;
 
 /**
  * Class Attributes
@@ -58,7 +59,8 @@ class Attributes extends \Magento\Framework\View\Element\Template
 
     protected function createChildBlocks()
     {
-        foreach ($this->getViewModel()->getAttributes($this->getFormCode()) as $attributeCode => $attribute) {
+        $attributes = $this->getViewModel()->getAttributes($this->getFormCode());
+        foreach ($attributes as $attributeCode => $attribute) {
             $block = null;
             $fields = $this->getFields();
             if ($attribute->getIsUserDefined() || (is_array($fields) && in_array($attribute->getAttributeCode(), array_keys($fields)) && $fields[$attribute->getAttributeCode()])) {
@@ -69,6 +71,8 @@ class Attributes extends \Magento\Framework\View\Element\Template
                 $this->fieldsetAttributes[$attribute->getExtensionAttributes()->getCamAttribute()->getFieldset()][] = $attribute;
             }
             if ($block) {
+                $this->_eventManager->dispatch("cam_add_child_attribute_block", ["block" => $block, "attribute" => $attribute, "attributes" => $attributes]);
+                $this->_eventManager->dispatch("cam_add_child_{$attribute->getAttributeCode()}_block", ["block" => $block, "attribute" => $attribute, "attributes" => $attributes]);
                 $this->setChild($this->getNameInLayout() . '.' .  $attribute->getAttributeCode(), $block);
             }
         }

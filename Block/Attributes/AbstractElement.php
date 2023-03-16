@@ -17,25 +17,8 @@ use Magento\Framework\View\Element\Template;
 class AbstractElement extends \Magento\Framework\View\Element\Template
 {
 
-    /**
-     * @var \Magento\Framework\Serialize\Serializer\Json
-     */
-    protected $jsonEncoder;
 
-    /**
-     * Constructor
-     *
-     * @param Template\Context $context
-     * @param array $data
-     */
-    public function __construct(
-        \Magento\Framework\Serialize\Serializer\Json $jsonEncoder,
-        Template\Context $context,
-        array $data = []
-    ) {
-        parent::__construct($context, $data);
-        $this->jsonEncoder = $jsonEncoder;
-    }
+
 
     /**
      * @return \Magento\Customer\Api\Data\AttributeMetadataInterface $attribute
@@ -63,19 +46,5 @@ class AbstractElement extends \Magento\Framework\View\Element\Template
             }
         }
         return $value;
-    }
-
-    /**
-     * @param \Magento\Customer\Api\Data\AttributeMetadataInterface $attribute
-     * @return string
-     */
-    public function getValidationRules($attribute)
-    {
-        $rules = [];
-        if ($attribute->getIsRequired()) {
-            $rules["required"] = true;
-        }
-
-        return $this->jsonEncoder->serialize($attribute->getValidationRules());
     }
 }

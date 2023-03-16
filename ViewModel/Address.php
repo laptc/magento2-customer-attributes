@@ -16,6 +16,14 @@ class Address implements ArgumentInterface
     private \Magento\Customer\ViewModel\Address $addressViewModel;
 
     private Data $configHelper;
+
+
+    /**
+     * @var \Magento\Framework\Serialize\Serializer\Json
+     */
+    protected $jsonEncoder;
+
+
     /**
      * Constructor
      *
@@ -23,8 +31,10 @@ class Address implements ArgumentInterface
      */
     public function __construct(
         \Magento\Customer\ViewModel\Address $addressViewModel,
+        \Magento\Framework\Serialize\Serializer\Json $jsonEncoder,
         Data $configHelper
     ) {
+        $this->jsonEncoder = $jsonEncoder;
         $this->addressViewModel = $addressViewModel;
         $this->configHelper = $configHelper;
     }
@@ -103,5 +113,19 @@ class Address implements ArgumentInterface
     {
         $placeholders =  $this->configHelper->getStreetPlaceholders();
         return isset($placeholders[$i]) ? $placeholders[$i] : "";
+    }
+
+    /**
+     * @param \Magento\Customer\Api\Data\AttributeMetadataInterface $attribute
+     * @return string
+     */
+    public function getValidationRules($attribute)
+    {
+        $rules = [];
+        if ($attribute->getIsRequired()) {
+            $rules["required"] = true;
+        }
+
+        return $this->jsonEncoder->serialize($attribute->getValidationRules());
     }
 }
