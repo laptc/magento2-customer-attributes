@@ -9,10 +9,10 @@
 namespace Tangkoko\CustomerAttributesManagement\Plugin\Eav\Model\Attribute;
 
 use Magento\Eav\Api\AttributeRepositoryInterface;
-use Magento\Framework\Serialize\Serializer\Json;
+
 use Tangkoko\CustomerAttributesManagement\Api\CamAttributeRepositoryInterface;
 use Tangkoko\CustomerAttributesManagement\Model\Data\CamAttributeFactory;
-use Tangkoko\CustomerAttributesManagement\Model\Data\Condition\Converter;
+
 
 class RepositoryPlugin
 {
@@ -42,14 +42,10 @@ class RepositoryPlugin
 
     public function __construct(
         CamAttributeRepositoryInterface $camAttributeRepository,
-        CamAttributeFactory $camAttributeFactory,
-        Converter $converter,
-        Json $json
+        CamAttributeFactory $camAttributeFactory
     ) {
         $this->camAttributeRepository = $camAttributeRepository;
         $this->camAttributeFactory = $camAttributeFactory;
-        $this->json = $json;
-        $this->converter = $converter;
     }
 
     /**
@@ -69,14 +65,7 @@ class RepositoryPlugin
             $camAttribute = $this->camAttributeFactory->create();
         }
 
-        if ($attribute->getData()) {
-
-            $camAttribute->loadPost($attribute->getData());
-
-            $camAttribute->setAttributeId($attribute->getAttributeId())->setVisibilityConditionsSerialized($this->json->serialize($this->converter->dataModelToArray($camAttribute->getVisibilityConditions())));
-        } else {
-            $camAttribute->setAttributeId($attribute->getAttributeId())->setVisibilityConditionsSerialized($this->json->serialize([]));
-        }
+        $camAttribute->setAttributeId($attribute->getAttributeId());
 
         $this->camAttributeRepository->save($camAttribute);
         return $result;

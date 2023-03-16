@@ -305,8 +305,8 @@ class CamAttribute extends AbstractModel implements CamAttributeInterface
     {
         $this->_resetConditions();
         $arr = [];
-        if (isset($data['visibility_conditions_arr'])) {
-            $arr['conditions'] = $data['visibility_conditions_arr'];
+        if (isset($data['rule']) && isset($data['rule']['conditions'])) {
+            $arr['conditions'] = $data['rule']['conditions'];
 
 
             $arr = $this->_convertFlatToRecursive($arr);

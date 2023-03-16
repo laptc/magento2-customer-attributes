@@ -21,6 +21,8 @@ use Magento\Eav\Api\AttributeRepositoryInterface;
 use Magento\Eav\Model\EntityFactory;
 use Magento\Eav\Model\AttributeFactory;
 use Magento\Framework\Serialize\Serializer\Json;
+use Tangkoko\CustomerAttributesManagement\Model\Data\CamAttributeFactory;
+use Tangkoko\CustomerAttributesManagement\Model\Data\Condition\Converter;
 
 /**
  * Product attribute save controller.
@@ -64,9 +66,16 @@ class Save extends \Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\C
      */
     private $formDataSerializer;
 
+    private $camAttributeFactory;
+
+    private Converter $converter;
+
+    private Json $json;
+
 
     /**
-     * Save constructor.
+     * Constructor
+     *
      * @param \Magento\Backend\App\Action\Context $context
      * @param \Tangkoko\CustomerAttributesManagement\Helper\Data $helper
      * @param \Magento\Framework\Cache\FrontendInterface $attributeLabelCache
@@ -76,7 +85,12 @@ class Save extends \Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\C
      * @param CollectionFactory $groupCollectionFactory
      * @param FilterManager $filterManager
      * @param LayoutFactory $layoutFactory
-     * @param AttributeFactory $attributeFactory
+     * @param \Magento\Eav\Model\AttributeFactory $attributeFactory
+     * @param AttributeRepositoryInterface $attributeRepository
+     * @param EntityFactory $entityFactory
+     * @param CamAttributeFactory $camAttributeFactory
+     * @param Converter $converter
+     * @param Json $json
      * @param FormData|null $formDataSerializer
      */
     public function __construct(
@@ -92,6 +106,9 @@ class Save extends \Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\C
         \Magento\Eav\Model\AttributeFactory $attributeFactory,
         AttributeRepositoryInterface $attributeRepository,
         EntityFactory $entityFactory,
+        CamAttributeFactory $camAttributeFactory,
+        Converter $converter,
+        Json $json,
         FormData $formDataSerializer = null
     ) {
         parent::__construct($context, $helper, $attributeLabelCache, $coreRegistry, $attributeFactory, $attributeRepository, $entityFactory);
@@ -101,6 +118,9 @@ class Save extends \Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\C
         $this->validatorFactory = $validatorFactory;
         $this->groupCollectionFactory = $groupCollectionFactory;
         $this->layoutFactory = $layoutFactory;
+        $this->camAttributeFactory = $camAttributeFactory;
+        $this->json = $json;
+        $this->converter = $converter;
         $this->formDataSerializer = $formDataSerializer
             ?: ObjectManager::getInstance()->get(FormData::class);
     }
@@ -161,9 +181,7 @@ class Save extends \Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\C
                     );
                 }
             }
-            if (isset($data['rule']['conditions'])) {
-                $model->setData('visibility_conditions_arr', $data['rule']['conditions']);
-            }
+
             $data['attribute_code'] = $attributeCode;
 
             //validate frontend_input
@@ -268,6 +286,18 @@ class Save extends \Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\C
                 $model->setEntityTypeId($this->entityTypeId);
                 $model->setIsUserDefined(1);
             }
+
+            $camAttribute = $model->getExtensionAttributes()->getCamAttribute();
+            if (!$camAttribute) {
+                $camAttribute = $this->camAttributeFactory->create();
+            }
+            if (isset($data['rule']['conditions'])) {
+                $camAttribute->loadPost($data);
+                $camAttribute->setAttributeId($model->getAttributeId())->setVisibilityConditionsSerialized($this->json->serialize($this->converter->dataModelToArray($camAttribute->getVisibilityConditions())));
+            } else {
+                $camAttribute->setAttributeId($model->getAttributeId())->setVisibilityConditionsSerialized($this->json->serialize([]));
+            }
+            $model->getExtensionAttributes()->setCamAttribute($camAttribute);
 
             try {
                 $model->save();
