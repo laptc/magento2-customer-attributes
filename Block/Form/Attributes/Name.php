@@ -260,7 +260,7 @@ class Name extends AbstractWidget
     private function _isAttributeRequired($attributeCode)
     {
         $attributeMetadata = $this->_getAttribute($attributeCode);
-        return $attributeMetadata ? (bool)$attributeMetadata->isRequired() : false;
+        return $attributeMetadata ? (bool)$attributeMetadata->getIsRequired() : false;
     }
 
     /**
@@ -272,6 +272,6 @@ class Name extends AbstractWidget
     private function _isAttributeVisible($attributeCode)
     {
         $attributeMetadata = $this->_getAttribute($attributeCode);
-        return $attributeMetadata ? (bool)$attributeMetadata->isVisible() : false;
+        return $attributeMetadata ? (bool)$attributeMetadata->getIsVisible() : false;
     }
 }
