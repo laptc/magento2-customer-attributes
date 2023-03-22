@@ -291,11 +291,12 @@ class Save extends \Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\C
             if (!$camAttribute) {
                 $camAttribute = $this->camAttributeFactory->create();
             }
+            $camAttribute->setAttributeId($model->getAttributeId());
+            $camAttribute->loadPost($data);
             if (isset($data['rule']['conditions'])) {
-                $camAttribute->loadPost($data);
-                $camAttribute->setAttributeId($model->getAttributeId())->setVisibilityConditionsSerialized($this->json->serialize($this->converter->dataModelToArray($camAttribute->getVisibilityConditions())));
+                $camAttribute->setVisibilityConditionsSerialized($this->json->serialize($this->converter->dataModelToArray($camAttribute->getVisibilityConditions())));
             } else {
-                $camAttribute->setAttributeId($model->getAttributeId())->setVisibilityConditionsSerialized($this->json->serialize([]));
+                $camAttribute->setVisibilityConditionsSerialized($this->json->serialize([]));
             }
             $model->getExtensionAttributes()->setCamAttribute($camAttribute);
 

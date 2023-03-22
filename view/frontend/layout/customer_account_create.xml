@@ -14,6 +14,10 @@
                         <argument xsi:type="string" name="form_selector">.form-create-account</argument>
                         <argument xsi:type="string" name="form_code">customer_account_create</argument>
                         <argument xsi:type="object" name="view_model">Tangkoko\CustomerAttributesManagement\ViewModel\Form\Attributes</argument>
+                        <argument name="fields" xsi:type="array">
+                            <item name="lastname" xsi:type="boolean">true</item>
+                            <item name="email" xsi:type="boolean">true</item>
+                        </argument>
                     </arguments>
                  </block>
             </container>
