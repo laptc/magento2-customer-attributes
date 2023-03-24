@@ -9,32 +9,22 @@
     <update handle="customer_address_form.xml"/>
     <body>
         <referenceBlock name="customer_address_edit">
-            <container name="form.address.contact-fieldset.container">
-                <block class="Tangkoko\CustomerAttributesManagement\Block\Address\Form\Edit\Attributes" name="form.address.contact-fieldset.attributes" template="Tangkoko_CustomerAttributesManagement::address/form/edit/attributes.phtml">
+            <container name="form.address.fieldset.container">
+                <block class="Tangkoko\CustomerAttributesManagement\Block\Form\Attributes" name="form.address.fieldset.attributes" template="Tangkoko_CustomerAttributesManagement::address/form/edit/attributes.phtml">
                     <arguments>
-                        <argument name="address_fieldset" xsi:type="array">
+                        <argument name="fields" xsi:type="array">
                             <item name="street" xsi:type="boolean">true</item>
-                            <item name="country_id" xsi:type="boolean">true</item>
-                            <item name="region_id" xsi:type="boolean">true</item>
                             <item name="city" xsi:type="boolean">true</item>
                             <item name="postcode" xsi:type="boolean">true</item>
+                            <item name="region" xsi:type="boolean">false</item>
+                            <item name="region_id" xsi:type="boolean">true</item>
+                            <item name="country" xsi:type="boolean">true</item>
+                            <item name="country_id" xsi:type="boolean">true</item>
+                            <item name="lastname" xsi:type="boolean">true</item>
                         </argument>
-                        <argument name="fieldset" xsi:type="string">contact</argument>
                         <argument xsi:type="string" name="form_selector">.form-address-edit</argument>
-                    </arguments>
-                </block>
-            </container>
-            <container name="form.address.address-fieldset.container">
-                <block class="Tangkoko\CustomerAttributesManagement\Block\Address\Form\Edit\Attributes" name="form.address.address-fieldset.attributes" template="Tangkoko_CustomerAttributesManagement::address/form/edit/attributes.phtml">
-                    <arguments>
-                        <argument name="address_fieldset" xsi:type="array">
-                            <item name="street" xsi:type="boolean">true</item>
-                            <item name="country_id" xsi:type="boolean">true</item>
-                            <item name="region_id" xsi:type="boolean">true</item>
-                            <item name="city" xsi:type="boolean">true</item>
-                            <item name="postcode" xsi:type="boolean">true</item>
-                        </argument>
-                        <argument name="fieldset" xsi:type="string">address</argument>
+                        <argument xsi:type="string" name="form_code">customer_address_edit</argument>
+                        <argument xsi:type="object" name="view_model">Tangkoko\CustomerAttributesManagement\ViewModel\Form\Address\Attributes</argument>
                     </arguments>
                 </block>
             </container>
@@ -44,3 +34,4 @@
         </referenceBlock>
     </body>
 </page>
+
