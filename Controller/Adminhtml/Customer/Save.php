@@ -159,7 +159,10 @@ class Save extends \Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\C
              */
             $model = $this->attributeFactory->createAttribute(\Magento\Customer\Model\Attribute::class);
             if ($attributeCode) {
-                $model =  $this->attributeRepository->get(\Magento\Customer\Api\CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER, $attributeCode);
+                try{
+                    $model =  $this->attributeRepository->get(\Magento\Customer\Api\CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER, $attributeCode);
+                } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
+                }
             }
             $attributeId = $model->getId();
             if (strlen($attributeCode) > 0) {
