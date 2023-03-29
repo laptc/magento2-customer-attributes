@@ -5,6 +5,7 @@
  */
 $formData = $block->getFormData();
 $_dob = $block->getChildBlock($block->getNameInLayout() . '.' . "dob");
+$_dobIsEnable = $_dob && $_dob->isEnabled();
 $displayAll = $block->getConfig('general/region/display_all');
 ?>
 <?php foreach ($block->getViewModel()->getAttributes($block->getFormCode()) as $attribute) : ?>
@@ -24,7 +25,7 @@ $displayAll = $block->getConfig('general/region/display_all');
 <?php endforeach; ?>
 
 
-<?php $ignore = /* @noEscape */ $_dob->isEnabled() ? '\'input[id$="full"]\'' : 'null';
+<?php $ignore = /* @noEscape */ $_dobIsEnable ? '\'input[id$="full"]\'' : 'null';
 $scriptString = <<<script
     require([
         "jquery",
@@ -35,7 +36,7 @@ $scriptString = <<<script
 
         dataForm.mage('validation', {
 script;
-if ($_dob->isEnabled()) :
+if ($_dobIsEnable) :
     $scriptString .= <<<script
             errorPlacement: function(error, element) {
                 if (element.prop('id').search('full') !== -1) {
