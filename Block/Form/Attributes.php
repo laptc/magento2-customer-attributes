@@ -122,4 +122,14 @@ class Attributes extends \Magento\Framework\View\Element\Template
             ["conditions" => $this->getViewModel()->getRules($this->getFormCode()), "model" => $this->getViewModel()->getFormData()->toArray()]
         );
     }
+
+    public function getMinimumPasswordLength()
+    {
+        return $this->getLayout()->getBlock('customer_form_register')->getMinimumPasswordLength();
+    }
+
+    public function getRequiredCharacterClassesNumber()
+    {
+        return $this->getLayout()->getBlock('customer_form_register')->getRequiredCharacterClassesNumber();
+    }
 }
