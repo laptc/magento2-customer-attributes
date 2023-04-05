@@ -62,7 +62,7 @@ class Customer extends \Magento\Rule\Model\Condition\AbstractCondition
         $this->attributes = [];
         $options = [];
         foreach ($attributeModels->getItems() as $attributeModel) {
-            if (!in_array($attributeModel->getFrontendInput(), ["select", "multiselect"])) {
+            if (!in_array($attributeModel->getFrontendInput(), ["select", "multiselect", "boolean"])) {
                 continue;
             }
 
