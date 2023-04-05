@@ -18,7 +18,7 @@ if ($attribute) :
         <?php foreach ($attribute->getOptions() as $option) : ?>
             <div class="control">
                 <input type="radio" data-validate="<?= $escaper->escapeHtmlAttr($block->getViewModel()->getValidationRules($attribute)) ?>" value="<?= $option->getValue() ?>" id="<?= $attribute->getAttributeCode() ?>-<?= $option->getValue() ?>" class="<?= $attribute->getFrontendClass() ?>" <?= ($block->escapeHtmlAttr($block->getValue()) == $option->getValue()) ? "checked" : "" ?> />
-                <label for="<?= $attribute->getAttributeCode() ?>-<?= $option->getValue() ?>"></label>
+                <label for="<?= $attribute->getAttributeCode() ?>-<?= $option->getValue() ?>"><?= $option->getLabel() ?></label>
             </div>
         <?php endforeach; ?>
     </div>
