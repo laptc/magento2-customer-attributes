@@ -63,7 +63,7 @@ define([
                 break;
                 case "Tangkoko\\CustomerAttributesManagement\\Model\\Rule\\Condition\\Address":
                 case "Tangkoko\\CustomerAttributesManagement\\Model\\Rule\\Condition\\Customer":
-                    const value = $("input[name="+ condition.attribute +"],select[name="+ condition.attribute +"]").val();
+                    const value = $("input[name="+ condition.attribute +"]:checked,select[name="+ condition.attribute +"]").val();
                     switch(condition.operator){
                         case "()":
                         case "{}":

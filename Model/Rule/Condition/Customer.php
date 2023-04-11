@@ -94,7 +94,7 @@ class Customer extends \Magento\Rule\Model\Condition\AbstractCondition
      */
     public function getInputType()
     {
-        if ($this->attributes[$this->getAttribute()]->getFrontendInput() == 'select') {
+        if (in_array($this->attributes[$this->getAttribute()]->getFrontendInput(), ['select', 'boolean'])) {
             return 'multiselect';
         };
         return $this->attributes[$this->getAttribute()]->getFrontendInput();
@@ -107,7 +107,7 @@ class Customer extends \Magento\Rule\Model\Condition\AbstractCondition
      */
     public function getValueElementType()
     {
-        if ($this->attributes[$this->getAttribute()]->getFrontendInput() == 'select') {
+        if (in_array($this->attributes[$this->getAttribute()]->getFrontendInput(), ['select', 'boolean'])) {
             return 'multiselect';
         };
         return $this->attributes[$this->getAttribute()]->getFrontendInput();
