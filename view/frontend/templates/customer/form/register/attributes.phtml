@@ -6,6 +6,7 @@
 $formData = $block->getFormData();
 $_dob = $block->getChildBlock($block->getNameInLayout() . '.' . "dob");
 $displayAll = $block->getConfig('general/region/display_all');
+$registerBlock = $block->getLayout()->getBlock("customer_form_register");
 ?>
 <?php foreach ($block->getViewModel()->getAttributes($block->getFormCode()) as $attribute) : ?>
 
@@ -28,8 +29,8 @@ $displayAll = $block->getConfig('general/region/display_all');
     <label for="password" class="label"><span><?= $escaper->escapeHtml(__('Password')) ?></span></label>
     <div class="control">
         <input type="password" name="password" id="password" title="<?= $escaper->escapeHtmlAttr(__('Password')) ?>" class="input-text" data-password-min-length="<?=
-                                                                                                                                                                    $escaper->escapeHtmlAttr($block->getMinimumPasswordLength()) ?>" data-password-min-character-sets="<?=
-                                                                                                                                                                                                                                                                        $escaper->escapeHtmlAttr($block->getRequiredCharacterClassesNumber()) ?>" data-validate="{required:true, 'validate-customer-password':true}" autocomplete="off">
+                                                                                                                                                                    $escaper->escapeHtmlAttr($registerBlock->getMinimumPasswordLength()) ?>" data-password-min-character-sets="<?=
+                                                                                                                                                                                                                                                                                $escaper->escapeHtmlAttr($registerBlock->getRequiredCharacterClassesNumber()) ?>" data-validate="{required:true, 'validate-customer-password':true}" autocomplete="off">
         <div id="password-strength-meter-container" data-role="password-strength-meter" aria-live="polite">
             <div id="password-strength-meter" class="password-strength-meter">
                 <?= $escaper->escapeHtml(__('Password Strength')) ?>:

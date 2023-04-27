@@ -126,6 +126,6 @@ class Address implements ArgumentInterface
             $rules["required"] = true;
         }
 
-        return $this->jsonEncoder->serialize($attribute->getValidationRules());
+        return $this->jsonEncoder->serialize(array_merge($attribute->getValidationRules(), $rules));
     }
 }
