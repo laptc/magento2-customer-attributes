@@ -14,7 +14,9 @@ $editBlock = $block->getLayout()->getBlock("customer_address_edit");
             <input type="hidden" name="error_url" value="<?= $escaper->escapeUrl($editBlock->getErrorUrl()) ?>">
         <?php endif; ?>
         <?php foreach ($block->getAttributes($fieldsetName) as $attribute) : ?>
+            <?= $block->getChildChildHtml($block->getNameInLayout() . '.' .  $attribute->getAttributeCode() . "_before", '') ?>
             <?= $block->getChildHtml($block->getNameInLayout() . '.' .  $attribute->getAttributeCode()) ?>
+            <?= $block->getChildChildHtml($block->getNameInLayout() . '.' .  $attribute->getAttributeCode() . "_after", '') ?>
         <?php endforeach; ?>
         <?php if ($fieldsetName == "address") : ?>
             <?php if ($editBlock->isDefaultBilling()) : ?>
