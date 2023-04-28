@@ -110,11 +110,10 @@ class Name extends AbstractWidget
     public function getPrefixOptions()
     {
         $prefixOptions = $this->options->getNamePrefixOptions();
-
         if ($this->getObject() && !empty($prefixOptions)) {
             $prefixOption = $this->getObject()->getPrefix();
             $oldPrefix = $this->escapeHtml(trim($prefixOption ?? ''));
-            if ($prefixOption !== null && !isset($prefixOptions[$oldPrefix]) && !isset($prefixOptions[$prefixOption])) {
+            if ($prefixOption !== null && !in_array($oldPrefix, $prefixOptions)) {
                 $prefixOptions[$oldPrefix] = $oldPrefix;
             }
         }

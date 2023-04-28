@@ -50,7 +50,8 @@ class AddressDataResolver implements DataResolverInterface
          * @var Address $addressData
          */
         $addressData =  $this->layout->getBlock("customer_address_edit")->getAddress();
-
-        return $this->addressFactory->create()->load($addressData->getId())->addData($this->customerDataResolver->getFormData()->toArray());
+        $address = $this->addressFactory->create()->load($addressData->getId());
+        $address->setData(array_merge($this->customerDataResolver->getFormData()->toArray(), $address->getData()));
+        return $address;
     }
 }
