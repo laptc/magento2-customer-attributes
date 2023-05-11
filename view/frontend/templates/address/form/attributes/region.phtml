@@ -5,7 +5,7 @@
  */
 
 
-$_region = $block->getAttribute()->getFrontendLabel();
+$_region = $block->getAttribute()->getStoreLabel();
 $_selectRegion = 'Please select a region, state or province.';
 $_displayAll = $block->getConfig('general/region/display_all');
 $_regionValidationClass = $this->getViewModel()->addressGetAttributeValidationClass('region'); ?>

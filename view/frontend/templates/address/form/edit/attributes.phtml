@@ -7,7 +7,7 @@ $editBlock = $block->getLayout()->getBlock("customer_address_edit");
 ?>
 <?php foreach ($block->getViewModel()->getFieldsets() as $fieldsetName => $fieldset) : ?>
     <fieldset class="fieldset">
-        <legend class="legend"><span><?= $escaper->escapeHtml($fieldsetName) ?></span></legend><br>
+        <legend class="legend"><span><?= $escaper->escapeHtml(__($fieldset)) ?></span></legend><br>
         <?php if ($fieldsetName == "contact") : ?>
             <?= $block->getBlockHtml('formkey') ?>
             <input type="hidden" name="success_url" value="<?= $escaper->escapeUrl($editBlock->getSuccessUrl()) ?>">
