@@ -359,6 +359,16 @@ class CamAttribute extends AbstractModel implements CamAttributeInterface
      */
     public function isVisible(AbstractModel $model)
     {
+        return $this->getConditions()->isVisible($model);
+    }
+
+    /**
+     * Return true if attribute is visible
+     *
+     * @return boolean
+     */
+    public function validate(AbstractModel $model)
+    {
         return $this->getConditions()->validate($model);
     }
 }

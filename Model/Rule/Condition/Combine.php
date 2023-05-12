@@ -98,4 +98,45 @@ class Combine extends \Magento\Rule\Model\Condition\Combine
 
         return $conditions;
     }
+
+    /**
+     * Is entity valid
+     *
+     * @param int|\Magento\Framework\Model\AbstractModel $entity
+     * @return bool
+     */
+    protected function _isVisible($entity)
+    {
+        if (!$this->getConditions()) {
+            return true;
+        }
+
+        $all = $this->getAggregator() === 'all';
+        $true = (bool)$this->getValue();
+
+        foreach ($this->getConditions() as $cond) {
+            if ($entity instanceof \Magento\Framework\Model\AbstractModel) {
+                $validated = $cond->isVisible($entity);
+            } else {
+                $validated = $cond->validateByEntityId($entity);
+            }
+            if ($all && $validated !== $true) {
+                return false;
+            } elseif (!$all && $validated === $true) {
+                return true;
+            }
+        }
+        return $all ? true : false;
+    }
+
+    /**
+     * Validate
+     *
+     * @param \Magento\Framework\Model\AbstractModel $model
+     * @return bool
+     */
+    public function isVisible(\Magento\Framework\Model\AbstractModel $model)
+    {
+        return $this->_isVisible($model);
+    }
 }

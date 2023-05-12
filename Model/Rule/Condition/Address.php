@@ -153,6 +153,21 @@ class Address extends \Magento\Rule\Model\Condition\AbstractCondition
     public function validateAttribute($validatedValue)
     {
 
+        return parent::validateAttribute($validatedValue);
+    }
+
+    /**
+     * Validate product attribute value for condition
+     *
+     * @param   object|array|int|string|float|bool|null $validatedValue product attribute value
+     * @return  bool
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     */
+    public function isVisible($validatedValue)
+    {
+
         if ($this->attributes[$this->getAttribute()]->getIsVisible() && $this->attributes[$this->getAttribute()]->getIsUserDefined()) {
             return true;
         }

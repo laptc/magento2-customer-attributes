@@ -24,19 +24,26 @@ class Backend
      */
     public function aroundValidate(\Magento\Eav\Model\Entity\Attribute\Backend\AbstractBackend $subject, callable $proceed, \Magento\Framework\DataObject $object)
     {
-
+        /**
+         * @var \Magento\Eav\Model\Entity\Attribute\AbstractAttribute
+         */
         $attribute = $subject->getAttribute();
-        if (!in_array($subject->getAttribute()->getEntityTypeId(), [AddressMetadataInterface::ENTITY_TYPE_ADDRESS, CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER]) || !$attribute->getExtensionAttributes() || !$attribute->getExtensionAttributes()->getCamAttribute()) {
+
+
+        if (!in_array($subject->getAttribute()->getEntityType()->getEntityTypeCode(), [AddressMetadataInterface::ENTITY_TYPE_ADDRESS, CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER]) || !$attribute->getExtensionAttributes() || !$attribute->getExtensionAttributes()->getCamAttribute()) {
             return $proceed($object);
         }
+
         $byPassValidate = false;
-        if ($attribute->getIsVisible() && !$attribute->getExtensionAttributes()->getCamAttribute()->isVisible($object)) {
-            $attribute->setIsVisible(false);
+        if ($attribute->getIsVisible() && !$attribute->getExtensionAttributes()->getCamAttribute()->validate($object)) {
+            $attribute->setData("scope_is_visible", false);
             $byPassValidate = true;
         }
+
         $returnValue = $proceed($object);
+
         if ($byPassValidate) {
-            $attribute->setIsVisible(true);
+            $attribute->setData("scope_is_visible", true);
         }
         return $returnValue;
     }
