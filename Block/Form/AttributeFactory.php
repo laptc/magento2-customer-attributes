@@ -9,6 +9,7 @@
 namespace Tangkoko\CustomerAttributesManagement\Block\Form;
 
 use \Magento\Eav\Api\Data\AttributeInterface;
+use Magento\Framework\DataObject;
 use Magento\Framework\Model\AbstractModel;
 use Magento\Framework\View\Element\AbstractBlock;
 use Magento\Framework\View\Element\BlockInterface;
@@ -19,7 +20,7 @@ class AttributeFactory
 {
 
     /**
-     * 
+     *
      *
      * @var AbstractBlock[]
      */
@@ -44,7 +45,7 @@ class AttributeFactory
         $this->eventManager = $eventManager;
     }
 
-    public function create(AttributeInterface $attribute, AbstractModel $object): BlockInterface
+    public function create(AttributeInterface $attribute, DataObject $object): BlockInterface
     {
         if (isset($this->attributeBlocks[$attribute->getAttributeCode()])) {
             $blockType = $this->attributeBlocks[$attribute->getAttributeCode()];
