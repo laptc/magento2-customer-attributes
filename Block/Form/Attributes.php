@@ -7,6 +7,7 @@
 
 namespace Tangkoko\CustomerAttributesManagement\Block\Form;
 
+use Magento\Customer\Model\Session;
 use Magento\Eav\Api\Data\AttributeInterface;
 use Magento\Framework\DataObject;
 use Magento\Framework\Serialize\SerializerInterface;
@@ -29,6 +30,8 @@ class Attributes extends \Magento\Framework\View\Element\Template
 
     protected $fieldsetAttributes = [];
 
+    private Session $customerSession;
+
     /**
      * Constructor
      *
@@ -37,10 +40,12 @@ class Attributes extends \Magento\Framework\View\Element\Template
     public function __construct(
         AttributeFactory $attributeFactory,
         SerializerInterface $serializer,
+        Session $customerSession,
         Template\Context $context,
         array $data = []
     ) {
         parent::__construct($context, $data);
+        $this->customerSession = $customerSession;
         $this->attributeFactory =  $attributeFactory;
         $this->serializer = $serializer;
     }
@@ -105,7 +110,15 @@ class Attributes extends \Magento\Framework\View\Element\Template
     {
         $data = $this->getData('form_data');
         if ($data === null) {
-            $data = $this->getViewModel()->getFormData();
+            $formData = $this->customerSession->getCustomerFormData(true);
+            $data = new \Magento\Framework\DataObject();
+            if ($formData) {
+                $data->addData($formData);
+                $data->setCustomerData(1);
+            }
+            if (isset($data['region_id'])) {
+                $data['region_id'] = (int)$data['region_id'];
+            }
             $this->setData('form_data', $data);
         }
         return $data;
