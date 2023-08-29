@@ -108,8 +108,8 @@ class Attributes extends \Magento\Framework\View\Element\Template
      */
     public function getFormData(): DataObject
     {
-        $data = $this->getData('form_data');
-        if ($data === null) {
+        $data = $this->getViewModel()->getFormData();
+        if (!$data->getId()) {
             $formData = $this->customerSession->getCustomerFormData(true);
             $data = new \Magento\Framework\DataObject();
             if ($formData) {
