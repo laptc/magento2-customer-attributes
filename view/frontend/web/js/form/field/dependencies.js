@@ -61,6 +61,18 @@ define([
 
                     return result;
                 break;
+                case "Tangkoko\\CustomerAttributesManagement\\Model\\Rule\\Condition\\Store":
+                    switch(condition.operator){
+                        case "()":
+                        case "{}":
+                            return condition.value.includes( this.options.config.storeId );
+                        break;
+                        case "!()":
+                        case "!{}":
+                            return !condition.value.includes( this.options.config.storeId );
+                        break;
+                    }
+                    break;
                 case "Tangkoko\\CustomerAttributesManagement\\Model\\Rule\\Condition\\Address":
                 case "Tangkoko\\CustomerAttributesManagement\\Model\\Rule\\Condition\\Customer":
                     const value = $("input[name="+ condition.attribute +"]:checked,select[name="+ condition.attribute +"]").val();
