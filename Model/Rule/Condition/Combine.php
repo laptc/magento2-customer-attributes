@@ -24,16 +24,6 @@ class Combine extends \Magento\Rule\Model\Condition\Combine
     protected $_eventManager = null;
 
     /**
-     * @var \Tangkoko\CustomerAttributesManagement\Model\Rule\Condition\Customer
-     */
-    protected $_conditionCustomer;
-
-    /**
-     * @var \Tangkoko\CustomerAttributesManagement\Model\Rule\Condition\Address
-     */
-    protected $_conditionAddress;
-
-    /**
      *
      * @var ConditionInterface[][]
      */
@@ -43,8 +33,7 @@ class Combine extends \Magento\Rule\Model\Condition\Combine
      *
      * @param \Magento\Rule\Model\Condition\Context $context
      * @param \Magento\Framework\Event\ManagerInterface $eventManager
-     * @param \Tangkoko\CustomerAttributesManagement\Model\Rule\Condition\Customer $conditionCustomer
-     * @param \Tangkoko\CustomerAttributesManagement\Model\Rule\Condition\Address $conditionAddress
+     * @param array $conditions
      * @param array $data
      */
     public function __construct(

@@ -101,6 +101,10 @@
                     <item name="label" xsi:type="string" translatable="true"></item>
                     <item name="value" xsi:type="object">Tangkoko\CustomerAttributesManagement\Model\Rule\Condition\Customer</item>
                 </item>
+                <item name="store" xsi:type="array">
+                    <item name="label" xsi:type="string" translatable="true">Store</item>
+                    <item name="value" xsi:type="object">Tangkoko\CustomerAttributesManagement\Model\Rule\Condition\Store</item>
+                </item>
             </argument>
         </arguments>
     </type>
@@ -124,6 +128,10 @@
                 <item name="address" xsi:type="array">
                     <item name="label" xsi:type="string" translatable="true">Customer address attributes</item>
                     <item name="value" xsi:type="object">Tangkoko\CustomerAttributesManagement\Model\Rule\Condition\Address</item>
+                </item>
+                <item name="store" xsi:type="array">
+                    <item name="label" xsi:type="string" translatable="true">Store</item>
+                    <item name="value" xsi:type="object">Tangkoko\CustomerAttributesManagement\Model\Rule\Condition\Store</item>
                 </item>
             </argument>
         </arguments>
