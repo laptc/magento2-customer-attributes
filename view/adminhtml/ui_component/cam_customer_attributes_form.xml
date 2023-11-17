@@ -571,10 +571,10 @@
         </field>
     </fieldset>
 
-    <fieldset name="conditions" sortOrder="23">
+    <fieldset name="visibility_conditions" sortOrder="24">
         <settings>
             <collapsible>true</collapsible>
-            <label translate="true">Conditions</label>
+            <label translate="true">Visibility Conditions</label>
         </settings>
         <container name="visibility_conditions" sortOrder="10">
             <htmlContent name="html_content">
@@ -582,7 +582,19 @@
             </htmlContent>
         </container>
     </fieldset>
-    <fieldset name="manage-titles" sortOrder="25">
+     <fieldset name="required_conditions" sortOrder="25">
+        <settings>
+            <collapsible>true</collapsible>
+            <label translate="true">Required Conditions</label>
+        </settings>
+    
+        <container name="required_conditions" sortOrder="11">
+            <htmlContent name="html_content">
+                <block name="required_conditions" class="Tangkoko\CustomerAttributesManagement\Block\Adminhtml\Customer\Attribute\Edit\Tab\Required\Conditions" />
+            </htmlContent>
+        </container>
+    </fieldset>
+    <fieldset name="manage-titles" sortOrder="26">
         <settings>
             <collapsible>true</collapsible>
             <label translate="true">Manage Titles</label>

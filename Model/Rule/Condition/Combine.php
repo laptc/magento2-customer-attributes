@@ -44,6 +44,7 @@ class Combine extends \Magento\Rule\Model\Condition\Combine
     ) {
         $this->_eventManager = $eventManager;
         $this->conditions = $conditions;
+
         parent::__construct($context, $data);
         $this->setType(\Tangkoko\CustomerAttributesManagement\Model\Rule\Condition\Combine::class);
     }

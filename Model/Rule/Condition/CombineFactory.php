@@ -42,7 +42,7 @@ class CombineFactory
     public function create($code, array $data = [])
     {
         if (isset($this->_instanceNames[$code])) {
-            return $this->_objectManager->create($this->_instanceNames[$code], $data);
+            return $this->_objectManager->create($this->_instanceNames[$code], ["data" => $data]);
         }
     }
 }

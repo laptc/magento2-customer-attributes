@@ -147,6 +147,7 @@ class Save extends \Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\C
         }
 
         $data = $this->getRequest()->getPostValue();
+
         $data = array_replace_recursive(
             $data,
             $optionData
@@ -159,7 +160,7 @@ class Save extends \Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\C
              */
             $model = $this->attributeFactory->createAttribute(\Magento\Customer\Model\Attribute::class);
             if ($attributeCode) {
-                try{
+                try {
                     $model =  $this->attributeRepository->get(\Magento\Customer\Api\CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER, $attributeCode);
                 } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
                 }
@@ -296,11 +297,20 @@ class Save extends \Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\C
             }
             $camAttribute->setAttributeId($model->getAttributeId());
             $camAttribute->loadPost($data);
+
+
+            if (isset($data['rule']['required_conditions'])) {
+                $camAttribute->setRequiredConditionsSerialized($this->json->serialize($this->converter->dataModelToArray($camAttribute->getRequiredConditions())));
+            } else {
+                $camAttribute->setRequiredConditionsSerialized($this->json->serialize([]));
+            }
             if (isset($data['rule']['conditions'])) {
                 $camAttribute->setVisibilityConditionsSerialized($this->json->serialize($this->converter->dataModelToArray($camAttribute->getVisibilityConditions())));
             } else {
                 $camAttribute->setVisibilityConditionsSerialized($this->json->serialize([]));
             }
+
+
             $model->getExtensionAttributes()->setCamAttribute($camAttribute);
 
             try {

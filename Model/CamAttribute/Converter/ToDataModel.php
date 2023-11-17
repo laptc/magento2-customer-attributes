@@ -62,6 +62,7 @@ class ToDataModel
      */
     public function ConvertConditions(CamAttributeInterface $dataModel)
     {
+
         $conditionSerialized = $dataModel->getVisibilityConditionsSerialized();
         if ($conditionSerialized) {
             $conditionArray = $this->serializer->unserialize($conditionSerialized);

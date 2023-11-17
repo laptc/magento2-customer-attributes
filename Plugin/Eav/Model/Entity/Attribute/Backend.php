@@ -29,7 +29,6 @@ class Backend
          */
         $attribute = $subject->getAttribute();
 
-
         if (!in_array($subject->getAttribute()->getEntityType()->getEntityTypeCode(), [AddressMetadataInterface::ENTITY_TYPE_ADDRESS, CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER]) || !$attribute->getExtensionAttributes() || !$attribute->getExtensionAttributes()->getCamAttribute()) {
             return $proceed($object);
         }
@@ -45,6 +44,7 @@ class Backend
         if ($byPassValidate) {
             $attribute->setData("scope_is_visible", true);
         }
+
         return $returnValue;
     }
 }

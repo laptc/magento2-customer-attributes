@@ -16,7 +16,12 @@ interface CamAttributeInterface
 
     const VISIBILITY_CONDITIONS = "visibility_conditions";
 
+    const REQUIRED_CONDITIONS = "required_conditions";
+
     const VISIBILITY_CONDITIONS_SERIALIZED = "visibility_conditions_serialized";
+
+    const REQUIRED_CONDITIONS_SERIALIZED = "required_conditions_serialized";
+
 
     const FIELDSET = "fieldset";
 
@@ -63,6 +68,36 @@ interface CamAttributeInterface
      * @return self
      */
     public function setVisibilityConditionsSerialized($conditions);
+
+
+
+    /**
+     * @return \Tangkoko\CustomerAttributesManagement\Api\Data\ConditionInterface[]|null
+     * 
+     */
+    public function getRequiredConditions();
+
+    /**
+     * set condition
+     * @param \Tangkoko\CustomerAttributesManagement\Api\Data\ConditionInterface $conditions
+     * @return self
+     */
+    public function setRequiredConditions($conditions);
+
+    /**
+     * return json conditoins serialized
+     * 
+     * @return string
+     */
+    public function getRequiredConditionsSerialized();
+
+
+    /**
+     * set condition
+     * @param string $conditions
+     * @return self
+     */
+    public function setRequiredConditionsSerialized($conditions);
 
 
     /**
