@@ -10,15 +10,26 @@ namespace Tangkoko\CustomerAttributesManagement\Model\Form;
 
 use Magento\Customer\Model\Customer;
 use Magento\Customer\Model\Session;
+use Magento\Store\Model\StoreManagerInterface;
 
 class CustomerDataResolver implements DataResolverInterface
 {
 
     private Session $customerSession;
 
-    public function __construct(Session $customerSession)
-    {
+    private StoreManagerInterface $storeManager;
+
+    /**
+     *
+     * @param Session $customerSession
+     * @param StoreManagerInterface $storeManager
+     */
+    public function __construct(
+        Session $customerSession,
+        StoreManagerInterface $storeManager
+    ) {
         $this->customerSession = $customerSession;
+        $this->storeManager = $storeManager;
     }
 
     /**
@@ -28,6 +39,9 @@ class CustomerDataResolver implements DataResolverInterface
      */
     public function getFormData(): Customer
     {
+        if (!$this->customerSession->getCustomerId()) {
+            $this->customerSession->getCustomer()->setWebsiteId($this->storeManager->getWebsite()->getId());
+        }
         return $this->customerSession->getCustomer();
     }
 }

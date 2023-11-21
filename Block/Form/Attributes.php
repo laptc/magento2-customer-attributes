@@ -132,7 +132,7 @@ class Attributes extends \Magento\Framework\View\Element\Template
     public function getJsonConfig()
     {
         return $this->serializer->serialize(
-            ["conditions" => $this->getViewModel()->getRules($this->getFormCode()), "model" => $this->getViewModel()->getFormData()->toArray(), "storeId" => $this->_storeManager->getStore()->getId()]
+            ["visibility_conditions" => $this->getViewModel()->getVisibilityRules($this->getFormCode()), "required_conditions" => $this->getViewModel()->getRequiredRules($this->getFormCode()), "model" => $this->getViewModel()->getFormData()->toArray(), "storeId" => $this->_storeManager->getStore()->getId()]
         );
     }
 

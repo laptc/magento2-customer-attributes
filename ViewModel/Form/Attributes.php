@@ -114,12 +114,29 @@ class Attributes implements ArgumentInterface
      *
      * @return array
      */
-    public function getRules(string $formCode): array
+    public function getVisibilityRules(string $formCode): array
     {
         $rules = [];
         foreach ($this->getAttributes($formCode) as $attributeModel) {
             if ($attributeModel->getExtensionAttributes()->getCamAttribute()->getVisibilityConditions()->getConditions()) {
                 $rules[$attributeModel->getAttributeCode()] = $this->converter->dataModelToArray($attributeModel->getExtensionAttributes()->getCamAttribute()->getVisibilityConditions());
+            }
+        }
+        return $rules;
+    }
+
+
+    /**
+     * Return rules configuration
+     *
+     * @return array
+     */
+    public function getRequiredRules(string $formCode): array
+    {
+        $rules = [];
+        foreach ($this->getAttributes($formCode) as $attributeModel) {
+            if ($attributeModel->getExtensionAttributes()->getCamAttribute()->getRequiredConditions()->getConditions()) {
+                $rules[$attributeModel->getAttributeCode()] = $this->converter->dataModelToArray($attributeModel->getExtensionAttributes()->getCamAttribute()->getRequiredConditions());
             }
         }
         return $rules;

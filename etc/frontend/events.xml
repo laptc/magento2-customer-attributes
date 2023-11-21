@@ -6,5 +6,4 @@
      <event name="cam_add_child_lastname_block">
          <observer name="set_name_attributes" instance="Tangkoko\CustomerAttributesManagement\Observer\SetNameAttributes" />
     </event>
-    
 </config>

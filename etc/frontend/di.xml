@@ -57,4 +57,10 @@
             <argument name="fieldsets" xsi:type="object">Tangkoko\CustomerAttributesManagement\Model\Attribute\Source\AddressFieldset</argument>
         </arguments>
     </virtualType>
+
+    <type name="Tangkoko\CustomerAttributesManagement\Plugin\Eav\Model\Entity\Attribute\Backend">
+        <arguments>
+            <argument name="context" xsi:type="object">Tangkoko\CustomerAttributesManagement\Model\Context\FrontendContext</argument>
+        </arguments>
+    </type>
 </config>

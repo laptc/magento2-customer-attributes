@@ -10,9 +10,17 @@ namespace Tangkoko\CustomerAttributesManagement\Plugin\Eav\Model\Entity\Attribut
 
 use Magento\Customer\Api\AddressMetadataInterface;
 use Magento\Customer\Api\CustomerMetadataInterface;
+use Tangkoko\CustomerAttributesManagement\Model\Context\ContextInterface;
 
 class Backend
 {
+
+    private ContextInterface $context;
+
+    public function __construct(ContextInterface $context)
+    {
+        $this->context = $context;
+    }
 
     /**
      * validate attribute value
@@ -32,18 +40,27 @@ class Backend
         if (!in_array($subject->getAttribute()->getEntityType()->getEntityTypeCode(), [AddressMetadataInterface::ENTITY_TYPE_ADDRESS, CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER]) || !$attribute->getExtensionAttributes() || !$attribute->getExtensionAttributes()->getCamAttribute()) {
             return $proceed($object);
         }
-
+        $byPassRequired = false;
+        if ($attribute->getIsRequired() && $attribute->getExtensionAttributes()->getCamAttribute()) {
+            $byPassRequired = true;
+            $isRequired = $attribute->getExtensionAttributes()->getCamAttribute()->isRequired($this->context->getCustomer());
+            $attribute->setCamIsRequired($isRequired);
+        }
         $byPassValidate = false;
         if ($attribute->getIsVisible() && !$attribute->getExtensionAttributes()->getCamAttribute()->validate($object)) {
             $attribute->setData("scope_is_visible", false);
             $byPassValidate = true;
         }
-
         $returnValue = $proceed($object);
 
         if ($byPassValidate) {
             $attribute->setData("scope_is_visible", true);
         }
+
+        if ($byPassRequired) {
+            $attribute->setIsRequired(true);
+        }
+
 
         return $returnValue;
     }
