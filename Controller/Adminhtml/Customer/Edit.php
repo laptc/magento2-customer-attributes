@@ -1,15 +1,17 @@
 <?php
+
 /**
  * Copyright © 2019 Mvn. All rights reserved.
  * See COPYING.txt for license details.
  */
-namespace Mvn\Cam\Controller\Adminhtml\Customer;
+
+namespace Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\Customer;
 
 /**
  * Class Edit
- * @package Mvn\Cam\Controller\Adminhtml\Customer
+ * @package Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\Customer
  */
-class Edit extends \Mvn\Cam\Controller\Adminhtml\Customer\Attribute
+class Edit extends \Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\Customer\Attribute
 {
     /**
      * @return \Magento\Framework\Controller\ResultInterface
@@ -17,12 +19,10 @@ class Edit extends \Mvn\Cam\Controller\Adminhtml\Customer\Attribute
      */
     public function execute()
     {
-        $id = $this->getRequest()->getParam('attribute_id');
-        $model = $this->_objectManager->create(
-            \Magento\Customer\Model\Attribute::class
-        );
-        if ($id) {
-            $model->load($id);
+        $code = $this->getRequest()->getParam('attribute_code');
+        $model = $this->attributeFactory->createAttribute(\Magento\Customer\Model\Attribute::class);
+        if ($code) {
+            $model =  $this->attributeRepository->get($this->entityTypeId, $code);
 
             if (!$model->getId()) {
                 $this->messageManager->addErrorMessage(__('This attribute no longer exists.'));
@@ -42,13 +42,13 @@ class Edit extends \Mvn\Cam\Controller\Adminhtml\Customer\Attribute
             $model->addData($data);
         }
         $attributeData = $this->getRequest()->getParam('attribute');
-        if (!empty($attributeData) && $id === null) {
+        if (!empty($attributeData) && $code === null) {
             $model->addData($attributeData);
         }
 
         $this->coreRegistry->register('entity_attribute', $model);
 
-        $title = $id ? __('Edit Customer Attribute "%1"', $model->getAttributeCode()) : __('New Customer Attribute');
+        $title = $code ? __('Edit Customer Attribute "%1"', $model->getAttributeCode()) : __('New Customer Attribute');
         $resultPage = $this->createPageResult();
         $resultPage->setActiveMenu(self::ADMIN_RESOURCE);
         $resultPage->getConfig()->getTitle()->prepend($title);

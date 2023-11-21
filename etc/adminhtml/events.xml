@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="adminhtml_customer_attribute_types">
+        <observer name="add_multiline" instance="Tangkoko\CustomerAttributesManagement\Observer\InputType\AddMultiline" />
+    </event>
+    <event name="adminhtml_customer_prepare_save">
+         <observer name="cam_adminhtml_prepare_save_customer" instance="Tangkoko\CustomerAttributesManagement\Observer\Admin\Customer\PrepareSave" />
+    </event>
+</config>

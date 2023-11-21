@@ -1,23 +1,27 @@
 <?php
+
 /**
  * Copyright © Mvn, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
 
-namespace Mvn\Cam\Controller\Adminhtml\Address;
+namespace Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\Address;
+
+use Magento\Eav\Api\AttributeRepositoryInterface;
+use \Magento\Eav\Model\EntityFactory;
 
 /**
  * Class Attribute
- * @package Mvn\Cam\Controller\Adminhtml\Customer
+ * @package Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\Customer
  */
-abstract class Attribute extends \Mvn\Cam\Controller\Adminhtml\AbstractAction
+abstract class Attribute extends \Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\AbstractAction
 {
     /**
      * Authorization level of a basic admin session
      *
      * @see _isAllowed()
      */
-    const ADMIN_RESOURCE = 'Mvn_Cam::address_attributes';
+    const ADMIN_RESOURCE = 'Tangkoko_CustomerAttributesManagement::address_attributes';
 
     /**
      * @var \Magento\Framework\Cache\FrontendInterface
@@ -37,21 +41,45 @@ abstract class Attribute extends \Mvn\Cam\Controller\Adminhtml\AbstractAction
     protected $coreRegistry = null;
 
     /**
+     *
+     * @var \Magento\Eav\Model\AttributeFactory
+     */
+    protected  $attributeFactory;
+
+    /**
+     *
+     * @var AttributeRepositoryInterface
+     */
+    protected $attributeRepository;
+
+    /**
+     *
+     * @var EntityFactory
+     */
+    protected $entityFactory;
+
+    /**
      * Attribute constructor.
      * @param \Magento\Backend\App\Action\Context $context
-     * @param \Mvn\Cam\Helper\Data $helper
+     * @param \Tangkoko\CustomerAttributesManagement\Helper\Data $helper
      * @param \Magento\Framework\Cache\FrontendInterface $attributeLabelCache
      * @param \Magento\Framework\Registry $coreRegistry
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
-        \Mvn\Cam\Helper\Data $helper,
+        \Tangkoko\CustomerAttributesManagement\Helper\Data $helper,
         \Magento\Framework\Cache\FrontendInterface $attributeLabelCache,
-        \Magento\Framework\Registry $coreRegistry
+        \Magento\Framework\Registry $coreRegistry,
+        \Magento\Eav\Model\AttributeFactory $attributeFactory,
+        AttributeRepositoryInterface $attributeRepository,
+        EntityFactory $entityFactory
     ) {
         $this->coreRegistry = $coreRegistry;
         $this->attributeLabelCache = $attributeLabelCache;
         parent::__construct($context, $helper);
+        $this->attributeFactory = $attributeFactory;
+        $this->attributeRepository = $attributeRepository;
+        $this->entityFactory = $entityFactory;
     }
 
     /**

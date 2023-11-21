@@ -7,8 +7,50 @@
 
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Tangkoko\CustomerAttributesManagement\Api\Data\ConditionInterface" type="Tangkoko\CustomerAttributesManagement\Model\Data\Condition" />
+    <preference for="Tangkoko\CustomerAttributesManagement\Api\Data\CamAttributeInterface" type="Tangkoko\CustomerAttributesManagement\Model\Data\CamAttribute" />
+    <preference for="Tangkoko\CustomerAttributesManagement\Api\CamAttributeRepositoryInterface" type="Tangkoko\CustomerAttributesManagement\Model\CamAttribute\Repository" />
+    <type name="Magento\Eav\Api\AttributeRepositoryInterface">
+        <plugin name="cam_process_extension_attributes" type="Tangkoko\CustomerAttributesManagement\Plugin\Eav\Model\Attribute\RepositoryPlugin"/>
+    </type>
 
-    <type name="Mvn\Cam\Model\Attribute\Source\CustomerForm">
+    <type name="Magento\Eav\Model\Entity\Attribute\Backend\AbstractBackend">
+        <plugin name="cam_by_pass_attribute_validation" type="Tangkoko\CustomerAttributesManagement\Plugin\Eav\Model\Entity\Attribute\Backend"/>
+    </type>
+
+    <type name="Magento\Eav\Model\Config">
+        <plugin name="load_customer_cam_attributes" type="Tangkoko\CustomerAttributesManagement\Plugin\Eav\Model\ResourceModel\Entity\Attribute\Collection"/>
+    </type>
+
+
+    <type name="Magento\Customer\Model\AttributeMetadataDataProvider">
+        <plugin name="add_customer_cam_attributes" type="Tangkoko\CustomerAttributesManagement\Plugin\Customer\Model\AttributeMetadataDataProvider"/>
+    </type>
+
+    <type name="Magento\Eav\Model\Attribute">
+        <plugin name="cam_getisrequired_with_conditions" type="Tangkoko\CustomerAttributesManagement\Plugin\Eav\Model\Attribute"></plugin>
+    </type> 
+    
+
+    <type name="Tangkoko\CustomerAttributesManagement\Model\Attribute\Source\ValidationRule">
+        <arguments>
+            <argument name="optionsArray" xsi:type="array">
+                <item name="" xsi:type="string" translatable="true">None</item>
+                <item name="validate-number" xsi:type="string" translatable="true">Decimal Number</item>
+                <item name="validate-digits" xsi:type="string" translatable="true">Integer Number</item>
+                <item name="validate-email" xsi:type="string" translatable="true">Email</item>
+                <item name="validate-url" xsi:type="string" translatable="true">URL</item>
+                <item name="validate-alpha" xsi:type="string" translatable="true">Letters</item>
+                <item name="validate-alphanum" xsi:type="string" translatable="true">Letters (a-z, A-Z) or Numbers (0-9)</item>
+                <item name="validate-range" xsi:type="string" translatable="true">Number range ( max - max). css class : range-[0-9]-[0-9]</item>
+                <item name="validate-date" xsi:type="string" translatable="true">Date</item>
+                <item name="validate-length" xsi:type="string" translatable="true">String length ( css class minimum-length-[0-9] maximum-length-[0-9])</item>
+            </argument>
+        </arguments>
+    </type>
+
+
+    <type name="Tangkoko\CustomerAttributesManagement\Model\Attribute\Source\CustomerForm">
         <arguments>
             <argument name="optionsArray" xsi:type="array">
                 <item name="adminhtml_customer" xsi:type="string" translatable="true">Admin Customer</item>
@@ -20,7 +62,7 @@
         </arguments>
     </type>
 
-    <type name="Mvn\Cam\Model\Attribute\Source\AddressForm">
+    <type name="Tangkoko\CustomerAttributesManagement\Model\Attribute\Source\AddressForm">
         <arguments>
             <argument name="optionsArray" xsi:type="array">
                 <item name="adminhtml_customer_address" xsi:type="string" translatable="true">Admin Customer Address</item>
@@ -30,4 +72,75 @@
         </arguments>
     </type>
 
+    <type name="Tangkoko\CustomerAttributesManagement\Model\Attribute\Source\AddressFieldset">
+        <arguments>
+            <argument name="optionsArray" xsi:type="array">
+                <item name="contact" xsi:type="string" translatable="true">Contact informations</item>
+                <item name="address" xsi:type="string" translatable="true">Address</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Tangkoko\CustomerAttributesManagement\Model\Attribute\Source\CustomerFieldset">
+        <arguments>
+            <argument name="optionsArray" xsi:type="array">
+                <item name="default" xsi:type="string" translatable="true">Default</item>
+            </argument>
+        </arguments>
+    </type>
+
+
+    <type name="Tangkoko\CustomerAttributesManagement\Model\Attribute\DefaultFieldsetResolver">
+        <arguments>
+            <argument name="entityTypeFieldsets" xsi:type="array">
+                <item name="customer" xsi:type="object">Tangkoko\CustomerAttributesManagement\Model\Attribute\Source\CustomerFieldset</item>
+                <item name="customer_address" xsi:type="object">Tangkoko\CustomerAttributesManagement\Model\Attribute\Source\AddressFieldset</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Tangkoko\CustomerAttributesManagement\Model\Rule\Condition\Combine">
+        <arguments>
+            <argument name="conditions" xsi:type="array">
+                <item name="customer" xsi:type="array">
+                    <item name="label" xsi:type="string" translatable="true"></item>
+                    <item name="value" xsi:type="object">Tangkoko\CustomerAttributesManagement\Model\Rule\Condition\Customer</item>
+                </item>
+                <item name="store" xsi:type="array">
+                    <item name="label" xsi:type="string" translatable="true">Store</item>
+                    <item name="value" xsi:type="object">Tangkoko\CustomerAttributesManagement\Model\Rule\Condition\Store</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Tangkoko\CustomerAttributesManagement\Model\Rule\Condition\CombineFactory">
+         <arguments>
+            <argument name="instanceNames" xsi:type="array">
+                <item name="customer" xsi:type="string">Tangkoko\CustomerAttributesManagement\Model\Rule\Condition\Combine</item>
+                <item name="customer_address" xsi:type="string">Tangkoko\CustomerAttributesManagement\Model\Rule\Condition\Address\Combine</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <virtualType name="Tangkoko\CustomerAttributesManagement\Model\Rule\Condition\Address\Combine" type="Tangkoko\CustomerAttributesManagement\Model\Rule\Condition\Combine">
+        <arguments>
+            <argument name="conditions" xsi:type="array">
+                <item name="customer" xsi:type="array">
+                    <item name="label" xsi:type="string" translatable="true">Customer attributes</item>
+                    <item name="value" xsi:type="object">Tangkoko\CustomerAttributesManagement\Model\Rule\Condition\Customer</item>
+                </item>
+                <item name="address" xsi:type="array">
+                    <item name="label" xsi:type="string" translatable="true">Customer address attributes</item>
+                    <item name="value" xsi:type="object">Tangkoko\CustomerAttributesManagement\Model\Rule\Condition\Address</item>
+                </item>
+                <item name="store" xsi:type="array">
+                    <item name="label" xsi:type="string" translatable="true">Store</item>
+                    <item name="value" xsi:type="object">Tangkoko\CustomerAttributesManagement\Model\Rule\Condition\Store</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    
 </config>

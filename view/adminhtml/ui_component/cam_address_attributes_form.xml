@@ -16,9 +16,9 @@
     </argument>
     <settings>
         <buttons>
-            <button name="save" class="Mvn\Cam\Block\Adminhtml\Address\Attribute\Button\Save"/>
-            <button name="delete" class="Mvn\Cam\Block\Adminhtml\Address\Attribute\Button\Delete"/>
-            <button name="cancel" class="Mvn\Cam\Block\Adminhtml\Address\Attribute\Button\Cancel"/>
+            <button name="save" class="Tangkoko\CustomerAttributesManagement\Block\Adminhtml\Address\Attribute\Button\Save"/>
+            <button name="delete" class="Tangkoko\CustomerAttributesManagement\Block\Adminhtml\Address\Attribute\Button\Delete"/>
+            <button name="cancel" class="Tangkoko\CustomerAttributesManagement\Block\Adminhtml\Address\Attribute\Button\Cancel"/>
         </buttons>
         <namespace>cam_address_attributes_form</namespace>
         <!--<ajaxSave>true</ajaxSave>-->
@@ -38,7 +38,7 @@
             <validateUrl path="cam/address/validate"/>
             <submitUrl path="cam/address/save"/>
         </settings>
-        <dataProvider class="Mvn\Cam\Ui\DataProvider\Address\Attributes\DataProvider" name="cam_address_attributes_form_data_source">
+        <dataProvider class="Tangkoko\CustomerAttributesManagement\Ui\DataProvider\Address\Attributes\DataProvider" name="cam_address_attributes_form_data_source">
             <settings>
                 <requestFieldName>id</requestFieldName>
                 <primaryFieldName>attribute_id</primaryFieldName>
@@ -91,13 +91,13 @@
             <formElements>
                 <select>
                     <settings>
-                        <options class="Mvn\Cam\Model\Attribute\Source\Inputtype"/>
+                        <options class="Tangkoko\CustomerAttributesManagement\Model\Attribute\Source\Inputtype"/>
                     </settings>
                 </select>
             </formElements>
         </field>
 
-        <field name="default_value_text" component="Mvn_Cam/js/components/visible-on-option/input" sortOrder="30" formElement="input">
+        <field name="default_value_text" component="Tangkoko_CustomerAttributesManagement/js/components/visible-on-option/input" sortOrder="30" formElement="input">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="valuesForOptions" xsi:type="array">
@@ -114,7 +114,7 @@
                 </imports>
             </settings>
         </field>
-        <field name="default_value_textarea" component="Mvn_Cam/js/components/visible-on-option/textarea" sortOrder="30" formElement="textarea">
+        <field name="default_value_textarea" component="Tangkoko_CustomerAttributesManagement/js/components/visible-on-option/textarea" sortOrder="30" formElement="textarea">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="valuesForOptions" xsi:type="array">
@@ -131,7 +131,7 @@
                 </imports>
             </settings>
         </field>
-        <field name="default_value_yesno" component="Mvn_Cam/js/components/visible-on-option/yesno" sortOrder="30" formElement="checkbox">
+        <field name="default_value_yesno" component="Tangkoko_CustomerAttributesManagement/js/components/visible-on-option/yesno" sortOrder="30" formElement="checkbox">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="default" xsi:type="number">0</item>
@@ -160,7 +160,7 @@
                 </checkbox>
             </formElements>
         </field>
-        <field name="default_value_date" component="Mvn_Cam/js/components/visible-on-option/date" sortOrder="30" formElement="date">
+        <field name="default_value_date" component="Tangkoko_CustomerAttributesManagement/js/components/visible-on-option/date" sortOrder="30" formElement="date">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="valuesForOptions" xsi:type="array">
@@ -177,7 +177,7 @@
                 </imports>
             </settings>
         </field>
-        <field name="is_required" component="Mvn_Cam/js/components/visible-on-option/yesno" sortOrder="40" formElement="checkbox">
+        <field name="is_required" component="Tangkoko_CustomerAttributesManagement/js/components/visible-on-option/yesno" sortOrder="40" formElement="checkbox">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="source" xsi:type="string">address_attributes</item>
@@ -213,7 +213,7 @@
             </formElements>
         </field>
     </fieldset>
-    <fieldset name="attribute_options_select_container" component="Mvn_Cam/js/components/visible-on-option/fieldset" sortOrder="15">
+    <fieldset name="attribute_options_select_container" component="Tangkoko_CustomerAttributesManagement/js/components/visible-on-option/fieldset" sortOrder="100">
         <argument name="data" xsi:type="array">
             <item name="config" xsi:type="array">
                 <item name="valuesForOptions" xsi:type="array">
@@ -228,7 +228,7 @@
                 <link name="toggleVisibility">${ $.provider }:data.frontend_input</link>
             </imports>
         </settings>
-        <dynamicRows name="attribute_options_select" component="Mvn_Cam/js/components/dynamic-rows">
+        <dynamicRows name="attribute_options_select" component="Tangkoko_CustomerAttributesManagement/js/components/dynamic-rows">
             <settings>
                 <addButtonLabel translate="true">Add Value</addButtonLabel>
                 <additionalClasses>
@@ -244,7 +244,7 @@
                         <item name="componentType" xsi:type="string">container</item>
                     </item>
                 </argument>
-                <field name="is_default" component="Mvn_Cam/js/form/element/checkbox" sortOrder="0" formElement="checkbox">
+                <field name="is_default" component="Tangkoko_CustomerAttributesManagement/js/form/element/checkbox" sortOrder="0" formElement="checkbox">
                     <argument name="data" xsi:type="array">
                         <item name="config" xsi:type="array">
                             <item name="prefixElementName" xsi:type="string">option_</item>
@@ -270,7 +270,7 @@
                         </checkbox>
                     </formElements>
                 </field>
-                <field name="position" component="Mvn_Cam/js/form/element/input" formElement="input">
+                <field name="position" component="Tangkoko_CustomerAttributesManagement/js/form/element/input" formElement="input">
                     <argument name="data" xsi:type="array">
                         <item name="config" xsi:type="array">
                             <item name="prefixName" xsi:type="string">option.order</item>
@@ -285,7 +285,7 @@
             </container>
         </dynamicRows>
     </fieldset>
-    <fieldset name="attribute_options_multiselect_container" component="Mvn_Cam/js/components/visible-on-option/fieldset" sortOrder="15">
+    <fieldset name="attribute_options_multiselect_container" component="Tangkoko_CustomerAttributesManagement/js/components/visible-on-option/fieldset" sortOrder="15">
         <argument name="data" xsi:type="array">
             <item name="config" xsi:type="array">
                 <item name="valuesForOptions" xsi:type="array">
@@ -300,7 +300,7 @@
                 <link name="toggleVisibility">${ $.provider }:data.frontend_input</link>
             </imports>
         </settings>
-        <dynamicRows name="attribute_options_multiselect" component="Mvn_Cam/js/components/dynamic-rows">
+        <dynamicRows name="attribute_options_multiselect" component="Tangkoko_CustomerAttributesManagement/js/components/dynamic-rows">
             <settings>
                 <addButtonLabel translate="true">Add Value</addButtonLabel>
                 <additionalClasses>
@@ -317,7 +317,7 @@
                         <item name="positionProvider" xsi:type="string">attribute_options.position</item>
                     </item>
                 </argument>
-                <field name="is_default" component="Mvn_Cam/js/form/element/checkbox" sortOrder="0" formElement="checkbox">
+                <field name="is_default" component="Tangkoko_CustomerAttributesManagement/js/form/element/checkbox" sortOrder="0" formElement="checkbox">
                     <argument name="data" xsi:type="array">
                         <item name="config" xsi:type="array">
                             <item name="prefixElementName" xsi:type="string">option_</item>
@@ -338,7 +338,7 @@
                         <label translate="true">Is Default</label>
                     </settings>
                 </field>
-                <field name="position" component="Mvn_Cam/js/form/element/input" formElement="input">
+                <field name="position" component="Tangkoko_CustomerAttributesManagement/js/form/element/input" formElement="input">
                     <argument name="data" xsi:type="array">
                         <item name="config" xsi:type="array">
                             <item name="prefixName" xsi:type="string">option.order</item>
@@ -362,7 +362,7 @@
             <collapsible>true</collapsible>
             <label translate="true">Advanced Attribute Properties</label>
         </settings>
-        <field name="is_unique" component="Mvn_Cam/js/components/visible-on-option/yesno" sortOrder="40" formElement="checkbox">
+        <field name="is_unique" component="Tangkoko_CustomerAttributesManagement/js/components/visible-on-option/yesno" sortOrder="40" formElement="checkbox">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="valuesForOptions" xsi:type="array">
@@ -393,33 +393,18 @@
                 </checkbox>
             </formElements>
         </field>
-        <field name="frontend_class" component="Mvn_Cam/js/components/disable-hide-select" sortOrder="50" formElement="select">
+        <field name="validate_rules"  sortOrder="50" formElement="select">
             <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="valuesForOptions" xsi:type="array">
-                        <item name="text" xsi:type="string">text</item>
-                        <item name="textarea" xsi:type="string">textarea</item>
-                        <item name="texteditor" xsi:type="string">texteditor</item>
-                        <item name="date" xsi:type="string">date</item>
-                        <item name="boolean" xsi:type="string">boolean</item>
-                        <item name="multiselect" xsi:type="string">multiselect</item>
-                        <item name="select" xsi:type="string">select</item>
-                        <item name="price" xsi:type="string">price</item>
-                    </item>
-                    <item name="valuesForEnable" xsi:type="array">
-                        <item name="text" xsi:type="string">text</item>
-                    </item>
-                </item>
             </argument>
             <settings>
                 <dataType>string</dataType>
                 <label translate="true">Input Validation</label>
-                <dataScope>frontend_class</dataScope>
+                <dataScope>validate_rules</dataScope>
             </settings>
             <formElements>
                 <select>
                     <settings>
-                        <options class="Magento\Eav\Model\Adminhtml\Attribute\Validation\Rules\Options"/>
+                        <options class="Tangkoko\CustomerAttributesManagement\Model\Attribute\Source\ValidationRule"/>
                     </settings>
                 </select>
             </formElements>
@@ -524,6 +509,22 @@
             </settings>
         </field>
 
+        <field name="frontend_class" sortOrder="87" formElement="input">
+            <settings>
+                <dataType>string</dataType>
+                <label translate="true">Css classes</label>
+                <dataScope>frontend_class</dataScope>
+            </settings>
+        </field>
+
+        <field name="placeholder" sortOrder="89" formElement="input">
+            <settings>
+                <dataType>string</dataType>
+                <label translate="true">Placeholder</label>
+                <dataScope>placeholder</dataScope>
+            </settings>
+        </field>
+
 
         <field name="used_in_forms" sortOrder="90" formElement="multiselect">
             <settings>
@@ -534,13 +535,51 @@
             <formElements>
                 <multiselect>
                     <settings>
-                        <options class="Mvn\Cam\Model\Attribute\Source\AddressForm"/>
+                        <options class="Tangkoko\CustomerAttributesManagement\Model\Attribute\Source\AddressForm"/>
                     </settings>
                 </multiselect>
             </formElements>
         </field>
+         <field name="fieldset" sortOrder="95" formElement="select">
+            <settings>
+                <dataType>string</dataType>
+                <label translate="true">Fieldset to Use in</label>
+                <dataScope>fieldset</dataScope>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Tangkoko\CustomerAttributesManagement\Model\Attribute\Source\AddressFieldset"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        
     </fieldset>
-    <fieldset name="manage-titles" sortOrder="25">
+     <fieldset name="visibility_conditions" sortOrder="24">
+        <settings>
+            <collapsible>true</collapsible>
+            <label translate="true">Visibility Conditions</label>
+        </settings>
+        <container name="visibility_conditions" sortOrder="10">
+            <htmlContent name="html_content">
+                <block name="visibility_conditions" class="Tangkoko\CustomerAttributesManagement\Block\Adminhtml\Address\Attribute\Edit\Tab\Visibility\Conditions" />
+            </htmlContent>
+        </container>
+    </fieldset>
+     <fieldset name="required_conditions" sortOrder="25">
+        <settings>
+            <collapsible>true</collapsible>
+            <label translate="true">Required Conditions</label>
+        </settings>
+    
+        <container name="required_conditions" sortOrder="11">
+            <htmlContent name="html_content">
+                <block name="required_conditions" class="Tangkoko\CustomerAttributesManagement\Block\Adminhtml\Address\Attribute\Edit\Tab\Required\Conditions" />
+            </htmlContent>
+        </container>
+    </fieldset>
+    <fieldset name="manage-titles" sortOrder="26">
         <settings>
             <collapsible>true</collapsible>
             <label translate="true">Manage Titles</label>

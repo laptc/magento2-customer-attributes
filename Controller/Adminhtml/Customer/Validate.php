@@ -1,23 +1,26 @@
 <?php
+
 /**
  *
  * Copyright © Mvn, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
 
-namespace Mvn\Cam\Controller\Adminhtml\Customer;
+namespace Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\Customer;
 
 use Magento\Framework\Serialize\Serializer\FormData;
 use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\App\Action\HttpPostActionInterface as HttpPostActionInterface;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\DataObject;
+use Magento\Eav\Api\AttributeRepositoryInterface;
+use \Magento\Eav\Model\EntityFactory;
 
 /**
  * Class Validate
- * @package Mvn\Cam\Controller\Adminhtml\Customer
+ * @package Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\Customer
  */
-class Validate extends \Mvn\Cam\Controller\Adminhtml\Customer\Attribute implements HttpGetActionInterface, HttpPostActionInterface
+class Validate extends \Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\Customer\Attribute implements HttpGetActionInterface, HttpPostActionInterface
 {
     const DEFAULT_MESSAGE_KEY = 'message';
 
@@ -39,7 +42,7 @@ class Validate extends \Mvn\Cam\Controller\Adminhtml\Customer\Attribute implemen
     /**
      * Validate constructor.
      * @param \Magento\Backend\App\Action\Context $context
-     * @param \Mvn\Cam\Helper\Data $helper
+     * @param \Tangkoko\CustomerAttributesManagement\Helper\Data $helper
      * @param \Magento\Framework\Cache\FrontendInterface $attributeLabelCache
      * @param \Magento\Framework\Registry $coreRegistry
      * @param \Magento\Framework\View\LayoutFactory $layoutFactory
@@ -48,14 +51,17 @@ class Validate extends \Mvn\Cam\Controller\Adminhtml\Customer\Attribute implemen
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
-        \Mvn\Cam\Helper\Data $helper,
+        \Tangkoko\CustomerAttributesManagement\Helper\Data $helper,
         \Magento\Framework\Cache\FrontendInterface $attributeLabelCache,
         \Magento\Framework\Registry $coreRegistry,
         \Magento\Framework\View\LayoutFactory $layoutFactory,
+        \Magento\Eav\Model\AttributeFactory $attributeFactory,
+        AttributeRepositoryInterface $attributeRepository,
+        EntityFactory $entityFactory,
         array $multipleAttributeList = [],
         FormData $formDataSerializer = null
     ) {
-        parent::__construct($context, $helper, $attributeLabelCache, $coreRegistry);
+        parent::__construct($context, $helper, $attributeLabelCache, $coreRegistry, $attributeFactory, $attributeRepository, $entityFactory);
         $this->layoutFactory = $layoutFactory;
         $this->multipleAttributeList = $multipleAttributeList;
         $this->formDataSerializer = $formDataSerializer ?: ObjectManager::getInstance()
@@ -170,7 +176,8 @@ class Validate extends \Mvn\Cam\Controller\Adminhtml\Customer\Attribute implemen
      */
     private function checkUniqueOption(DataObject $response, array $options = null)
     {
-        if (is_array($options)
+        if (
+            is_array($options)
             && isset($options['value'])
             && isset($options['delete'])
             && !empty($options['value'])

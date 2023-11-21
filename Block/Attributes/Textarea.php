@@ -1,14 +1,15 @@
 <?php
+
 /**
  * Copyright © 2019 Mvn. All rights reserved.
  * See COPYING.txt for license details.
  */
 
-namespace Mvn\Cam\Block\Attributes;
+namespace Tangkoko\CustomerAttributesManagement\Block\Attributes;
 
 /**
  * Class Textarea
- * @package Mvn\Cam\Block\Attributes
+ * @package Tangkoko\CustomerAttributesManagement\Block\Attributes
  */
 class Textarea extends AbstractElement
 {
@@ -18,5 +19,5 @@ class Textarea extends AbstractElement
      *
      * @var string
      */
-    protected $_template = "Mvn_Cam::attributes/textarea.phtml";
+    protected $_template = "Tangkoko_CustomerAttributesManagement::attributes/textarea.phtml";
 }

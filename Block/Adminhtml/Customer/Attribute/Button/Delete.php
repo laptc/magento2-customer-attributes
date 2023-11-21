@@ -1,9 +1,11 @@
 <?php
+
 /**
  * Copyright © 2019 Mvn. All rights reserved.
  * See COPYING.txt for license details.
  */
-namespace Mvn\Cam\Block\Adminhtml\Customer\Attribute\Button;
+
+namespace Tangkoko\CustomerAttributesManagement\Block\Adminhtml\Customer\Attribute\Button;
 
 use Magento\Framework\View\Element\UiComponent\Control\ButtonProviderInterface;
 
@@ -14,15 +16,14 @@ class Delete extends Generic implements ButtonProviderInterface
      */
     public function getButtonData()
     {
-        if($this->getContext()->getRequestParam('attribute_id')){
+        if ($this->getContext()->getRequestParam('attribute_id')) {
             $data = [
                 'label' => __('Delete'),
                 'class' => 'delete',
                 'id' => 'attribute-delete-button',
-                'data_attribute'=> [
-                    'url' => $this->getDeleteUrl(),
-                ],
-                'on_click' =>'deleteConfirm("'.__('Are you sure you want to delete this attribute? Only do this if you know what you are doing.').'","'.$this->getDeleteUrl().'")',
+                'on_click' => 'deleteConfirm(\'' . __(
+                    'Are you sure you want to delete this attribute ?'
+                ) . '\', \'' . $this->getDeleteUrl() . '\', {"data": {}})',
                 'sort_order' => 20,
             ];
             return $data;

@@ -1,25 +1,31 @@
 <?php
+
 /**
  *
  * Copyright © Mvn, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
-namespace Mvn\Cam\Controller\Adminhtml\Customer;
 
-class Delete extends \Mvn\Cam\Controller\Adminhtml\Customer\Attribute
+namespace Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\Customer;
+
+class Delete extends \Tangkoko\CustomerAttributesManagement\Controller\Adminhtml\Customer\Attribute
 {
     /**
      * @return \Magento\Backend\Model\View\Result\Redirect
      */
     public function execute()
     {
-        $id = $this->getRequest()->getParam('attribute_id');
+        $code = $this->getRequest()->getParam('attribute_code');
         $resultRedirect = $this->createRedirectResult();
-        if ($id) {
-            $model = $this->_objectManager->create(\Magento\Customer\Model\Attribute::class);
+        if ($code) {
+            $model =  $this->attributeRepository->get($this->entityTypeId, $code);
 
-            // entity type check
-            $model->load($id);
+            if (!$model->getId()) {
+                $this->messageManager->addErrorMessage(__('This attribute no longer exists.'));
+                $resultRedirect = $this->createRedirectResult();
+                return $resultRedirect->setPath('cam/*/');
+            }
+
             if ($model->getEntityTypeId() != $this->entityTypeId) {
                 $this->messageManager->addErrorMessage(__('We can\'t delete the attribute.'));
                 return $resultRedirect->setPath('cam/*/');
@@ -27,14 +33,14 @@ class Delete extends \Mvn\Cam\Controller\Adminhtml\Customer\Attribute
 
             try {
                 $attributeCode = $model->getAttributeCode();
-                $model->delete();
+                $this->attributeRepository->delete($model);
                 $this->messageManager->addSuccessMessage(__('You deleted the customer attribute: "%1".', $attributeCode));
                 return $resultRedirect->setPath('cam/*/');
             } catch (\Exception $e) {
                 $this->messageManager->addErrorMessage($e->getMessage());
                 return $resultRedirect->setPath(
                     'cam/*/edit',
-                    ['attribute_id' => $this->getRequest()->getParam('attribute_id')]
+                    ['attribute_code' => $this->getRequest()->getParam('attribute_code')]
                 );
             }
         }

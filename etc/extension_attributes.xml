@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+
+<!--
+  Created on Fri Jan 27 2023
+  @author : Nicolas RENAULT <nrenault@tangkoko.com>
+  @copyright (c) 2023 Tangkoko
+ -->
+
+<config>
+    <extension_attributes for="Magento\Eav\Api\Data\AttributeInterface">
+        <attribute code="cam_attribute" type="Tangkoko\CustomerAttributesManagement\Api\Data\CamAttributeInterface">
+           <resources>
+              <resource ref="permission"/>
+           </resources>
+           <join reference_table="cam_customer_eav_attribute" reference_field="attribute_id" join_on_field="attribute_id">
+              <field>attribute_id</field>
+              <field>visibility_conditions_serialized</field>
+              <field>required_conditions_serialized</field>
+              <field>fieldset</field>
+              <field>placeholder</field>
+           </join>
+        </attribute>
+    </extension_attributes>
+</config>

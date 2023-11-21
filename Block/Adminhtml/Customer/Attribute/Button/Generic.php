@@ -1,9 +1,11 @@
 <?php
+
 /**
  * Copyright © Mvn, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
-namespace Mvn\Cam\Block\Adminhtml\Customer\Attribute\Button;
+
+namespace Tangkoko\CustomerAttributesManagement\Block\Adminhtml\Customer\Attribute\Button;
 
 use Magento\Framework\Registry;
 use Magento\Framework\View\Element\UiComponent\Context;
@@ -65,7 +67,8 @@ class Generic implements ButtonProviderInterface
     /**
      * @return Context
      */
-    public function getContext(){
+    public function getContext()
+    {
         return $this->context;
     }
 }

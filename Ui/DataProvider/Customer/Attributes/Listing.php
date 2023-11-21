@@ -1,10 +1,11 @@
 <?php
+
 /**
  * Copyright © Mvn, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
 
-namespace Mvn\Cam\Ui\DataProvider\Customer\Attributes;
+namespace Tangkoko\CustomerAttributesManagement\Ui\DataProvider\Customer\Attributes;
 
 use Magento\Framework\App\RequestInterface;
 use Magento\Customer\Model\ResourceModel\Attribute\CollectionFactory;

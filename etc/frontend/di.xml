@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ Copyright © 2019 MVN. All rights reserved.
+  ~ See COPYING.txt for license details.
+  -->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    
+    <type name="Tangkoko\CustomerAttributesManagement\Block\Form\AttributeFactory">
+        <arguments>
+            <argument name="attributeBlocks" xsi:type="array">
+                <item name="lastname" xsi:type="string">\Tangkoko\CustomerAttributesManagement\Block\Form\Attributes\Name</item>
+                <item name="dob" xsi:type="string">\Magento\Customer\Block\Widget\Dob</item>
+                <item name="taxvat" xsi:type="string">\Magento\Customer\Block\Widget\Taxvat</item>
+                <item name="gender" xsi:type="string">\Magento\Customer\Block\Widget\Gender</item>
+                <item name="company" xsi:type="string">\Magento\Customer\Block\Widget\Company</item>
+                <item name="telephone" xsi:type="string">\Magento\Customer\Block\Widget\Telephone</item>
+                <item name="fax" xsi:type="string">\Magento\Customer\Block\Widget\Fax</item>
+                <item name="street" xsi:type="string">\Tangkoko\CustomerAttributesManagement\Block\Address\Form\Attributes\Street</item>
+                <item name="country_id" xsi:type="string">\Tangkoko\CustomerAttributesManagement\Block\Address\Form\Attributes\Country</item>
+                <item name="city" xsi:type="string">Tangkoko\CustomerAttributesManagement\Block\Attributes\Text</item>
+                <item name="postcode" xsi:type="string">Tangkoko\CustomerAttributesManagement\Block\Attributes\Text</item>
+                <item name="region_id" xsi:type="string">Tangkoko\CustomerAttributesManagement\Block\Address\Form\Attributes\Region</item>
+                <item name="vat_id" xsi:type="string">Tangkoko\CustomerAttributesManagement\Block\Attributes\Text</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Tangkoko\CustomerAttributesManagement\Model\Attribute\Provider">
+        <arguments>
+            <argument name="entityType" xsi:type="const">Magento\Customer\Api\CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER</argument>
+        </arguments>
+    </type>
+
+    <virtualType name="Tangkoko\CustomerAttributesManagement\Model\Address\Attribute\Provider" type="Tangkoko\CustomerAttributesManagement\Model\Attribute\Provider">
+        <arguments>
+            <argument name="entityType" xsi:type="const">Magento\Customer\Api\AddressMetadataInterface::ENTITY_TYPE_ADDRESS</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Tangkoko\CustomerAttributesManagement\ViewModel\Form\Attributes">
+        <arguments>
+            <argument name="attributeProvider" xsi:type="object">Tangkoko\CustomerAttributesManagement\Model\Attribute\Provider</argument>
+            <argument name="dataResolver" xsi:type="object">Tangkoko\CustomerAttributesManagement\Model\Form\CustomerDataResolver</argument>
+            <argument name="fieldsets" xsi:type="object">Tangkoko\CustomerAttributesManagement\Model\Attribute\Source\CustomerFieldset</argument>
+            <argument name="attributeViewModel" xsi:type="object">Tangkoko\CustomerAttributesManagement\ViewModel\Customer</argument>
+        </arguments>
+    </type>
+
+    <virtualType name="Tangkoko\CustomerAttributesManagement\ViewModel\Form\Address\Attributes" type="Tangkoko\CustomerAttributesManagement\ViewModel\Form\Attributes">
+        <arguments>
+            <argument name="attributeProvider" xsi:type="object">Tangkoko\CustomerAttributesManagement\Model\Address\Attribute\Provider</argument>
+            <argument name="dataResolver" xsi:type="object">Tangkoko\CustomerAttributesManagement\Model\Form\AddressDataResolver</argument>
+            <argument name="attributeViewModel" xsi:type="object">Tangkoko\CustomerAttributesManagement\ViewModel\Address</argument>
+            <argument name="fieldsets" xsi:type="object">Tangkoko\CustomerAttributesManagement\Model\Attribute\Source\AddressFieldset</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Tangkoko\CustomerAttributesManagement\Plugin\Eav\Model\Entity\Attribute\Backend">
+        <arguments>
+            <argument name="context" xsi:type="object">Tangkoko\CustomerAttributesManagement\Model\Context\FrontendContext</argument>
+        </arguments>
+    </type>
+</config>

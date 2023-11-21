@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @var \Tangkoko\CustomerAttributesManagement\Block\Address\Form\Attributes\Region $block
+ */
+
+
+$_region = $block->getAttribute()->getStoreLabel();
+$_selectRegion = 'Please select a region, state or province.';
+$_displayAll = $block->getConfig('general/region/display_all');
+$_regionValidationClass = $this->getViewModel()->addressGetAttributeValidationClass('region'); ?>
+
+<div class="field region required">
+    <label class="label" for="region_id">
+        <span><?= /* @noEscape */ $_region ?></span>
+    </label>
+    <div class="control">
+        <select id="region_id" name="region_id" title="<?= /* @noEscape */ $_region ?>" class="validate-select region_id" <?= /* @noEscape */ !$_displayAll ? ' disabled="disabled"' : '' ?>>
+            <option value=""><?= $escaper->escapeHtml(__($_selectRegion)) ?></option>
+        </select>
+        <input type="text" id="region" name="region" value="<?= $escaper->escapeHtmlAttr($block->getRegion()) ?>" title="<?= /* @noEscape */ $_region ?>" class="input-text validate-not-number-first
+                        <?= $escaper->escapeHtmlAttr($_regionValidationClass) ?>" <?= !$_displayAll ? ' disabled="disabled"' : '' ?> />
+    </div>
+</div>

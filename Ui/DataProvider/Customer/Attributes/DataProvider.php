@@ -1,9 +1,11 @@
 <?php
+
 /**
  * Copyright © Mvn, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
-namespace Mvn\Cam\Ui\DataProvider\Customer\Attributes;
+
+namespace Tangkoko\CustomerAttributesManagement\Ui\DataProvider\Customer\Attributes;
 
 use Magento\Framework\Stdlib\ArrayManager;
 use Magento\Store\Api\StoreRepositoryInterface;
@@ -15,11 +17,12 @@ use Magento\Ui\Component\Form\Element\DataType\Text;
 use Magento\Store\Model\Store;
 use Magento\Framework\App\RequestInterface;
 use Magento\Customer\Model\AttributeFactory;
+use Magento\Eav\Api\AttributeRepositoryInterface;
 use Magento\Eav\Model\ResourceModel\Entity\Attribute\Option\CollectionFactory as OptionCollectionFactory;
 
 /**
  * Class DataProvider
- * @package Mvn\Cam\Ui\DataProvider\Customer\Attributes
+ * @package Tangkoko\CustomerAttributesManagement\Ui\DataProvider\Customer\Attributes
  */
 class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
 {
@@ -54,6 +57,12 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
     protected $attribute;
 
     /**
+     *
+     * @var AttributeRepositoryInterface
+     */
+    protected $attributeRepository;
+
+    /**
      * @param string $name
      * @param string $primaryFieldName
      * @param string $requestFieldName
@@ -76,6 +85,7 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
         RequestInterface $request,
         AttributeFactory $attributeFactory,
         OptionCollectionFactory $attrOptionCollectionFactory,
+        AttributeRepositoryInterface $attributeRepository,
         array $meta = [],
         array $data = []
     ) {
@@ -86,17 +96,19 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
         $this->request = $request;
         $this->attributeFactory = $attributeFactory;
         $this->attrOptionCollectionFactory = $attrOptionCollectionFactory;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
      * @return \Magento\Customer\Model\Attribute
      */
-    public function getAttribute(){
-        if(!$this->attribute){
+    public function getAttribute()
+    {
+        if (!$this->attribute) {
             $attribute = $this->attributeFactory->create();
-            $attributeId = $this->request->getParam('attribute_id');
-            if($attributeId) {
-                $attribute->load($attributeId);
+            $attributeCode = $this->request->getParam('attribute_code');
+            if ($attributeCode) {
+                $attribute = $this->attributeRepository->get(\Magento\Customer\Api\CustomerMetadataInterface::ENTITY_TYPE_CUSTOMER, $attributeCode);
             }
             $this->attribute = $attribute;
         }
@@ -112,19 +124,19 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
     {
         $data = [];
         $attribute = $this->getAttribute();
-        if($attribute->getId()){
+        if ($attribute->getId()) {
             $inputType = $attribute->getFrontendInput();
-            if(empty($attribute->getData("frontend_label[0]")) && !empty($attribute->getData("frontend_label"))){
+            if (empty($attribute->getData("frontend_label[0]")) && !empty($attribute->getData("frontend_label"))) {
                 $attribute->setData("frontend_label[0]", $attribute->getData("frontend_label"));
             }
             $labels = $attribute->getStoreLabels();
-            if($labels && !empty($labels)){
-                foreach ($labels as $storeId => $label){
+            if ($labels && !empty($labels)) {
+                foreach ($labels as $storeId => $label) {
                     $attribute->setData("frontend_label[$storeId]", $label);
                 }
             }
 
-            if($attribute->usesSource()){
+            if ($attribute->usesSource()) {
                 $optionsData = [];
                 foreach ($this->storeRepository->getList() as $store) {
                     $storeId = $store->getId();
@@ -132,17 +144,17 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
                         continue;
                     }
                     $options = $this->getAttributeOptions($attribute->getId(), $storeId);
-                    if($options && !empty($options)){
-                        $attributeDefaultValue = explode(",", $attribute->getDefaultValue());
+                    if ($options && !empty($options)) {
+                        $attributeDefaultValue = explode(",", $attribute->getDefaultValue() ?? "");
                         foreach ($options as $option) {
                             $optionId = $option->getOptionId();
-                            if(isset($optionsData[$optionId])){
+                            if (isset($optionsData[$optionId])) {
                                 $optionsData[$optionId]["value_option_$storeId"] = $option->getValue();
-                            }else{
+                            } else {
                                 $optionsData[$optionId] = [
                                     "record_id" => $optionId,
                                     "option_id" => $optionId,
-                                    "is_default" => (in_array($optionId, $attributeDefaultValue))?1:0,
+                                    "is_default" => (in_array($optionId, $attributeDefaultValue)) ? 1 : 0,
                                     "position" => $option->getSortOrder(),
                                     "value_option_0" => $option->getDefaultValue(),
                                     "value_option_$storeId" => $option->getValue()
@@ -160,9 +172,12 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
             }
 
             $attribute->setUsedInForms($attribute->getUsedInForms());
-            $data[""] = $attribute->getData();
-        }
+            $data[""] = array_merge($attribute->getData(), $attribute->getExtensionAttributes()->getCamAttribute()->getData());
+            if (!empty($attribute->getValidateRules())) {
 
+                $data[""]["validate_rules"] = array_key_first($attribute->getValidateRules());
+            }
+        }
         return $data;
     }
 
@@ -189,7 +204,7 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
     private function customizeBase($meta)
     {
         $attribute = $this->getAttribute();
-        $disabled = ($attribute->getId())?true:false;
+        $disabled = ($attribute->getId()) ? true : false;
         $childrens = $this->arrayManager->set(
             'frontend_input/arguments/data/config',
             [],
@@ -261,7 +276,7 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
             $storeLabelConfiguration = [
                 'dataType' => 'text',
                 'formElement' => 'input',
-                'component' => 'Mvn_Cam/js/form/element/input',
+                'component' => 'Tangkoko_CustomerAttributesManagement/js/form/element/input',
                 'template' => 'Magento_Catalog/form/element/input',
                 'prefixName' => 'option.value',
                 'prefixElementName' => 'option_',
@@ -276,15 +291,13 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
                     'required-entry' => true,
                 ];
             }
-            $meta['attribute_options_select_container']['children']['attribute_options_select']['children']
-            ['record']['children']['value_option_' . $storeId] = $this->arrayManager->set(
+            $meta['attribute_options_select_container']['children']['attribute_options_select']['children']['record']['children']['value_option_' . $storeId] = $this->arrayManager->set(
                 'arguments/data/config',
                 [],
                 $storeLabelConfiguration
             );
 
-            $meta['attribute_options_multiselect_container']['children']['attribute_options_multiselect']['children']
-            ['record']['children']['value_option_' . $storeId] = $this->arrayManager->set(
+            $meta['attribute_options_multiselect_container']['children']['attribute_options_multiselect']['children']['record']['children']['value_option_' . $storeId] = $this->arrayManager->set(
                 'arguments/data/config',
                 [],
                 $storeLabelConfiguration
@@ -292,8 +305,7 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
             ++$sortOrder;
         }
 
-        $meta['attribute_options_select_container']['children']['attribute_options_select']['children']
-        ['record']['children']['action_delete'] = $this->arrayManager->set(
+        $meta['attribute_options_select_container']['children']['attribute_options_select']['children']['record']['children']['action_delete'] = $this->arrayManager->set(
             'arguments/data/config',
             [],
             [
@@ -301,15 +313,14 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
                 'dataType' => 'text',
                 'fit' => true,
                 'sortOrder' => $sortOrder,
-                'component' => 'Mvn_Cam/js/form/element/action-delete',
-                'elementTmpl' => 'Mvn_Cam/form/element/action-delete',
-                'template' => 'Mvn_Cam/form/element/action-delete',
+                'component' => 'Tangkoko_CustomerAttributesManagement/js/form/element/action-delete',
+                'elementTmpl' => 'Tangkoko_CustomerAttributesManagement/form/element/action-delete',
+                'template' => 'Tangkoko_CustomerAttributesManagement/form/element/action-delete',
                 'prefixName' => 'option.delete',
                 'prefixElementName' => 'option_',
             ]
         );
-        $meta['attribute_options_multiselect_container']['children']['attribute_options_multiselect']['children']
-        ['record']['children']['action_delete'] = $this->arrayManager->set(
+        $meta['attribute_options_multiselect_container']['children']['attribute_options_multiselect']['children']['record']['children']['action_delete'] = $this->arrayManager->set(
             'arguments/data/config',
             [],
             [
@@ -317,9 +328,9 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
                 'dataType' => 'text',
                 'fit' => true,
                 'sortOrder' => $sortOrder,
-                'component' => 'Mvn_Cam/js/form/element/action-delete',
-                'elementTmpl' => 'Mvn_Cam/form/element/action-delete',
-                'template' => 'Mvn_Cam/form/element/action-delete',
+                'component' => 'Tangkoko_CustomerAttributesManagement/js/form/element/action-delete',
+                'elementTmpl' => 'Tangkoko_CustomerAttributesManagement/form/element/action-delete',
+                'template' => 'Tangkoko_CustomerAttributesManagement/form/element/action-delete',
                 'prefixName' => 'option.delete',
                 'prefixElementName' => 'option_',
             ]
@@ -341,5 +352,4 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
             ->load();
         return $options;
     }
-
 }

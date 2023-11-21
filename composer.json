@@ -1,19 +1,26 @@
 {
-  "name": "mvn/cam",
+  "name": "tangkoko/customer-attributes-management",
   "description": "Magento 2 customer attributes management",
   "require": {
+    "php": ">=7.3.0"
   },
   "type": "project",
   "license": [
     "OSL-3.0",
     "AFL-3.0"
   ],
-  "version": "0.1.0",
+  "version": "1.0.28",
   "authors": [
     {
       "name": "daniel",
       "email": "support@danieltruong.com",
       "homepage": "https://www.danieltruong.com/",
+      "role": "Developer"
+    },
+    {
+      "name": "Nicolas RENAULT",
+      "email": "nrenault@tangkoko.com",
+      "homepage": "https://www.tangkoko.com/",
       "role": "Developer"
     }
   ],
@@ -22,7 +29,7 @@
       "registration.php"
     ],
     "psr-4": {
-      "Mvn\\Cam\\": ""
+      "Tangkoko\\CustomerAttributesManagement\\": ""
     }
   }
 }

@@ -4,7 +4,7 @@
  */
 define([
     'Magento_Ui/js/form/element/textarea',
-    'Mvn_Cam/js/components/visible-on-option/strategy'
+    'Tangkoko_CustomerAttributesManagement/js/components/visible-on-option/strategy'
 ], function (Element, strategy) {
     'use strict';
 

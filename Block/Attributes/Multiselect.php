@@ -1,14 +1,15 @@
 <?php
+
 /**
  * Copyright © 2019 Mvn. All rights reserved.
  * See COPYING.txt for license details.
  */
 
-namespace Mvn\Cam\Block\Attributes;
+namespace Tangkoko\CustomerAttributesManagement\Block\Attributes;
 
 /**
  * Class Multiselect
- * @package Mvn\Cam\Block\Attributes
+ * @package Tangkoko\CustomerAttributesManagement\Block\Attributes
  */
 class Multiselect extends AbstractElement
 {
@@ -18,12 +19,13 @@ class Multiselect extends AbstractElement
      *
      * @var string
      */
-    protected $_template = "Mvn_Cam::attributes/multiselect.phtml";
+    protected $_template = "Tangkoko_CustomerAttributesManagement::attributes/multiselect.phtml";
 
     /**
      * @return array
      */
-    public function getAttributeValue(){
+    public function getAttributeValue()
+    {
         return explode(",", parent::getAttributeValue());
     }
 }

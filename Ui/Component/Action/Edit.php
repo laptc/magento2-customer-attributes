@@ -1,10 +1,11 @@
 <?php
+
 /**
  * Copyright © 2019 Mvn. All rights reserved.
  * See COPYING.txt for license details.
  */
 
-namespace Mvn\Cam\Ui\Component\Action;
+namespace Tangkoko\CustomerAttributesManagement\Ui\Component\Action;
 
 use Magento\Framework\View\Element\UiComponent\ContextInterface;
 use Magento\Framework\View\Element\UiComponentFactory;
@@ -61,8 +62,10 @@ class Edit extends Column
      */
     public function prepareDataSource(array $dataSource)
     {
+
         if (isset($dataSource['data']['items'])) {
-            foreach ($dataSource['data']['items'] as & $item) {
+            foreach ($dataSource['data']['items'] as &$item) {
+
                 $name = $this->getData('name');
                 if (isset($item[$this->_indexField])) {
                     $item[$name]['edit'] = [
