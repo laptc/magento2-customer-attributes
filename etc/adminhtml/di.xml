@@ -20,4 +20,17 @@
         </arguments>
     </type>
 
+    <type name="Tangkoko\CustomerAttributesManagement\Plugin\Eav\Model\Entity\Attribute\Backend">
+        <arguments>
+            <argument name="context" xsi:type="object">Tangkoko\CustomerAttributesManagement\Model\Context\AdminContext</argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Customer\Model\Customer\DataProviderWithDefaultAddresses">
+        <plugin name="cam_admin_customer_form_required" type="Tangkoko\CustomerAttributesManagement\Plugin\Customer\Model\DataProviderWithDefaultAddresses"/>
+    </type>
+
+    <type name="Magento\Eav\Model\Validator\Attribute\Backend">
+        <plugin name="cam_admin_set_validation_context" type="Tangkoko\CustomerAttributesManagement\Plugin\Eav\Model\Validator\Attribute\Backend"/>
+    </type>
 </config>

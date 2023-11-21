@@ -3,4 +3,7 @@
     <event name="adminhtml_customer_attribute_types">
         <observer name="add_multiline" instance="Tangkoko\CustomerAttributesManagement\Observer\InputType\AddMultiline" />
     </event>
+    <event name="adminhtml_customer_prepare_save">
+         <observer name="cam_adminhtml_prepare_save_customer" instance="Tangkoko\CustomerAttributesManagement\Observer\Admin\Customer\PrepareSave" />
+    </event>
 </config>
